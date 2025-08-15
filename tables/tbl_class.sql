@@ -4,9 +4,10 @@
    Description: Table definition for Class, class name is eg. Prima, Sekunda, 4.A, ...
    Created: 2025-08-15
 */
-CREATE TABLE Class (
-    class_id NUMBER PRIMARY KEY,
-    class_name VARCHAR2(50) NOT NULL,
-    teacher_id NUMBER NOT NULL,
-    CONSTRAINT fk_class_teacher FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)
+create table class (
+   class_id   number primary key,
+   class_name varchar2(50) not null,
+   teacher_id number not null,
+   constraint fk_class_teacher foreign key ( teacher_id )
+      references teacher ( teacher_id )
 );

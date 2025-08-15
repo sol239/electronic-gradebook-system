@@ -49,15 +49,25 @@ create or replace package pkg_parent as
    );
 
     /*
-       Retrieves and prints parent details by ID.
-       Parameters:
-         p_parent_id - ID of the parent to retrieve
-       Output:
-         Prints parent information via DBMS_OUTPUT
+       Type for return value of get_parent_by_id function.
     */
-   procedure get_parent_by_id (
-      p_parent_id in number
-   );
+    type parent_rec is record (
+        parent_id   number,
+        first_name  varchar2(100),
+        last_name   varchar2(100),
+        email       varchar2(100)
+    );
+
+    /*
+       Returns parent details by ID.
+       Parameters:
+         p_parent_id - ID of the parent
+       Returns:
+         parent_rec with parent details, or NULL if not found.
+    */
+    function get_parent_by_id (
+        p_parent_id in number
+    ) return parent_rec;
 
 end pkg_parent;
 /
@@ -124,33 +134,25 @@ create or replace package body pkg_parent as
    end delete_parent;
 
 
-   procedure get_parent_by_id (
-      p_parent_id in number
-   ) as
-      v_first_name parent.first_name%type;
-      v_last_name  parent.last_name%type;
-      v_email      parent.email%type;
-   begin
-      select first_name,
-             last_name,
-             email
-        into
-         v_first_name,
-         v_last_name,
-         v_email
-        from parent
-       where parent_id = p_parent_id;
+   function get_parent_by_id (
+        p_parent_id in number
+    ) return parent_rec
+    as
+        v_parent parent_rec;
+    begin
+        select parent_id,
+               first_name,
+               last_name,
+               email
+          into v_parent
+          from parent
+         where parent_id = p_parent_id;
 
-      dbms_output.put_line('Parent ID: ' || p_parent_id);
-      dbms_output.put_line('First Name: ' || v_first_name);
-      dbms_output.put_line('Last Name: ' || v_last_name);
-      dbms_output.put_line('Email: ' || v_email);
-   exception
-      when no_data_found then
-         dbms_output.put_line('Parent with ID '
-                              || p_parent_id
-                              || ' not found.');
-   end get_parent_by_id;
+        return v_parent;
+    exception
+        when no_data_found then
+            return null;
+    end get_parent_by_id;
 
 end pkg_parent;
 /

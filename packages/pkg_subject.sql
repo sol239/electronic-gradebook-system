@@ -12,50 +12,62 @@
 create or replace package pkg_subject as
 
     /*
-    Adds a new subject to the database.
-    Parameters:
-      p_name - The name of the subject to add.
+       Adds a new subject to the Subject table.
+       Parameters:
+         p_name - name of the subject
     */
    procedure add_subject (
       p_name in varchar2
    );
 
-   /*
-   Updates an existing subject in the database.
-   Parameters:
-      p_id   - The ID of the subject to update.
-      p_name - The new name of the subject.
-   */
+    /*
+       Updates an existing subject in the Subject table.
+       Parameters:
+         p_subject_id - ID of the subject to update
+         p_name       - new name of the subject
+    */
    procedure update_subject (
-      p_id   in number,
-      p_name in varchar2
+      p_subject_id in number,
+      p_name       in varchar2
    );
 
-   /*
-   Deletes an existing subject from the database.
-   Parameters:
-      p_id - The ID of the subject to delete.
-   */
+    /*
+       Deletes a subject from the Subject table.
+       Parameters:
+         p_subject_id - ID of the subject to delete
+    */
    procedure delete_subject (
-      p_id in number
+      p_subject_id in number
    );
 
-   /*
-   Retrieves an existing subject from the database.
-   Parameters:
-      p_id - The ID of the subject to retrieve.
-   */
-   function get_subject (
-      p_id in number
-   ) return subject%rowtype;
+    /*
+       Type for return value of get_subject_by_id function.
+    */
+   type subject_rec is record (
+         subject_id number,
+         name       varchar2(100)
+   );
+
+    /*
+       Returns subject details by ID.
+       Parameters:
+         p_subject_id - ID of the subject
+       Returns:
+         subject_rec with subject details, or NULL if not found.
+    */
+   function get_subject_by_id (
+      p_subject_id in number
+   ) return subject_rec;
+
 end pkg_subject;
+/
 
 -- Package body
 create or replace package body pkg_subject as
 
    procedure add_subject (
       p_name in varchar2
-   ) is
+   ) as
    begin
       insert into subject (
          id,
@@ -66,51 +78,50 @@ create or replace package body pkg_subject as
    end add_subject;
 
    procedure update_subject (
-      p_id   in number,
-      p_name in varchar2
-   ) is
+      p_subject_id in number,
+      p_name       in varchar2
+   ) as
    begin
       update subject
          set
          name = p_name
-       where id = p_id;
+       where id = p_subject_id;
       if sql%rowcount = 0 then
-         dbms_output.put_line('No subject found with ID ' || p_id);
+         dbms_output.put_line('No subject found with ID ' || p_subject_id);
       else
-         dbms_output.put_line('Subject updated: ID ' || p_id);
+         dbms_output.put_line('Subject updated: ID ' || p_subject_id);
       end if;
    end update_subject;
 
    procedure delete_subject (
-      p_id in number
-   ) is
+      p_subject_id in number
+   ) as
    begin
       delete from subject
-       where id = p_id;
+       where id = p_subject_id;
       if sql%rowcount = 0 then
-         dbms_output.put_line('No subject found with ID ' || p_id);
+         dbms_output.put_line('No subject found with ID ' || p_subject_id);
       else
-         dbms_output.put_line('Subject deleted: ID ' || p_id);
+         dbms_output.put_line('Subject deleted: ID ' || p_subject_id);
       end if;
    end delete_subject;
 
-   procedure get_subject_by_id (
-      p_id in number
-   ) is
-      v_name subject.name%type;
+   function get_subject_by_id (
+      p_subject_id in number
+   ) return subject_rec as
+      v_subject subject_rec;
    begin
-      select name
-        into v_name
+      select id,
+             name
+        into v_subject
         from subject
-       where id = p_id;
+       where id = p_subject_id;
 
-      dbms_output.put_line('Subject ID: ' || p_id);
-      dbms_output.put_line('Name: ' || v_name);
+      return v_subject;
    exception
       when no_data_found then
-         dbms_output.put_line('Subject with ID '
-                              || p_id
-                              || ' not found.');
+         return null;
    end get_subject_by_id;
 
 end pkg_subject;
+/

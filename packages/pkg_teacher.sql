@@ -28,9 +28,9 @@ CREATE OR REPLACE PACKAGE pkg_teacher AS
        Updates an existing teacher in the Teacher table.
        Parameters:
          p_teacher_id - ID of the teacher to update
-         p_first_name - new first name of the teacher
-         p_last_name  - new last name of the teacher
-         p_email      - new email of the teacher (must be unique)
+         p_first_name - new first name
+         p_last_name  - new last name
+         p_email      - new email
     */
     PROCEDURE update_teacher(
         p_teacher_id IN NUMBER,
@@ -39,24 +39,35 @@ CREATE OR REPLACE PACKAGE pkg_teacher AS
         p_email      IN VARCHAR2
     );
 
+    /*
+       Deletes a teacher from the Teacher table.
+       Parameters:
+         p_teacher_id - ID of the teacher to delete
+    */
     PROCEDURE delete_teacher(
         p_teacher_id IN NUMBER
     );
 
     /*
-       Retrieves a teacher by ID from the Teacher table.
-       Parameters:
-         p_teacher_id - ID of the teacher to retrieve
-         p_first_name - first name of the teacher
-         p_last_name  - last name of the teacher
-         p_email      - email of the teacher
+       Type for return value of get_teacher_by_id function.
     */
-    PROCEDURE get_teacher_by_id(
-        p_teacher_id IN NUMBER,
-        p_first_name OUT VARCHAR2,
-        p_last_name  OUT VARCHAR2,
-        p_email      OUT VARCHAR2
+    TYPE teacher_rec IS RECORD (
+        teacher_id  NUMBER,
+        first_name  VARCHAR2(100),
+        last_name   VARCHAR2(100),
+        email       VARCHAR2(100)
     );
+
+    /*
+       Returns teacher details by ID.
+       Parameters:
+         p_teacher_id - ID of the teacher
+       Returns:
+         teacher_rec with teacher details, or NULL if not found.
+    */
+    FUNCTION get_teacher_by_id(
+        p_teacher_id IN NUMBER
+    ) RETURN teacher_rec;
 
 END pkg_teacher;
 /
@@ -70,8 +81,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
         p_email      IN VARCHAR2
     ) IS
     BEGIN
-        INSERT INTO Teacher (teacher_id, first_name, last_name, email)
-        VALUES (seq_teacher_id.NEXTVAL, p_first_name, p_last_name, p_email);
+        INSERT INTO Teacher (
+            teacher_id,
+            first_name,
+            last_name,
+            email
+        ) VALUES (
+            seq_teacher_id.NEXTVAL,
+            p_first_name,
+            p_last_name,
+            p_email
+        );
 
         DBMS_OUTPUT.PUT_LINE('Teacher added: ' || p_first_name || ' ' || p_last_name);
     END add_teacher;
@@ -110,23 +130,24 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
         END IF;
     END delete_teacher;
 
-    PROCEDURE get_teacher_by_id(
-        p_teacher_id IN NUMBER,
-        p_first_name OUT VARCHAR2,
-        p_last_name  OUT VARCHAR2,
-        p_email      OUT VARCHAR2
-    ) IS
+    FUNCTION get_teacher_by_id(
+        p_teacher_id IN NUMBER
+    ) RETURN teacher_rec
+    IS
+        v_teacher teacher_rec;
     BEGIN
-        SELECT first_name, last_name, email
-        INTO p_first_name, p_last_name, p_email
+        SELECT teacher_id,
+               first_name,
+               last_name,
+               email
+        INTO v_teacher
         FROM Teacher
         WHERE teacher_id = p_teacher_id;
 
-        DBMS_OUTPUT.PUT_LINE('Teacher ID: ' || p_teacher_id);
-        DBMS_OUTPUT.PUT_LINE('First Name: ' || p_first_name);
-        DBMS_OUTPUT.PUT_LINE('Last Name: '  || p_last_name);
-        DBMS_OUTPUT.PUT_LINE('Email: '      || p_email);
-
+        RETURN v_teacher;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN NULL;
     END get_teacher_by_id;
 
 END pkg_teacher;
