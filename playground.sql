@@ -1,3 +1,3 @@
-SELECT object_name
-FROM user_objects
-WHERE object_type = 'PACKAGE';
+SELECT * FROM VW_CLASS ORDER BY CLASS_ID;
+
+SELECT * FROM student;

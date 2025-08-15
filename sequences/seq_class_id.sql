@@ -5,4 +5,4 @@
    Description: Sequence for auto-generating class IDs.
 */
 
-create sequence seq_class_id start with 1 increment by 1 nocache;
+create  sequence seq_class_id start with 1 increment by 1 nocache;
