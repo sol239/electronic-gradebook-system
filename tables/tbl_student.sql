@@ -12,7 +12,7 @@ create table student (
    last_name     varchar2(50) not null,
    date_of_birth date not null,
    email         varchar2(100) not null unique,
-   password      varchar2(256) not null,
+   password      varchar2(256) default 'password' not null,
    class_id      number null,
    constraint fk_student_class foreign key ( class_id )
       references class ( class_id )
