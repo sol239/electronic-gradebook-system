@@ -9,7 +9,7 @@
 */
 
 -- Package specification
-CREATE OR REPLACE PACKAGE pkg_parent AS
+create or replace package pkg_parent as
 
     /*
        Adds a new parent to the Parent table.
@@ -18,11 +18,11 @@ CREATE OR REPLACE PACKAGE pkg_parent AS
          p_last_name  - last name of the parent
          p_email      - email of the parent (must be unique)
     */
-    PROCEDURE add_parent(
-        p_first_name IN VARCHAR2,
-        p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
-    );
+   procedure add_parent (
+      p_first_name in varchar2,
+      p_last_name  in varchar2,
+      p_email      in varchar2
+   );
 
     /*
        Updates an existing parent in the Parent table.
@@ -32,21 +32,21 @@ CREATE OR REPLACE PACKAGE pkg_parent AS
          p_last_name  - new last name
          p_email      - new email
     */
-    PROCEDURE update_parent(
-        p_parent_id  IN NUMBER,
-        p_first_name IN VARCHAR2,
-        p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
-    );
+   procedure update_parent (
+      p_parent_id  in number,
+      p_first_name in varchar2,
+      p_last_name  in varchar2,
+      p_email      in varchar2
+   );
 
     /*
        Deletes a parent from the Parent table.
        Parameters:
          p_parent_id - ID of the parent to delete
     */
-    PROCEDURE delete_parent(
-        p_parent_id IN NUMBER
-    );
+   procedure delete_parent (
+      p_parent_id in number
+   );
 
     /*
        Retrieves and prints parent details by ID.
@@ -55,85 +55,102 @@ CREATE OR REPLACE PACKAGE pkg_parent AS
        Output:
          Prints parent information via DBMS_OUTPUT
     */
-    PROCEDURE get_parent_by_id(
-        p_parent_id IN NUMBER
-    );
+   procedure get_parent_by_id (
+      p_parent_id in number
+   );
 
-END pkg_parent;
+end pkg_parent;
 /
 
 -- Package body
-CREATE OR REPLACE PACKAGE BODY pkg_parent AS
+create or replace package body pkg_parent as
 
-    PROCEDURE add_parent(
-        p_first_name IN VARCHAR2,
-        p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
-    ) AS
-    BEGIN
-        INSERT INTO Parent (parent_id, first_name, last_name, email)
-        VALUES (seq_parent_id.NEXTVAL, p_first_name, p_last_name, p_email);
+   procedure add_parent (
+      p_first_name in varchar2,
+      p_last_name  in varchar2,
+      p_email      in varchar2
+   ) as
+   begin
+      insert into parent (
+         parent_id,
+         first_name,
+         last_name,
+         email
+      ) values ( seq_parent_id.nextval,
+                 p_first_name,
+                 p_last_name,
+                 p_email );
 
-        DBMS_OUTPUT.PUT_LINE('Parent added: ' || p_first_name || ' ' || p_last_name);
-    END add_parent;
-
-
-    PROCEDURE update_parent(
-        p_parent_id  IN NUMBER,
-        p_first_name IN VARCHAR2,
-        p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
-    ) AS
-    BEGIN
-        UPDATE Parent
-        SET first_name = p_first_name,
-            last_name  = p_last_name,
-            email      = p_email
-        WHERE parent_id = p_parent_id;
-
-        IF SQL%ROWCOUNT = 0 THEN
-            DBMS_OUTPUT.PUT_LINE('No parent found with ID ' || p_parent_id);
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('Parent updated: ID ' || p_parent_id);
-        END IF;
-    END update_parent;
+      dbms_output.put_line('Parent added: '
+                           || p_first_name
+                           || ' '
+                           || p_last_name);
+   end add_parent;
 
 
-    PROCEDURE delete_parent(
-        p_parent_id IN NUMBER
-    ) AS
-    BEGIN
-        DELETE FROM Parent
-        WHERE parent_id = p_parent_id;
+   procedure update_parent (
+      p_parent_id  in number,
+      p_first_name in varchar2,
+      p_last_name  in varchar2,
+      p_email      in varchar2
+   ) as
+   begin
+      update parent
+         set first_name = p_first_name,
+             last_name = p_last_name,
+             email = p_email
+       where parent_id = p_parent_id;
 
-        IF SQL%ROWCOUNT = 0 THEN
-            DBMS_OUTPUT.PUT_LINE('No parent found to delete with ID ' || p_parent_id);
-        ELSE
-            DBMS_OUTPUT.PUT_LINE('Parent deleted: ID ' || p_parent_id);
-        END IF;
-    END delete_parent;
+      if sql%rowcount = 0 then
+         dbms_output.put_line('No parent found with ID ' || p_parent_id);
+      else
+         dbms_output.put_line('Parent updated: ID ' || p_parent_id);
+      end if;
+   end update_parent;
 
 
-    PROCEDURE get_parent_by_id(
-        p_parent_id IN NUMBER
-    ) AS
-        v_first_name Parent.first_name%TYPE;
-        v_last_name  Parent.last_name%TYPE;
-        v_email      Parent.email%TYPE;
-    BEGIN
-        SELECT first_name, last_name, email
-        INTO   v_first_name, v_last_name, v_email
-        FROM   Parent
-        WHERE  parent_id = p_parent_id;
+   procedure delete_parent (
+      p_parent_id in number
+   ) as
+   begin
+      delete from parent
+       where parent_id = p_parent_id;
 
-        DBMS_OUTPUT.PUT_LINE('Parent ID: ' || p_parent_id);
-        DBMS_OUTPUT.PUT_LINE('First Name: ' || v_first_name);
-        DBMS_OUTPUT.PUT_LINE('Last Name: '  || v_last_name);
-        DBMS_OUTPUT.PUT_LINE('Email: '      || v_email);
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            DBMS_OUTPUT.PUT_LINE('Parent with ID ' || p_parent_id || ' not found.');
-    END get_parent_by_id;
+      if sql%rowcount = 0 then
+         dbms_output.put_line('No parent found to delete with ID ' || p_parent_id);
+      else
+         dbms_output.put_line('Parent deleted: ID ' || p_parent_id);
+      end if;
+   end delete_parent;
 
-END pkg_parent;
+
+   procedure get_parent_by_id (
+      p_parent_id in number
+   ) as
+      v_first_name parent.first_name%type;
+      v_last_name  parent.last_name%type;
+      v_email      parent.email%type;
+   begin
+      select first_name,
+             last_name,
+             email
+        into
+         v_first_name,
+         v_last_name,
+         v_email
+        from parent
+       where parent_id = p_parent_id;
+
+      dbms_output.put_line('Parent ID: ' || p_parent_id);
+      dbms_output.put_line('First Name: ' || v_first_name);
+      dbms_output.put_line('Last Name: ' || v_last_name);
+      dbms_output.put_line('Email: ' || v_email);
+   exception
+      when no_data_found then
+         dbms_output.put_line('Parent with ID '
+                              || p_parent_id
+                              || ' not found.');
+   end get_parent_by_id;
+
+end pkg_parent;
 /
