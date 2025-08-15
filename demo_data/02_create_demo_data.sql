@@ -97,6 +97,8 @@ INSERT INTO Subject (subject_id, name) VALUES (16, 'Ekonomie');
 INSERT INTO Subject (subject_id, name) VALUES (17, 'Ruský jazyk');
 INSERT INTO Subject (subject_id, name) VALUES (18, 'Analytická chemie');
 INSERT INTO Subject (subject_id, name) VALUES (19, 'Základy práva');
+INSERT INTO Subject (subject_id, name) VALUES (20, 'Volná hodina');
+INSERT INTO Subject (subject_id, name) VALUES (21, 'Školní akce');
 COMMIT;
 
 -- Class table
