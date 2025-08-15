@@ -18,7 +18,7 @@ create or replace package pkg_student as
          p_last_name    - last name of the student
          p_date_of_birth- date of birth of the student
          p_email        - email of the student (must be unique)
-         p_password     - password for the student
+         p_password_hash     - password hash for the student
          p_class_id     - class ID (nullable)
     */
    procedure add_student (
@@ -26,7 +26,7 @@ create or replace package pkg_student as
       p_last_name     in varchar2,
       p_date_of_birth in date,
       p_email         in varchar2,
-      p_password      in varchar2,
+      p_password_hash      in varchar2,
       p_class_id      in number
    );
 
@@ -38,7 +38,7 @@ create or replace package pkg_student as
          p_last_name     - new last name
          p_date_of_birth - new date of birth
          p_email         - new email
-         p_password      - new password
+         p_password_hash      - new password hash
          p_class_id      - new class ID
     */
    procedure update_student (
@@ -47,7 +47,7 @@ create or replace package pkg_student as
       p_last_name     in varchar2,
       p_date_of_birth in date,
       p_email         in varchar2,
-      p_password      in varchar2,
+      p_password_hash      in varchar2,
       p_class_id      in number
    );
 
@@ -69,7 +69,7 @@ create or replace package pkg_student as
          last_name     varchar2(50),
          date_of_birth date,
          email         varchar2(100),
-         password      varchar2(256),
+         password_hash      varchar2(256),
          class_id      number
    );
 
@@ -95,7 +95,7 @@ create or replace package body pkg_student as
       p_last_name     in varchar2,
       p_date_of_birth in date,
       p_email         in varchar2,
-      p_password      in varchar2,
+      p_password_hash      in varchar2,
       p_class_id      in number
    ) as
    begin
@@ -104,13 +104,13 @@ create or replace package body pkg_student as
          last_name,
          date_of_birth,
          email,
-         password,
+         password_hash,
          class_id
       ) values ( p_first_name,
                  p_last_name,
                  p_date_of_birth,
                  p_email,
-                 p_password,
+                 p_password_hash,
                  p_class_id );
       dbms_output.put_line('Student added: '
                            || p_first_name
@@ -124,7 +124,7 @@ create or replace package body pkg_student as
       p_last_name     in varchar2,
       p_date_of_birth in date,
       p_email         in varchar2,
-      p_password      in varchar2,
+      p_password_hash      in varchar2,
       p_class_id      in number
    ) as
    begin
@@ -133,7 +133,7 @@ create or replace package body pkg_student as
              last_name = p_last_name,
              date_of_birth = p_date_of_birth,
              email = p_email,
-             password = p_password,
+             password_hash = p_password_hash,
              class_id = p_class_id
        where student_id = p_student_id;
       if sql%rowcount = 0 then
@@ -166,7 +166,7 @@ create or replace package body pkg_student as
              last_name,
              date_of_birth,
              email,
-             password,
+             password_hash,
              class_id
         into v_student
         from student

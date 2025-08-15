@@ -6,16 +6,16 @@
 */
 
 create or replace trigger trg_student_biur before
-   insert or update of password on student
+   insert or update of password_hash on student
    for each row
 begin
     -- If the new password is not null
-   if :new.password is not null then
+   if :new.password_hash is not null then
         -- Generate a new random salt
       :new.salt := pkg_utils.random_salt(16);
 
         -- Hash the password together with the salt
-      :new.password := pkg_utils.hash_password(:new.password, :new.salt);
+      :new.password_hash := pkg_utils.hash_password(:new.password_hash, :new.salt);
    end if;
 end trg_student_biur;
 /

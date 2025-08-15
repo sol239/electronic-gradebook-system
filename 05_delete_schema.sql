@@ -1,3 +1,8 @@
+-- Drop all triggers
+DROP TRIGGER trg_parent_biur;
+DROP TRIGGER trg_student_biur;
+DROP TRIGGER trg_teacher_biur;
+
 -- Drop all packages
 DROP PACKAGE pkg_class;
 DROP PACKAGE pkg_classroom;

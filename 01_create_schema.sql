@@ -8,6 +8,7 @@
 @create_commands/create_tables.sql
 @create_commands/create_sequences.sql
 @create_commands/create_packages.sql
+@create_commands/create_triggers.sql
 
 BEGIN
 	dbms_output.put_line('Schema created successfully.');
