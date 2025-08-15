@@ -1,0 +1,11 @@
+@tables/tbl_parent.sql
+@tables/tbl_teacher.sql
+@tables/tbl_subject.sql
+@tables/tbl_class.sql
+@tables/tbl_student.sql
+@tables/tbl_classroom.sql
+@tables/tbl_lecture.sql
+@tables/tbl_grade.sql
+@tables/tbl_student_subject.sql
+@tables/tbl_subject_teacher.sql
+@tables/tbl_student_parent.sql
