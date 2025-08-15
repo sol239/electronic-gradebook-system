@@ -22,4 +22,12 @@ Pokud by DB systém nebyl dostatečně velký, tak by do něj šlo zakomponovat:
 
 ### TO-DO's
 
-- Index pro každý foreign key. 
+#### 1. indexy
+Přidat potřebné indexy
+Pro každou tabulku:
+- Index přes primární klíč (většinou automaticky)
+- Indexy přes cizí klíče
+- Eventuálně další indexy pro rychlé dotazy v pohledech
+- Ověř, aby dotazy ve tvých pohledech nevyžadovaly full-scan hlavní tabulky, pokud to není nezbytné.
+
+#### 2.
