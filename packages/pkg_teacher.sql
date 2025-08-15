@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Teacher table.
    Notes:
-     - Uses seq_teacher_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -82,12 +82,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
     ) IS
     BEGIN
         INSERT INTO Teacher (
-            teacher_id,
             first_name,
             last_name,
             email
         ) VALUES (
-            seq_teacher_id.NEXTVAL,
             p_first_name,
             p_last_name,
             p_email

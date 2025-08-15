@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Grade table.
    Notes:
-     - Uses seq_grade_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -88,13 +88,11 @@ create or replace package body pkg_grade as
     ) as
     begin
         insert into grade (
-            grade_id,
             student_id,
             subject_id,
             teacher_id,
             grade
         ) values (
-            seq_grade_id.nextval,
             p_student_id,
             p_subject_id,
             p_teacher_id,

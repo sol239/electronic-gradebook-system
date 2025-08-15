@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Parent table.
    Notes:
-     - Uses seq_parent_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -82,12 +82,10 @@ create or replace package body pkg_parent as
    ) as
    begin
       insert into parent (
-         parent_id,
          first_name,
          last_name,
          email
-      ) values ( seq_parent_id.nextval,
-                 p_first_name,
+      ) values ( p_first_name,
                  p_last_name,
                  p_email );
 

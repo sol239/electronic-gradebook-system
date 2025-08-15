@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Subject table.
    Notes:
-     - Uses seq_subject_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -69,11 +69,7 @@ create or replace package body pkg_subject as
       p_name in varchar2
    ) as
    begin
-      insert into subject (
-         subject_id,
-         name
-      ) values ( seq_subject_id.nextval,
-                 p_name );
+      insert into subject ( name ) values ( p_name );
       dbms_output.put_line('Subject added: ' || p_name);
    end add_subject;
 

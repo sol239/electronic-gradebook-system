@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Class table.
    Notes:
-     - Uses seq_class_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -76,11 +76,9 @@ create or replace package body pkg_class as
     ) as
     begin
         insert into class (
-            class_id,
             name,
             teacher_id
         ) values (
-            seq_class_id.nextval,
             p_name,
             p_teacher_id
         );

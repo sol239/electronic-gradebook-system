@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Student table.
    Notes:
-     - Uses seq_student_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -94,14 +94,12 @@ create or replace package body pkg_student as
    ) as
    begin
       insert into student (
-         student_id,
          first_name,
          last_name,
          date_of_birth,
          email,
          class_id
-      ) values ( seq_student_id.nextval,
-                 p_first_name,
+      ) values ( p_first_name,
                  p_last_name,
                  p_date_of_birth,
                  p_email,

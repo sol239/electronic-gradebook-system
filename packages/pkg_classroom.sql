@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Classroom table.
    Notes:
-     - Uses seq_classroom_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -76,11 +76,9 @@ create or replace package body pkg_classroom as
     ) as
     begin
         insert into classroom (
-            classroom_id,
             name,
             capacity
         ) values (
-            seq_classroom_id.nextval,
             p_name,
             p_capacity
         );

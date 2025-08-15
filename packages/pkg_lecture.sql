@@ -4,7 +4,7 @@
    Created: 2025-08-15
    Description: Package for CRUD operations on the Lecture table.
    Notes:
-     - Uses seq_lecture_id to auto-generate primary keys.
+     - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
 */
 
@@ -94,14 +94,12 @@ create or replace package body pkg_lecture as
    ) as
    begin
       insert into lecture (
-         lecture_id,
          subject_id,
          teacher_id,
          classroom_id,
          start_time,
          end_time
-      ) values ( seq_lecture_id.nextval,
-                 p_subject_id,
+      ) values ( p_subject_id,
                  p_teacher_id,
                  p_classroom_id,
                  p_start_time,
