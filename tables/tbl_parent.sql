@@ -10,5 +10,6 @@ create table parent (
    primary key,
    first_name varchar2(50) not null,
    last_name  varchar2(50) not null,
-   email      varchar2(100) not null unique
+   email      varchar2(100) not null unique,
+   password   varchar2(256) not null
 );

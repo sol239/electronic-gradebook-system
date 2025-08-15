@@ -17,11 +17,13 @@ CREATE OR REPLACE PACKAGE pkg_teacher AS
          p_first_name - first name of the teacher
          p_last_name  - last name of the teacher
          p_email      - email of the teacher (must be unique)
+         p_password   - password for the teacher
     */
     PROCEDURE add_teacher(
         p_first_name IN VARCHAR2,
         p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2    
+        p_email      IN VARCHAR2,
+        p_password   IN VARCHAR2
     );
 
     /*
@@ -31,12 +33,14 @@ CREATE OR REPLACE PACKAGE pkg_teacher AS
          p_first_name - new first name
          p_last_name  - new last name
          p_email      - new email
+         p_password   - new password
     */
     PROCEDURE update_teacher(
         p_teacher_id IN NUMBER,
         p_first_name IN VARCHAR2,
         p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
+        p_email      IN VARCHAR2,
+        p_password   IN VARCHAR2
     );
 
     /*
@@ -55,7 +59,8 @@ CREATE OR REPLACE PACKAGE pkg_teacher AS
         teacher_id  NUMBER,
         first_name  VARCHAR2(100),
         last_name   VARCHAR2(100),
-        email       VARCHAR2(100)
+        email       VARCHAR2(100),
+        password    VARCHAR2(256)
     );
 
     /*
@@ -78,17 +83,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
     PROCEDURE add_teacher(
         p_first_name IN VARCHAR2,
         p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
+        p_email      IN VARCHAR2,
+        p_password   IN VARCHAR2
     ) IS
     BEGIN
         INSERT INTO Teacher (
             first_name,
             last_name,
-            email
+            email,
+            password
         ) VALUES (
             p_first_name,
             p_last_name,
-            p_email
+            p_email,
+            p_password
         );
 
         DBMS_OUTPUT.PUT_LINE('Teacher added: ' || p_first_name || ' ' || p_last_name);
@@ -98,13 +106,15 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
         p_teacher_id IN NUMBER,
         p_first_name IN VARCHAR2,
         p_last_name  IN VARCHAR2,
-        p_email      IN VARCHAR2
+        p_email      IN VARCHAR2,
+        p_password   IN VARCHAR2
     ) IS
     BEGIN
         UPDATE Teacher
         SET first_name = p_first_name,
             last_name  = p_last_name,
-            email      = p_email
+            email      = p_email,
+            password   = p_password
         WHERE teacher_id = p_teacher_id;
 
         IF SQL%ROWCOUNT = 0 THEN
@@ -137,7 +147,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_teacher AS
         SELECT teacher_id,
                first_name,
                last_name,
-               email
+               email,
+               password
         INTO v_teacher
         FROM Teacher
         WHERE teacher_id = p_teacher_id;

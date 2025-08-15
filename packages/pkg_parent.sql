@@ -17,11 +17,13 @@ create or replace package pkg_parent as
          p_first_name - first name of the parent
          p_last_name  - last name of the parent
          p_email      - email of the parent (must be unique)
+         p_password   - password for the parent
     */
    procedure add_parent (
       p_first_name in varchar2,
       p_last_name  in varchar2,
-      p_email      in varchar2
+      p_email      in varchar2,
+      p_password   in varchar2
    );
 
     /*
@@ -31,12 +33,14 @@ create or replace package pkg_parent as
          p_first_name - new first name
          p_last_name  - new last name
          p_email      - new email
+         p_password   - new password
     */
    procedure update_parent (
       p_parent_id  in number,
       p_first_name in varchar2,
       p_last_name  in varchar2,
-      p_email      in varchar2
+      p_email      in varchar2,
+      p_password   in varchar2
    );
 
     /*
@@ -55,7 +59,8 @@ create or replace package pkg_parent as
         parent_id   number,
         first_name  varchar2(100),
         last_name   varchar2(100),
-        email       varchar2(100)
+        email       varchar2(100),
+        password    varchar2(256)
     );
 
     /*
@@ -78,16 +83,19 @@ create or replace package body pkg_parent as
    procedure add_parent (
       p_first_name in varchar2,
       p_last_name  in varchar2,
-      p_email      in varchar2
+      p_email      in varchar2,
+      p_password   in varchar2
    ) as
    begin
       insert into parent (
          first_name,
          last_name,
-         email
+         email,
+         password
       ) values ( p_first_name,
                  p_last_name,
-                 p_email );
+                 p_email,
+                 p_password );
 
       dbms_output.put_line('Parent added: '
                            || p_first_name
@@ -100,13 +108,15 @@ create or replace package body pkg_parent as
       p_parent_id  in number,
       p_first_name in varchar2,
       p_last_name  in varchar2,
-      p_email      in varchar2
+      p_email      in varchar2,
+      p_password   in varchar2
    ) as
    begin
       update parent
          set first_name = p_first_name,
              last_name = p_last_name,
-             email = p_email
+             email = p_email,
+             password = p_password
        where parent_id = p_parent_id;
 
       if sql%rowcount = 0 then
@@ -141,7 +151,8 @@ create or replace package body pkg_parent as
         select parent_id,
                first_name,
                last_name,
-               email
+               email,
+               password
           into v_parent
           from parent
          where parent_id = p_parent_id;
