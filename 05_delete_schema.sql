@@ -33,3 +33,9 @@ DROP SEQUENCE seq_parent_id;
 DROP SEQUENCE seq_student_id;
 DROP SEQUENCE seq_subject_id;
 DROP SEQUENCE seq_teacher_id;
+
+BEGIN
+	dbms_output.put_line('Schema deleted successfully.');
+END;
+/
+

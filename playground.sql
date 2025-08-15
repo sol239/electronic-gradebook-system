@@ -1,9 +1,10 @@
-select *
-  from vw_class
- order by class_id;
+SET SERVEROUTPUT ON;
 
-SELECT student_id,
-       LISTAGG(grade, ', ') WITHIN GROUP (ORDER BY grade) AS grades
-FROM vw_student_grade
-GROUP BY student_id
-ORDER BY student_id;
+DECLARE
+    l_raw RAW(2000);
+BEGIN
+    l_raw := DBMS_CRYPTO.HASH(UTL_I18N.STRING_TO_RAW('Hello', 'AL32UTF8'),
+                              DBMS_CRYPTO.HASH_SH1);
+    DBMS_OUTPUT.PUT_LINE(RAWTOHEX(l_raw));
+END;
+/

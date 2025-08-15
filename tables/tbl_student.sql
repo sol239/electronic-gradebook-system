@@ -13,6 +13,7 @@ create table student (
    date_of_birth date not null,
    email         varchar2(100) not null unique,
    password      varchar2(256) default 'password' not null,
+   salt          varchar2(32) not null,
    class_id      number null,
    constraint fk_student_class foreign key ( class_id )
       references class ( class_id )

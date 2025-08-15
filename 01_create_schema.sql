@@ -9,4 +9,8 @@
 @create_commands/create_sequences.sql
 @create_commands/create_packages.sql
 
+BEGIN
+	dbms_output.put_line('Schema created successfully.');
+END;
+/
 

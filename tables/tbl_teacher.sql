@@ -11,5 +11,6 @@ create table teacher (
    first_name varchar2(50) not null,
    last_name  varchar2(50) not null,
    email      varchar2(100) not null unique,
-   password   varchar2(256) default 'password' not null
+   password   varchar2(256) default 'password' not null,
+   salt       varchar2(32) not null
 );
