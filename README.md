@@ -6,3 +6,20 @@ DB systém bude mít  hodně funkcí, zatím uvedu pár - např.: prozkoumat jak
 Pokud by DB systém nebyl dostatečně velký, tak by do něj šlo zakomponovat:
 - rozšíření pro VŠ - zkoušky, odstranění rodiče, atd.
 - pro ZŠ a SŠ třeba ještě nějaké tabulky a funkce pro školní jídelnu
+
+---
+
+### Naming
+
+- `tables/`: tbl_<table_name>.sql
+- `packages/`: pkg_<package_name>.sql
+- `views/`: vw_<view_name>.sql
+- `sequences/`: seq_<sequence_name>.sql
+- `triggers/`: trg_<trigger_name>.sql
+- `indexes/`: idx_<index_name>.sql
+
+---
+
+### TO-DO's
+
+- Index pro každý foreign key. 
