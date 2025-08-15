@@ -217,6 +217,7 @@ INSERT INTO Classroom (classroom_id, name, capacity) VALUES (6, 'Učebna 201', 3
 INSERT INTO Classroom (classroom_id, name, capacity) VALUES (7, 'Učebna 202', 15);
 INSERT INTO Classroom (classroom_id, name, capacity) VALUES (8, 'Učebna 203', 30);
 INSERT INTO Classroom (classroom_id, name, capacity) VALUES (9, 'Tělocvična', 120);
+INSERT INTO Classroom (classroom_id, name, capacity) VALUES (10, 'Neuvedeno', 1000);
 COMMIT;
 
 -- Subject-Teacher table
