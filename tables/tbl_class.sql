@@ -6,7 +6,7 @@
 */
 create table class (
    class_id   number primary key,
-   class_name varchar2(50) not null,
+   name       varchar2(50) not null,
    teacher_id number not null,
    constraint fk_class_teacher foreign key ( teacher_id )
       references teacher ( teacher_id )

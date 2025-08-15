@@ -70,7 +70,7 @@ create or replace package body pkg_subject as
    ) as
    begin
       insert into subject (
-         id,
+         subject_id,
          name
       ) values ( seq_subject_id.nextval,
                  p_name );
@@ -85,7 +85,7 @@ create or replace package body pkg_subject as
       update subject
          set
          name = p_name
-       where id = p_subject_id;
+       where subject_id = p_subject_id;
       if sql%rowcount = 0 then
          dbms_output.put_line('No subject found with ID ' || p_subject_id);
       else
@@ -98,7 +98,7 @@ create or replace package body pkg_subject as
    ) as
    begin
       delete from subject
-       where id = p_subject_id;
+       where subject_id = p_subject_id;
       if sql%rowcount = 0 then
          dbms_output.put_line('No subject found with ID ' || p_subject_id);
       else
@@ -111,11 +111,11 @@ create or replace package body pkg_subject as
    ) return subject_rec as
       v_subject subject_rec;
    begin
-      select id,
+      select subject_id,
              name
         into v_subject
         from subject
-       where id = p_subject_id;
+       where subject_id = p_subject_id;
 
       return v_subject;
    exception

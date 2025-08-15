@@ -1,4 +1,15 @@
 -- Drop all packages
+DROP PACKAGE pkg_class;
+DROP PACKAGE pkg_classroom;
+DROP PACKAGE pkg_grade;
+DROP PACKAGE pkg_lecture;
+DROP PACKAGE pkg_parent;
+DROP PACKAGE pkg_student_parent;
+DROP PACKAGE pkg_student_subject;
+DROP PACKAGE pkg_student;
+DROP PACKAGE pkg_subject;
+DROP PACKAGE pkg_subject_teacher;
+DROP PACKAGE pkg_teacher;
 
 -- Drop all tables
 DROP TABLE Grade CASCADE CONSTRAINTS;
