@@ -2,8 +2,7 @@
    File: vw_teacher_subject.sql
    Author: David Válek
    Created: 2025-08-15
-   Modified: 2025-08-16 - Updated for normalized structure with Person table (no roles)
-   Description: View for displaying teacher and subject information.
+   Description: View for displaying what subject a teacher teaches.
 */
 create or replace view vw_teacher_subject as
    select s.subject_id,
