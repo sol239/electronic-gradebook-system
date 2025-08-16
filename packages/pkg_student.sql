@@ -2,57 +2,70 @@
    File: pkg_student.sql
    Author: David Válek
    Created: 2025-08-15
+   Modified: 2025-08-16 - Updated for new table structure with person_id FK
    Description: Package for CRUD operations on the Student table.
    Notes:
      - Uses auto-incrementing identity columns for primary keys.
      - Includes procedures: add, update, delete, get by ID.
+     - Student table now only contains student_id, person_id, and class_id.
 */
 
 -- Package specification
 create or replace package pkg_student as
 
     /*
-       Adds a new student to the Student table.
+       Adds a new student to the Student table and corresponding Person record.
        Parameters:
-         p_first_name   - first name of the student
-         p_last_name    - last name of the student
-         p_date_of_birth- date of birth of the student
-         p_email        - email of the student (must be unique)
-         p_password_hash     - password hash for the student
-         p_class_id     - class ID (nullable)
+         p_first_name    - first name of the student
+         p_last_name     - last name of the student
+         p_email         - email of the student (must be unique)
+         p_password_hash - password hash for the student
+         p_salt          - salt for password hashing
+         p_class_id      - class ID (nullable)
+       Returns:
+         student_id of the newly created student
     */
-   procedure add_student (
+   function add_student (
       p_first_name    in varchar2,
       p_last_name     in varchar2,
-      p_date_of_birth in date,
       p_email         in varchar2,
-      p_password_hash      in varchar2,
+      p_password_hash in varchar2,
+      p_salt          in varchar2,
       p_class_id      in number
+   ) return number;
+
+    /*
+       Updates an existing student's class assignment.
+       Parameters:
+         p_student_id - ID of the student to update
+         p_class_id   - new class ID
+    */
+   procedure update_student_class (
+      p_student_id in number,
+      p_class_id   in number
    );
 
     /*
-       Updates an existing student in the Student table.
+       Updates a student's personal information via Person table.
        Parameters:
-         p_student_id    - ID of the student to update
+         p_student_id    - ID of the student
          p_first_name    - new first name
          p_last_name     - new last name
-         p_date_of_birth - new date of birth
          p_email         - new email
-         p_password_hash      - new password hash
-         p_class_id      - new class ID
+         p_password_hash - new password hash
+         p_salt          - new salt
     */
-   procedure update_student (
+   procedure update_student_person_info (
       p_student_id    in number,
       p_first_name    in varchar2,
       p_last_name     in varchar2,
-      p_date_of_birth in date,
       p_email         in varchar2,
-      p_password_hash      in varchar2,
-      p_class_id      in number
+      p_password_hash in varchar2,
+      p_salt          in varchar2
    );
 
     /*
-       Deletes a student from the Student table.
+       Deletes a student from the Student table and corresponding Person record.
        Parameters:
          p_student_id - ID of the student to delete
     */
@@ -65,16 +78,17 @@ create or replace package pkg_student as
     */
    type student_rec is record (
          student_id    number,
+         person_id     number,
          first_name    varchar2(50),
          last_name     varchar2(50),
-         date_of_birth date,
          email         varchar2(100),
-         password_hash      varchar2(256),
+         password_hash varchar2(256),
+         salt          varchar2(32),
          class_id      number
    );
 
     /*
-       Returns student details by ID.
+       Returns student details by ID (joined with Person data).
        Parameters:
          p_student_id - ID of the student
        Returns:
@@ -90,70 +104,113 @@ end pkg_student;
 -- Package body
 create or replace package body pkg_student as
 
-   procedure add_student (
+   function add_student (
       p_first_name    in varchar2,
       p_last_name     in varchar2,
-      p_date_of_birth in date,
       p_email         in varchar2,
-      p_password_hash      in varchar2,
+      p_password_hash in varchar2,
+      p_salt          in varchar2,
       p_class_id      in number
-   ) as
+   ) return number as
+      v_student_id number;
+      v_person_id  number;
    begin
-      insert into student (
-         first_name,
-         last_name,
-         date_of_birth,
-         email,
-         password_hash,
-         class_id
-      ) values ( p_first_name,
-                 p_last_name,
-                 p_date_of_birth,
-                 p_email,
-                 p_password_hash,
-                 p_class_id );
+      -- First create the person record
+      v_person_id := pkg_person.add_person(
+         p_first_name => p_first_name,
+         p_last_name => p_last_name,
+         p_email => p_email,
+         p_password_hash => p_password_hash,
+         p_salt => p_salt
+      );
+      
+      -- Then insert into student table with person_id
+      insert into student (person_id, class_id)
+      values (v_person_id, p_class_id)
+      returning student_id into v_student_id;
+      
       dbms_output.put_line('Student added: '
                            || p_first_name
                            || ' '
-                           || p_last_name);
+                           || p_last_name
+                           || ' (Student ID: '
+                           || v_student_id
+                           || ', Person ID: '
+                           || v_person_id
+                           || ')');
+      return v_student_id;
    end add_student;
 
-   procedure update_student (
-      p_student_id    in number,
-      p_first_name    in varchar2,
-      p_last_name     in varchar2,
-      p_date_of_birth in date,
-      p_email         in varchar2,
-      p_password_hash      in varchar2,
-      p_class_id      in number
+   procedure update_student_class (
+      p_student_id in number,
+      p_class_id   in number
    ) as
    begin
       update student
-         set first_name = p_first_name,
-             last_name = p_last_name,
-             date_of_birth = p_date_of_birth,
-             email = p_email,
-             password_hash = p_password_hash,
-             class_id = p_class_id
+         set class_id = p_class_id
        where student_id = p_student_id;
       if sql%rowcount = 0 then
          dbms_output.put_line('No student found with ID ' || p_student_id);
       else
-         dbms_output.put_line('Student updated: ID ' || p_student_id);
+         dbms_output.put_line('Student class updated: ID ' || p_student_id);
       end if;
-   end update_student;
+   end update_student_class;
+
+   procedure update_student_person_info (
+      p_student_id    in number,
+      p_first_name    in varchar2,
+      p_last_name     in varchar2,
+      p_email         in varchar2,
+      p_password_hash in varchar2,
+      p_salt          in varchar2
+   ) as
+      v_person_id number;
+   begin
+      -- Get the person_id for this student
+      select person_id into v_person_id
+        from student
+       where student_id = p_student_id;
+      
+      -- Update the person record
+      pkg_person.update_person(
+         p_person_id => v_person_id,
+         p_first_name => p_first_name,
+         p_last_name => p_last_name,
+         p_email => p_email,
+         p_password_hash => p_password_hash,
+         p_salt => p_salt
+      );
+      
+      dbms_output.put_line('Student person info updated: ID ' || p_student_id);
+   exception
+      when no_data_found then
+         dbms_output.put_line('No student found with ID ' || p_student_id);
+   end update_student_person_info;
 
    procedure delete_student (
       p_student_id in number
    ) as
+      v_person_id number;
    begin
+      -- Get the person_id for this student
+      select person_id into v_person_id
+        from student
+       where student_id = p_student_id;
+      
+      -- Delete from student table first
       delete from student
        where student_id = p_student_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No student found with ID ' || p_student_id);
-      else
+       
+      -- Then delete from person table
+      if sql%rowcount > 0 then
+         pkg_person.delete_person(v_person_id);
          dbms_output.put_line('Student deleted: ID ' || p_student_id);
+      else
+         dbms_output.put_line('No student found with ID ' || p_student_id);
       end if;
+   exception
+      when no_data_found then
+         dbms_output.put_line('No student found with ID ' || p_student_id);
    end delete_student;
 
    function get_student_by_id (
@@ -161,16 +218,18 @@ create or replace package body pkg_student as
    ) return student_rec as
       v_student student_rec;
    begin
-      select student_id,
-             first_name,
-             last_name,
-             date_of_birth,
-             email,
-             password_hash,
-             class_id
+      select s.student_id,
+             s.person_id,
+             p.first_name,
+             p.last_name,
+             p.email,
+             p.password_hash,
+             p.salt,
+             s.class_id
         into v_student
-        from student
-       where student_id = p_student_id;
+        from student s
+        join person p on s.person_id = p.person_id
+       where s.student_id = p_student_id;
 
       return v_student;
    exception

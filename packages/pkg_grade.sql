@@ -18,12 +18,14 @@ create or replace package pkg_grade as
          p_subject_id - ID of the subject
          p_teacher_id - ID of the teacher
          p_grade      - grade value (1-5)
+         p_grade_date - date of the grade (optional, defaults to sysdate)
     */
     procedure add_grade (
         p_student_id in number,
         p_subject_id in number,
         p_teacher_id in number,
-        p_grade      in number
+        p_grade      in number,
+        p_grade_date in date default sysdate
     );
 
     /*
@@ -34,13 +36,15 @@ create or replace package pkg_grade as
          p_subject_id - new subject ID
          p_teacher_id - new teacher ID
          p_grade      - new grade value
+         p_grade_date - new grade date (optional, defaults to sysdate)
     */
     procedure update_grade (
         p_grade_id   in number,
         p_student_id in number,
         p_subject_id in number,
         p_teacher_id in number,
-        p_grade      in number
+        p_grade      in number,
+        p_grade_date in date default sysdate
     );
 
     /*
@@ -60,7 +64,8 @@ create or replace package pkg_grade as
         student_id  number,
         subject_id  number,
         teacher_id  number,
-        grade       number
+        grade       number,
+        grade_date  date
     );
 
     /*
@@ -84,19 +89,22 @@ create or replace package body pkg_grade as
         p_student_id in number,
         p_subject_id in number,
         p_teacher_id in number,
-        p_grade      in number
+        p_grade      in number,
+        p_grade_date in date default sysdate
     ) as
     begin
         insert into grade (
             student_id,
             subject_id,
             teacher_id,
-            grade
+            grade,
+            grade_date
         ) values (
             p_student_id,
             p_subject_id,
             p_teacher_id,
-            p_grade
+            p_grade,
+            p_grade_date
         );
         dbms_output.put_line('Grade added for student ID ' || p_student_id);
     end add_grade;
@@ -106,14 +114,16 @@ create or replace package body pkg_grade as
         p_student_id in number,
         p_subject_id in number,
         p_teacher_id in number,
-        p_grade      in number
+        p_grade      in number,
+        p_grade_date in date default sysdate
     ) as
     begin
         update grade
             set student_id = p_student_id,
                 subject_id = p_subject_id,
                 teacher_id = p_teacher_id,
-                grade      = p_grade
+                grade      = p_grade,
+                grade_date = p_grade_date
           where grade_id = p_grade_id;
         if sql%rowcount = 0 then
             dbms_output.put_line('No grade found with ID ' || p_grade_id);
@@ -145,7 +155,8 @@ create or replace package body pkg_grade as
                student_id,
                subject_id,
                teacher_id,
-               grade
+               grade,
+               grade_date
           into v_grade
           from grade
          where grade_id = p_grade_id;

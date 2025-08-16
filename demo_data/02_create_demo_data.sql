@@ -1,80 +1,524 @@
 -- Parent table
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (1, 'Zdeněk', 'Veselý', 'zdeněk.veselý22@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (2, 'Adam', 'Kolář', 'adam.kolář23@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (3, 'Stanislav', 'Sedláček', 'stanislav.sedláček24@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (4, 'Martin', 'Procházka', 'martin.procházka25@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (5, 'Richard', 'Horák', 'richard.horák26@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (6, 'Aleš', 'Beneš', 'aleš.beneš27@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (7, 'Karel', 'Kříž', 'karel.kříž28@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (8, 'Filip', 'Beneš', 'filip.beneš29@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (9, 'Ondřej', 'Hájek', 'ondřej.hájek30@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (10, 'Jiří', 'Urban', 'jiří.urban31@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (11, 'Štěpán', 'Jelínek', 'štěpán.jelínek32@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (12, 'Ondřej', 'Zeman', 'ondřej.zeman33@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (13, 'Tomáš', 'Doležal', 'tomáš.doležal34@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (14, 'Dominik', 'Král', 'dominik.král35@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (15, 'Adam', 'Němec', 'adam.němec36@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (16, 'Jakub', 'Marek', 'jakub.marek37@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (17, 'Petr', 'Kolář', 'petr.kolář38@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (18, 'Miroslav', 'Horák', 'miroslav.horák39@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (19, 'Tomáš', 'Němec', 'tomáš.němec40@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (20, 'Zdeněk', 'Fiala', 'zdeněk.fiala41@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (21, 'Marek', 'Bartoš', 'marek.bartoš42@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (22, 'Daniel', 'Urban', 'daniel.urban43@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (23, 'Tomáš', 'Hájek', 'tomáš.hájek44@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (24, 'Michal', 'Procházka', 'michal.procházka45@centrum.cz');
-COMMIT;
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (25, 'Štěpán', 'Svoboda', 'štěpán.svoboda46@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (26, 'Miroslav', 'Beneš', 'miroslav.beneš47@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (27, 'Pavla', 'Růžičková', 'pavla.růžičková48@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (28, 'Radka', 'Benešová', 'radka.benešová49@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (29, 'Zuzana', 'Navrátilová', 'zuzana.navrátilová50@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (30, 'Pavla', 'Kučerová', 'pavla.kučerová51@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (31, 'Lenka', 'Křížová', 'lenka.křížová52@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (32, 'Hana', 'Šimková', 'hana.šimková53@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (33, 'Karolína', 'Pospíšilová', 'karolína.pospíšilová54@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (34, 'Kristýna', 'Marková', 'kristýna.marková55@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (35, 'Barbora', 'Vaňková', 'barbora.vaňková56@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (36, 'Tereza', 'Marková', 'tereza.marková57@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (37, 'Anna', 'Kučerová', 'anna.kučerová58@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (38, 'Silvie', 'Novotná', 'silvie.novotná59@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (39, 'Ivana', 'Křížová', 'ivana.křížová60@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (40, 'Ivana', 'Šimková', 'ivana.šimková61@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (41, 'Gabriela', 'Benešová', 'gabriela.benešová62@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (42, 'Lenka', 'Dvořáková', 'lenka.dvořáková63@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (43, 'Adéla', 'Nováková', 'adéla.nováková64@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (44, 'Ivana', 'Černá', 'ivana.černá65@seznam.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (45, 'Radka', 'Dvořáková', 'radka.dvořáková66@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (46, 'Pavla', 'Marková', 'pavla.marková67@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (47, 'Zuzana', 'Veselá', 'zuzana.veselá68@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (48, 'Monika', 'Fialová', 'monika.fialová69@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (49, 'Alena', 'Navrátilová', 'alena.navrátilová70@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (50, 'Kristýna', 'Marková', 'kristýna.marková71@centrum.cz');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (51, 'Adéla', 'Pokorná', 'adéla.pokorná72@gmail.com');
-INSERT INTO Parent (parent_id, first_name, last_name, email) VALUES (52, 'Jitka', 'Horáková', 'jitka.horáková73@centrum.cz');
+DECLARE
+  v_parent_id NUMBER;
+BEGIN
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Zdeněk',
+    p_last_name      => 'Veselý',
+    p_email          => 'zdeněk.veselý22@gmail.com',
+    p_password_hash  => 'hashed_password_p1',
+    p_salt           => 'saltp1'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Adam',
+    p_last_name      => 'Kolář',
+    p_email          => 'adam.kolář23@gmail.com',
+    p_password_hash  => 'hashed_password_p2',
+    p_salt           => 'saltp2'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Stanislav',
+    p_last_name      => 'Sedláček',
+    p_email          => 'stanislav.sedláček24@centrum.cz',
+    p_password_hash  => 'hashed_password_p3',
+    p_salt           => 'saltp3'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Martin',
+    p_last_name      => 'Procházka',
+    p_email          => 'martin.procházka25@centrum.cz',
+    p_password_hash  => 'hashed_password_p4',
+    p_salt           => 'saltp4'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Richard',
+    p_last_name      => 'Horák',
+    p_email          => 'richard.horák26@gmail.com',
+    p_password_hash  => 'hashed_password_p5',
+    p_salt           => 'saltp5'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Aleš',
+    p_last_name      => 'Beneš',
+    p_email          => 'aleš.beneš27@seznam.cz',
+    p_password_hash  => 'hashed_password_p6',
+    p_salt           => 'saltp6'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Karel',
+    p_last_name      => 'Kříž',
+    p_email          => 'karel.kříž28@centrum.cz',
+    p_password_hash  => 'hashed_password_p7',
+    p_salt           => 'saltp7'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Filip',
+    p_last_name      => 'Beneš',
+    p_email          => 'filip.beneš29@seznam.cz',
+    p_password_hash  => 'hashed_password_p8',
+    p_salt           => 'saltp8'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Ondřej',
+    p_last_name      => 'Hájek',
+    p_email          => 'ondřej.hájek30@gmail.com',
+    p_password_hash  => 'hashed_password_p9',
+    p_salt           => 'saltp9'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Jiří',
+    p_last_name      => 'Urban',
+    p_email          => 'jiří.urban31@centrum.cz',
+    p_password_hash  => 'hashed_password_p10',
+    p_salt           => 'saltp10'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Štěpán',
+    p_last_name      => 'Jelínek',
+    p_email          => 'štěpán.jelínek32@centrum.cz',
+    p_password_hash  => 'hashed_password_p11',
+    p_salt           => 'saltp11'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Ondřej',
+    p_last_name      => 'Zeman',
+    p_email          => 'ondřej.zeman33@seznam.cz',
+    p_password_hash  => 'hashed_password_p12',
+    p_salt           => 'saltp12'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Tomáš',
+    p_last_name      => 'Doležal',
+    p_email          => 'tomáš.doležal34@gmail.com',
+    p_password_hash  => 'hashed_password_p13',
+    p_salt           => 'saltp13'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Dominik',
+    p_last_name      => 'Král',
+    p_email          => 'dominik.král35@gmail.com',
+    p_password_hash  => 'hashed_password_p14',
+    p_salt           => 'saltp14'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Adam',
+    p_last_name      => 'Němec',
+    p_email          => 'adam.němec36@centrum.cz',
+    p_password_hash  => 'hashed_password_p15',
+    p_salt           => 'saltp15'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Jakub',
+    p_last_name      => 'Marek',
+    p_email          => 'jakub.marek37@centrum.cz',
+    p_password_hash  => 'hashed_password_p16',
+    p_salt           => 'saltp16'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Petr',
+    p_last_name      => 'Kolář',
+    p_email          => 'petr.kolář38@gmail.com',
+    p_password_hash  => 'hashed_password_p17',
+    p_salt           => 'saltp17'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Miroslav',
+    p_last_name      => 'Horák',
+    p_email          => 'miroslav.horák39@seznam.cz',
+    p_password_hash  => 'hashed_password_p18',
+    p_salt           => 'saltp18'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Tomáš',
+    p_last_name      => 'Němec',
+    p_email          => 'tomáš.němec40@centrum.cz',
+    p_password_hash  => 'hashed_password_p19',
+    p_salt           => 'saltp19'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Zdeněk',
+    p_last_name      => 'Fiala',
+    p_email          => 'zdeněk.fiala41@seznam.cz',
+    p_password_hash  => 'hashed_password_p20',
+    p_salt           => 'saltp20'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Marek',
+    p_last_name      => 'Bartoš',
+    p_email          => 'marek.bartoš42@seznam.cz',
+    p_password_hash  => 'hashed_password_p21',
+    p_salt           => 'saltp21'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Daniel',
+    p_last_name      => 'Urban',
+    p_email          => 'daniel.urban43@seznam.cz',
+    p_password_hash  => 'hashed_password_p22',
+    p_salt           => 'saltp22'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Tomáš',
+    p_last_name      => 'Hájek',
+    p_email          => 'tomáš.hájek44@centrum.cz',
+    p_password_hash  => 'hashed_password_p23',
+    p_salt           => 'saltp23'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Michal',
+    p_last_name      => 'Procházka',
+    p_email          => 'michal.procházka45@centrum.cz',
+    p_password_hash  => 'hashed_password_p24',
+    p_salt           => 'saltp24'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Štěpán',
+    p_last_name      => 'Svoboda',
+    p_email          => 'štěpán.svoboda46@seznam.cz',
+    p_password_hash  => 'hashed_password_p25',
+    p_salt           => 'saltp25'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Miroslav',
+    p_last_name      => 'Beneš',
+    p_email          => 'miroslav.beneš47@seznam.cz',
+    p_password_hash  => 'hashed_password_p26',
+    p_salt           => 'saltp26'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Pavla',
+    p_last_name      => 'Růžičková',
+    p_email          => 'pavla.růžičková48@centrum.cz',
+    p_password_hash  => 'hashed_password_p27',
+    p_salt           => 'saltp27'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Radka',
+    p_last_name      => 'Benešová',
+    p_email          => 'radka.benešová49@gmail.com',
+    p_password_hash  => 'hashed_password_p28',
+    p_salt           => 'saltp28'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Zuzana',
+    p_last_name      => 'Navrátilová',
+    p_email          => 'zuzana.navrátilová50@centrum.cz',
+    p_password_hash  => 'hashed_password_p29',
+    p_salt           => 'saltp29'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Pavla',
+    p_last_name      => 'Kučerová',
+    p_email          => 'pavla.kučerová51@gmail.com',
+    p_password_hash  => 'hashed_password_p30',
+    p_salt           => 'saltp30'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Lenka',
+    p_last_name      => 'Křížová',
+    p_email          => 'lenka.křížová52@seznam.cz',
+    p_password_hash  => 'hashed_password_p31',
+    p_salt           => 'saltp31'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Hana',
+    p_last_name      => 'Šimková',
+    p_email          => 'hana.šimková53@seznam.cz',
+    p_password_hash  => 'hashed_password_p32',
+    p_salt           => 'saltp32'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Karolína',
+    p_last_name      => 'Pospíšilová',
+    p_email          => 'karolína.pospíšilová54@centrum.cz',
+    p_password_hash  => 'hashed_password_p33',
+    p_salt           => 'saltp33'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Kristýna',
+    p_last_name      => 'Marková',
+    p_email          => 'kristýna.marková55@seznam.cz',
+    p_password_hash  => 'hashed_password_p34',
+    p_salt           => 'saltp34'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Barbora',
+    p_last_name      => 'Vaňková',
+    p_email          => 'barbora.vaňková56@gmail.com',
+    p_password_hash  => 'hashed_password_p35',
+    p_salt           => 'saltp35'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Tereza',
+    p_last_name      => 'Marková',
+    p_email          => 'tereza.marková57@centrum.cz',
+    p_password_hash  => 'hashed_password_p36',
+    p_salt           => 'saltp36'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Anna',
+    p_last_name      => 'Kučerová',
+    p_email          => 'anna.kučerová58@centrum.cz',
+    p_password_hash  => 'hashed_password_p37',
+    p_salt           => 'saltp37'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Silvie',
+    p_last_name      => 'Novotná',
+    p_email          => 'silvie.novotná59@seznam.cz',
+    p_password_hash  => 'hashed_password_p38',
+    p_salt           => 'saltp38'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Ivana',
+    p_last_name      => 'Křížová',
+    p_email          => 'ivana.křížová60@gmail.com',
+    p_password_hash  => 'hashed_password_p39',
+    p_salt           => 'saltp39'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Ivana',
+    p_last_name      => 'Šimková',
+    p_email          => 'ivana.šimková61@seznam.cz',
+    p_password_hash  => 'hashed_password_p40',
+    p_salt           => 'saltp40'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Gabriela',
+    p_last_name      => 'Benešová',
+    p_email          => 'gabriela.benešová62@centrum.cz',
+    p_password_hash  => 'hashed_password_p41',
+    p_salt           => 'saltp41'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Lenka',
+    p_last_name      => 'Dvořáková',
+    p_email          => 'lenka.dvořáková63@gmail.com',
+    p_password_hash  => 'hashed_password_p42',
+    p_salt           => 'saltp42'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Adéla',
+    p_last_name      => 'Nováková',
+    p_email          => 'adéla.nováková64@gmail.com',
+    p_password_hash  => 'hashed_password_p43',
+    p_salt           => 'saltp43'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Ivana',
+    p_last_name      => 'Černá',
+    p_email          => 'ivana.černá65@seznam.cz',
+    p_password_hash  => 'hashed_password_p44',
+    p_salt           => 'saltp44'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Radka',
+    p_last_name      => 'Dvořáková',
+    p_email          => 'radka.dvořáková66@centrum.cz',
+    p_password_hash  => 'hashed_password_p45',
+    p_salt           => 'saltp45'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Pavla',
+    p_last_name      => 'Marková',
+    p_email          => 'pavla.marková67@gmail.com',
+    p_password_hash  => 'hashed_password_p46',
+    p_salt           => 'saltp46'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Zuzana',
+    p_last_name      => 'Veselá',
+    p_email          => 'zuzana.veselá68@centrum.cz',
+    p_password_hash  => 'hashed_password_p47',
+    p_salt           => 'saltp47'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Monika',
+    p_last_name      => 'Fialová',
+    p_email          => 'monika.fialová69@centrum.cz',
+    p_password_hash  => 'hashed_password_p48',
+    p_salt           => 'saltp48'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Alena',
+    p_last_name      => 'Navrátilová',
+    p_email          => 'alena.navrátilová70@gmail.com',
+    p_password_hash  => 'hashed_password_p49',
+    p_salt           => 'saltp49'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Kristýna',
+    p_last_name      => 'Marková',
+    p_email          => 'kristýna.marková71@centrum.cz',
+    p_password_hash  => 'hashed_password_p50',
+    p_salt           => 'saltp50'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Adéla',
+    p_last_name      => 'Pokorná',
+    p_email          => 'adéla.pokorná72@gmail.com',
+    p_password_hash  => 'hashed_password_p51',
+    p_salt           => 'saltp51'
+  );
+  v_parent_id := pkg_parent.add_parent(
+    p_first_name     => 'Jitka',
+    p_last_name      => 'Horáková',
+    p_email          => 'jitka.horáková73@centrum.cz',
+    p_password_hash  => 'hashed_password_p52',
+    p_salt           => 'saltp52'
+  );
+END;
+/
 COMMIT;
 
 -- Teacher table
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (1, 'Stanislav', 'Urban', 'stanislav.urban74@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (2, 'Václav', 'Veselý', 'václav.veselý75@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (3, 'Zdeněk', 'Dvořák', 'zdeněk.dvořák76@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (4, 'Miroslav', 'Černý', 'miroslav.černý77@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (5, 'Martin', 'Kříž', 'martin.kříž78@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (6, 'Matěj', 'Němec', 'matěj.němec79@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (7, 'Martin', 'Král', 'martin.král80@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (8, 'Adam', 'Sedláček', 'adam.sedláček81@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (9, 'Daniel', 'Marek', 'daniel.marek82@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (10, 'Lukáš', 'Bartoš', 'lukáš.bartoš83@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (11, 'Pavel', 'Pospíšil', 'pavel.pospíšil84@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (12, 'Matěj', 'Horák', 'matěj.horák85@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (13, 'Adam', 'Marek', 'adam.marek86@centrum.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (14, 'Michal', 'Pospíšil', 'michal.pospíšil87@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (15, 'Adam', 'Kříž', 'adam.kříž88@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (16, 'Marie', 'Svobodová', 'marie.svobodová89@seznam.cz');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (17, 'Viktorie', 'Pospíšilová', 'viktorie.pospíšilová90@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (18, 'Monika', 'Pospíšilová', 'monika.pospíšilová91@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (19, 'Klára', 'Nováková', 'klára.nováková92@gmail.com');
-INSERT INTO Teacher (teacher_id, first_name, last_name, email) VALUES (20, 'Radka', 'Nováková', 'radka.nováková93@centrum.cz');
+DECLARE
+  v_teacher_id NUMBER;
+BEGIN
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Stanislav',
+    p_last_name      => 'Urban',
+    p_email          => 'stanislav.urban74@gmail.com',
+    p_password_hash  => 'hashed_password_t1',
+    p_salt           => 'saltt1'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Václav',
+    p_last_name      => 'Veselý',
+    p_email          => 'václav.veselý75@centrum.cz',
+    p_password_hash  => 'hashed_password_t2',
+    p_salt           => 'saltt2'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Zdeněk',
+    p_last_name      => 'Dvořák',
+    p_email          => 'zdeněk.dvořák76@centrum.cz',
+    p_password_hash  => 'hashed_password_t3',
+    p_salt           => 'saltt3'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Miroslav',
+    p_last_name      => 'Černý',
+    p_email          => 'miroslav.černý77@centrum.cz',
+    p_password_hash  => 'hashed_password_t4',
+    p_salt           => 'saltt4'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Martin',
+    p_last_name      => 'Kříž',
+    p_email          => 'martin.kříž78@seznam.cz',
+    p_password_hash  => 'hashed_password_t5',
+    p_salt           => 'saltt5'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Matěj',
+    p_last_name      => 'Němec',
+    p_email          => 'matěj.němec79@seznam.cz',
+    p_password_hash  => 'hashed_password_t6',
+    p_salt           => 'saltt6'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Martin',
+    p_last_name      => 'Král',
+    p_email          => 'martin.král80@seznam.cz',
+    p_password_hash  => 'hashed_password_t7',
+    p_salt           => 'saltt7'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Adam',
+    p_last_name      => 'Sedláček',
+    p_email          => 'adam.sedláček81@centrum.cz',
+    p_password_hash  => 'hashed_password_t8',
+    p_salt           => 'saltt8'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Daniel',
+    p_last_name      => 'Marek',
+    p_email          => 'daniel.marek82@gmail.com',
+    p_password_hash  => 'hashed_password_t9',
+    p_salt           => 'saltt9'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Lukáš',
+    p_last_name      => 'Bartoš',
+    p_email          => 'lukáš.bartoš83@gmail.com',
+    p_password_hash  => 'hashed_password_t10',
+    p_salt           => 'saltt10'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Pavel',
+    p_last_name      => 'Pospíšil',
+    p_email          => 'pavel.pospíšil84@seznam.cz',
+    p_password_hash  => 'hashed_password_t11',
+    p_salt           => 'saltt11'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Matěj',
+    p_last_name      => 'Horák',
+    p_email          => 'matěj.horák85@centrum.cz',
+    p_password_hash  => 'hashed_password_t12',
+    p_salt           => 'saltt12'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Adam',
+    p_last_name      => 'Marek',
+    p_email          => 'adam.marek86@centrum.cz',
+    p_password_hash  => 'hashed_password_t13',
+    p_salt           => 'saltt13'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Michal',
+    p_last_name      => 'Pospíšil',
+    p_email          => 'michal.pospíšil87@seznam.cz',
+    p_password_hash  => 'hashed_password_t14',
+    p_salt           => 'saltt14'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Adam',
+    p_last_name      => 'Kříž',
+    p_email          => 'adam.kříž88@seznam.cz',
+    p_password_hash  => 'hashed_password_t15',
+    p_salt           => 'saltt15'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Marie',
+    p_last_name      => 'Svobodová',
+    p_email          => 'marie.svobodová89@seznam.cz',
+    p_password_hash  => 'hashed_password_t16',
+    p_salt           => 'saltt16'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Viktorie',
+    p_last_name      => 'Pospíšilová',
+    p_email          => 'viktorie.pospíšilová90@gmail.com',
+    p_password_hash  => 'hashed_password_t17',
+    p_salt           => 'saltt17'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Monika',
+    p_last_name      => 'Pospíšilová',
+    p_email          => 'monika.pospíšilová91@gmail.com',
+    p_password_hash  => 'hashed_password_t18',
+    p_salt           => 'saltt18'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Klára',
+    p_last_name      => 'Nováková',
+    p_email          => 'klára.nováková92@gmail.com',
+    p_password_hash  => 'hashed_password_t19',
+    p_salt           => 'saltt19'
+  );
+  v_teacher_id := pkg_teacher.add_teacher(
+    p_first_name     => 'Radka',
+    p_last_name      => 'Nováková',
+    p_email          => 'radka.nováková93@centrum.cz',
+    p_password_hash  => 'hashed_password_t20',
+    p_salt           => 'saltt20'
+  );
+
+  -- no-op to end block cleanly
+  NULL;
+END;
+/
 COMMIT;
 
 -- Subject table
@@ -113,30 +557,175 @@ INSERT INTO Class (class_id, name, teacher_id) VALUES (8, 'Oktava', 8);
 COMMIT;
 
 -- Student table
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (1, 'Lukáš', 'Bartoš', TO_DATE('2001-10-10', 'YYYY-MM-DD'), 'lukáš.bartoš1@centrum.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (2, 'Jan', 'Pospíšil', TO_DATE('2009-06-05', 'YYYY-MM-DD'), 'jan.pospíšil2@seznam.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (3, 'Miroslav', 'Horák', TO_DATE('2008-02-14', 'YYYY-MM-DD'), 'miroslav.horák3@gmail.com', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (4, 'Daniel', 'Beneš', TO_DATE('2009-10-24', 'YYYY-MM-DD'), 'daniel.beneš4@gmail.com', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (5, 'Štěpán', 'Navrátil', TO_DATE('2004-04-14', 'YYYY-MM-DD'), 'štěpán.navrátil5@centrum.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (6, 'Richard', 'Jelínek', TO_DATE('2004-03-25', 'YYYY-MM-DD'), 'richard.jelínek6@centrum.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (7, 'Zdeněk', 'Veselý', TO_DATE('2000-09-06', 'YYYY-MM-DD'), 'zdeněk.veselý7@centrum.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (8, 'Michal', 'Bartoš', TO_DATE('2009-03-28', 'YYYY-MM-DD'), 'michal.bartoš8@seznam.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (9, 'Marek', 'Šimek', TO_DATE('2006-02-23', 'YYYY-MM-DD'), 'marek.šimek9@gmail.com', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (10, 'Filip', 'Pospíšil', TO_DATE('2001-07-02', 'YYYY-MM-DD'), 'filip.pospíšil10@centrum.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (11, 'Sára', 'Veselá', TO_DATE('2002-09-24', 'YYYY-MM-DD'), 'sára.veselá12@centrum.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (12, 'Sabina', 'Šimková', TO_DATE('2009-12-14', 'YYYY-MM-DD'), 'sabina.šimková13@seznam.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (13, 'Jana', 'Procházková', TO_DATE('2008-03-06', 'YYYY-MM-DD'), 'jana.procházková14@seznam.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (14, 'Ivana', 'Jelínková', TO_DATE('2009-06-10', 'YYYY-MM-DD'), 'ivana.jelínková15@centrum.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (15, 'Klára', 'Sedláčková', TO_DATE('2007-09-15', 'YYYY-MM-DD'), 'klára.sedláčková16@seznam.cz', 1);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (16, 'Tereza', 'Hájková', TO_DATE('2002-04-14', 'YYYY-MM-DD'), 'tereza.hájková17@centrum.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (17, 'Silvie', 'Procházková', TO_DATE('2002-07-16', 'YYYY-MM-DD'), 'silvie.procházková18@gmail.com', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (18, 'Petra', 'Horáková', TO_DATE('2006-04-17', 'YYYY-MM-DD'), 'petra.horáková19@seznam.cz', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (19, 'Natálie', 'Doležalová', TO_DATE('2008-06-06', 'YYYY-MM-DD'), 'natálie.doležalová20@gmail.com', 2);
-INSERT INTO Student (student_id, first_name, last_name, date_of_birth, email, class_id) VALUES (20, 'Radka', 'Kovářová', TO_DATE('2000-04-14', 'YYYY-MM-DD'), 'radka.kovářová21@centrum.cz', 2);
+DECLARE
+  v_student_id NUMBER;
+BEGIN
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Lukáš',
+    p_last_name      => 'Bartoš',
+    p_email          => 'lukáš.bartoš1@centrum.cz',
+    p_password_hash  => 'hashed_password_s1',
+    p_salt           => 'salts1',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Jan',
+    p_last_name      => 'Pospíšil',
+    p_email          => 'jan.pospíšil2@seznam.cz',
+    p_password_hash  => 'hashed_password_s2',
+    p_salt           => 'salts2',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Miroslav',
+    p_last_name      => 'Horák',
+    p_email          => 'miroslav.horák3@gmail.com',
+    p_password_hash  => 'hashed_password_s3',
+    p_salt           => 'salts3',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Daniel',
+    p_last_name      => 'Beneš',
+    p_email          => 'daniel.beneš4@gmail.com',
+    p_password_hash  => 'hashed_password_s4',
+    p_salt           => 'salts4',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Štěpán',
+    p_last_name      => 'Navrátil',
+    p_email          => 'štěpán.navrátil5@centrum.cz',
+    p_password_hash  => 'hashed_password_s5',
+    p_salt           => 'salts5',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Richard',
+    p_last_name      => 'Jelínek',
+    p_email          => 'richard.jelínek6@centrum.cz',
+    p_password_hash  => 'hashed_password_s6',
+    p_salt           => 'salts6',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Zdeněk',
+    p_last_name      => 'Veselý',
+    p_email          => 'zdeněk.veselý7@centrum.cz',
+    p_password_hash  => 'hashed_password_s7',
+    p_salt           => 'salts7',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Michal',
+    p_last_name      => 'Bartoš',
+    p_email          => 'michal.bartoš8@seznam.cz',
+    p_password_hash  => 'hashed_password_s8',
+    p_salt           => 'salts8',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Marek',
+    p_last_name      => 'Šimek',
+    p_email          => 'marek.šimek9@gmail.com',
+    p_password_hash  => 'hashed_password_s9',
+    p_salt           => 'salts9',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Filip',
+    p_last_name      => 'Pospíšil',
+    p_email          => 'filip.pospíšil10@centrum.cz',
+    p_password_hash  => 'hashed_password_s10',
+    p_salt           => 'salts10',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Sára',
+    p_last_name      => 'Veselá',
+    p_email          => 'sára.veselá12@centrum.cz',
+    p_password_hash  => 'hashed_password_s11',
+    p_salt           => 'salts11',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Sabina',
+    p_last_name      => 'Šimková',
+    p_email          => 'sabina.šimková13@seznam.cz',
+    p_password_hash  => 'hashed_password_s12',
+    p_salt           => 'salts12',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Jana',
+    p_last_name      => 'Procházková',
+    p_email          => 'jana.procházková14@seznam.cz',
+    p_password_hash  => 'hashed_password_s13',
+    p_salt           => 'salts13',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Ivana',
+    p_last_name      => 'Jelínková',
+    p_email          => 'ivana.jelínková15@centrum.cz',
+    p_password_hash  => 'hashed_password_s14',
+    p_salt           => 'salts14',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Klára',
+    p_last_name      => 'Sedláčková',
+    p_email          => 'klára.sedláčková16@seznam.cz',
+    p_password_hash  => 'hashed_password_s15',
+    p_salt           => 'salts15',
+    p_class_id       => 1
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Tereza',
+    p_last_name      => 'Hájková',
+    p_email          => 'tereza.hájková17@centrum.cz',
+    p_password_hash  => 'hashed_password_s16',
+    p_salt           => 'salts16',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Silvie',
+    p_last_name      => 'Procházková',
+    p_email          => 'silvie.procházková18@gmail.com',
+    p_password_hash  => 'hashed_password_s17',
+    p_salt           => 'salts17',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Petra',
+    p_last_name      => 'Horáková',
+    p_email          => 'petra.horáková19@seznam.cz',
+    p_password_hash  => 'hashed_password_s18',
+    p_salt           => 'salts18',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Natálie',
+    p_last_name      => 'Doležalová',
+    p_email          => 'natálie.doležalová20@gmail.com',
+    p_password_hash  => 'hashed_password_s19',
+    p_salt           => 'salts19',
+    p_class_id       => 2
+  );
+  v_student_id := pkg_student.add_student(
+    p_first_name     => 'Radka',
+    p_last_name      => 'Kovářová',
+    p_email          => 'radka.kovářová21@centrum.cz',
+    p_password_hash  => 'hashed_password_s20',
+    p_salt           => 'salts20',
+    p_class_id       => 2
+  );
+END;
+/
 COMMIT;
 
--- Grade table
 -- Class 1
+-- Český jazyk
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
@@ -170,6 +759,13 @@ INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 3);
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 4);
 INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 2);
+COMMIT;
+
+-- Anglický jazyk
+INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 2, 1, 1);
+INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 2, 1, 2);
+INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 2, 1, 3);
+INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 2, 1, 2);
 COMMIT;
 
 -- Class 2
@@ -346,7 +942,7 @@ INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 12);
 COMMIT;
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 14);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 15);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 2);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 17);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 10);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 1);

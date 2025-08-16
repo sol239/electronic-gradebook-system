@@ -6,6 +6,7 @@
    TODO when running this script from here, and not from ~/create_schema.sql, there should be ../ at the beginning of each path
 */
 
+@tables/tbl_person.sql
 @tables/tbl_parent.sql
 @tables/tbl_teacher.sql
 @tables/tbl_subject.sql

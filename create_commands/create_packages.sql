@@ -10,6 +10,7 @@
 @packages/pkg_classroom.sql
 @packages/pkg_grade.sql
 @packages/pkg_lecture.sql
+@packages/pkg_person.sql
 @packages/pkg_parent.sql
 @packages/pkg_student_parent.sql
 @packages/pkg_student_subject.sql

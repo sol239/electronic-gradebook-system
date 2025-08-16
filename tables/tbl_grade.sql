@@ -12,6 +12,7 @@ create table grade (
    subject_id number not null,
    teacher_id number not null,
    grade      number(1) not null check ( grade between 1 and 5 ),
+   grade_date date default sysdate not null,
    constraint fk_grade_student foreign key ( student_id )
       references student ( student_id ),
    constraint fk_grade_subject foreign key ( subject_id )

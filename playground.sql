@@ -1,10 +1,1 @@
-SET SERVEROUTPUT ON;
-
-DECLARE
-    l_raw RAW(2000);
-BEGIN
-    l_raw := DBMS_CRYPTO.HASH(UTL_I18N.STRING_TO_RAW('Hello', 'AL32UTF8'),
-                              DBMS_CRYPTO.HASH_SH1);
-    DBMS_OUTPUT.PUT_LINE(RAWTOHEX(l_raw));
-END;
-/
+SELECT * FROM VW_STUDENT_GRADE ORDER BY full_name, subject_name;

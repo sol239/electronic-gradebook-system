@@ -1,7 +1,10 @@
 -- Drop all triggers
-drop trigger trg_parent_biur;
-drop trigger trg_student_biur;
-drop trigger trg_teacher_biur;
+drop trigger trg_person_biur;
+
+-- Drop all views
+drop view vw_class;
+drop view vw_student_grade;
+drop view vw_teacher_subject;
 
 -- Drop all packages
 drop package pkg_class;
@@ -15,7 +18,9 @@ drop package pkg_student;
 drop package pkg_subject;
 drop package pkg_subject_teacher;
 drop package pkg_teacher;
-drop package pkg_classroom_lecture
+drop package pkg_classroom_lecture;
+drop package pkg_utils;
+drop package pkg_person;
 
 -- Drop all tables
 drop table grade cascade constraints;
@@ -32,6 +37,7 @@ drop table subject_teacher cascade constraints;
 drop table lecture_teacher cascade constraints;
 drop table lecture_student cascade constraints;
 drop table classroom_lecture cascade constraints;
+drop table person cascade constraints;
 
 -- Drop all sequences
 drop sequence seq_class_id;
