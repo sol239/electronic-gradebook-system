@@ -17,3 +17,4 @@
 @packages/pkg_subject_teacher.sql
 @packages/pkg_subject.sql
 @packages/pkg_teacher.sql
+@packages/pkg_classroom_lecture.sql

@@ -19,3 +19,5 @@
 @tables/tbl_student_parent.sql
 @tables/tbl_lecture_student.sql
 @tables/tbl_lecture_teacher.sql
+@tables/tbl_classroom_lecture.sql
+

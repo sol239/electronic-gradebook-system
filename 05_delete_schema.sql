@@ -15,6 +15,7 @@ drop package pkg_student;
 drop package pkg_subject;
 drop package pkg_subject_teacher;
 drop package pkg_teacher;
+drop package pkg_classroom_lecture
 
 -- Drop all tables
 drop table grade cascade constraints;
@@ -30,6 +31,7 @@ drop table student_subject cascade constraints;
 drop table subject_teacher cascade constraints;
 drop table lecture_teacher cascade constraints;
 drop table lecture_student cascade constraints;
+drop table classroom_lecture cascade constraints;
 
 -- Drop all sequences
 drop sequence seq_class_id;
