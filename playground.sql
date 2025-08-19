@@ -1,26 +1,50 @@
-SET SERVEROUTPUT ON;
+   SET SERVEROUTPUT ON;
 
-SELECT * FROM VW_STUDENT_GRADE ORDER BY full_name, subject_name;
+select *
+  from vw_student_grade
+ order by full_name,
+          subject_name;
 
-SELECT * FROM VW_CLASS;
+select *
+  from vw_class;
 
-SELECT * FROM VW_CLASS_STUDENTS WHERE class_name = 'Prima';
+select *
+  from vw_class_students
+ where class_name = 'Prima';
 
-select * from vw_teacher_subjects order by teacher_name, subject_name;
+select *
+  from vw_teacher_subjects
+ order by teacher_name,
+          subject_name;
 
-select * from vw_students_parents;
+select *
+  from vw_students_parents;
 
-select * from STUDENT_PARENT;
+select *
+  from student_parent;
 
 -- LOGIN EXAMPLE
-DECLARE
-    login_resp pkg_person.response;
-BEGIN
-    -- Call the function and store the result
-    login_resp := pkg_person.LOGIN_PERSON('zdeněk.veselý22@gmail.com', 'hashed_password_p1');
+declare
+   login_resp pkg_person.response;
+   v_user_id  number;
+begin 
 
-    -- Print each field separately
+    /*
+    -- ADMIN PASSWORD RESET EXAMPLE
+   v_user_id := pkg_person.get_person_id_by_email('zdeněk.veselý22@gmail.com');
+   dbms_output.put_line('User ID: ' || v_user_id);
+   pkg_person.password_reset(v_user_id, 'passwordWQE');
+    */
+
+    login_resp := pkg_person.USER_PASSWORD_RESET('zdeněk.veselý22@gmail.com', 'password', 'password111');
     DBMS_OUTPUT.PUT_LINE('Success: ' || CASE WHEN login_resp.success THEN 'TRUE' ELSE 'FALSE' END);
     DBMS_OUTPUT.PUT_LINE('Message: ' || login_resp.message);
-END;
+
+    -- USER LOGIN EXAMPLE
+    login_resp := pkg_person.LOGIN_PERSON('zdeněk.veselý22@gmail.com', 'password');
+    DBMS_OUTPUT.PUT_LINE('Success: ' || CASE WHEN login_resp.success THEN 'TRUE' ELSE 'FALSE' END);
+    DBMS_OUTPUT.PUT_LINE('Message: ' || login_resp.message);
+    
+    
+end;
 /

@@ -113,9 +113,36 @@ create or replace package pkg_person as
        Returns:
          person_id if found, NULL otherwise.
     */
-    function get_person_id_by_email (
-        p_email in varchar2
-    ) return number;
+   function get_person_id_by_email (
+      p_email in varchar2
+   ) return number;
+
+   /*
+       Resets the password for a user. It is method which would be called from backend/frontend
+       Parameters:
+         p_email        - email of the user
+         p_old_password  - old password of the user
+         p_new_password  - new password for the user
+       Returns:
+         response indicating success or failure
+   */
+   function user_password_reset (
+      p_email        in varchar2,
+      p_old_password in varchar2,
+      p_new_password in varchar2
+   ) return response;
+
+    /*
+       Resets the user's password. This is internal method which can be used by admin. It does not require auth.
+       Parameters:
+         p_email       - email of the user
+         p_new_password - new password for the user
+   */
+   procedure password_reset (
+      p_id           in number,
+      p_new_password in varchar2
+   );
+
 
 end pkg_person;
 /
@@ -215,15 +242,18 @@ create or replace package body pkg_person as
       p_email    in varchar2,
       p_password in varchar2
    ) return response as
-      v_person_id number;
-      v_person person_rec;
+      v_person_id             number;
+      v_person                person_rec;
       v_input_hashed_password varchar2(256);
-      v_response response;
+      v_response              response;
    begin
       v_person_id := get_person_id_by_email(p_email);
       v_person := get_person_by_id(v_person_id);
-      v_input_hashed_password := pkg_utils.hash_password(p_password, v_person.salt);
-
+      v_input_hashed_password := pkg_utils.hash_password(
+         p_password,
+         v_person.salt
+      );
+      
       if v_input_hashed_password = v_person.password_hash then
          v_response.success := true;
          v_response.message := 'Login successful.';
@@ -236,19 +266,86 @@ create or replace package body pkg_person as
    end login_person;
 
    function get_person_id_by_email (
-        p_email in varchar2
-    ) return number as
-        v_person_id number;
-    begin
-        select person_id
-          into v_person_id
-          from person
-         where email = p_email;
-        return v_person_id;
-    exception
-        when no_data_found then
-            return null;
-    end get_person_id_by_email;
+      p_email in varchar2
+   ) return number as
+      v_person_id number;
+   begin
+      select person_id
+        into v_person_id
+        from person
+       where email = p_email;
+      return v_person_id;
+   exception
+      when no_data_found then
+         return null;
+   end get_person_id_by_email;
+
+   function user_password_reset (
+      p_email        in varchar2,
+      p_old_password in varchar2,
+      p_new_password in varchar2
+   ) return response as
+      v_person_id number;
+      v_person person_rec;
+      v_old_hashed varchar2(256);
+      v_new_hashed varchar2(256);
+      v_response response;
+   begin
+      v_person_id := get_person_id_by_email(p_email);
+      if v_person_id is null then
+         v_response.success := false;
+         v_response.message := 'User not found.';
+         return v_response;
+      end if;
+
+      v_person := get_person_by_id(v_person_id);
+      v_old_hashed := pkg_utils.hash_password(p_old_password, v_person.salt);
+
+      if v_old_hashed != v_person.password_hash then
+         v_response.success := false;
+         v_response.message := 'Old password is incorrect.';
+         return v_response;
+      end if;
+
+      v_new_hashed := pkg_utils.hash_password(p_new_password, v_person.salt);
+
+      update person
+         set password_hash = v_new_hashed
+       where person_id = v_person_id;
+
+      v_response.success := true;
+      v_response.message := 'Password reset successful.';
+      return v_response;
+   end user_password_reset;
+
+   procedure password_reset (
+      p_id           in number,
+      p_new_password in varchar2
+   ) as
+      v_person person_rec;
+      v_new_hashed varchar2(256);
+   begin
+      begin
+         v_person := get_person_by_id(p_id);
+         -- Pokud osoba neexistuje, get_person_by_id vrátí null a vyvolá výjimku
+         if v_person.person_id is null then
+            dbms_output.put_line('No person found with ID ' || p_id);
+            return;
+         end if;
+      exception
+         when others then
+            dbms_output.put_line('No person found with ID ' || p_id);
+            return;
+      end;
+
+      v_new_hashed := pkg_utils.hash_password(p_new_password, v_person.salt);
+
+      update person
+         set password_hash = v_new_hashed
+       where person_id = p_id;
+
+      dbms_output.put_line('Password reset for person ID ' || p_id);
+   end password_reset;
 
 end pkg_person;
 /
