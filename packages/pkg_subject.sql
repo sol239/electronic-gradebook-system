@@ -72,6 +72,32 @@ create or replace package pkg_subject as
       p_subject_id in number
    ) return number;
 
+   /*
+      Returns the most common grade of a student in a specific subject.
+      Parameters:
+         p_student_id  - ID of the student
+         p_subject_id  - ID of the subject
+      Returns:
+         Most common grade as a number, or NULL if not found.
+   */
+   function get_student_most_common_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number;
+   
+   /*
+      Returns the median grade of a student in a specific subject.
+      Parameters:
+         p_student_id  - ID of the student
+         p_subject_id  - ID of the subject
+      Returns:
+         Median grade as a number, or NULL if not found.
+   */
+   function get_student_median_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number;
+
 end pkg_subject;
 /
 
@@ -156,6 +182,61 @@ create or replace package body pkg_subject as
                               || p_subject_id);
          return null;
    end get_student_average_grade;
+
+   function get_student_most_common_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number as
+      v_most_common number;
+   begin
+      select grade
+        into v_most_common
+        from (
+          select grade,
+                 count(*) as freq
+            from grade_group_student
+            join grade_group gg
+              on gg.grade_group_id = grade_group_student.grade_group_id
+           where student_id = p_student_id
+             and gg.subject_id = p_subject_id
+           group by grade
+           order by freq desc, grade
+        )
+       where rownum = 1;
+
+      return v_most_common;
+   exception
+      when no_data_found then
+         dbms_output.put_line('No grades found for student '
+                              || p_student_id
+                              || ' in subject '
+                              || p_subject_id);
+         return null;
+   end get_student_most_common_grade;
+
+   function get_student_median_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number as
+      v_median number;
+   begin
+      select median(grade)
+        into v_median
+        from grade_group_student
+        join grade_group gg
+          on gg.grade_group_id = grade_group_student.grade_group_id
+       where student_id = p_student_id
+         and gg.subject_id = p_subject_id;
+
+      return v_median;
+   exception
+      when no_data_found then
+         dbms_output.put_line('No grades found for student '
+                              || p_student_id
+                              || ' in subject '
+                              || p_subject_id);
+         return null;
+   end get_student_median_grade;
 
 end pkg_subject;
 
