@@ -121,12 +121,26 @@ create or replace package body pkg_teacher as
                            || ', Person ID: '
                            || v_person_id
                            || ')');
+      commit;
       return v_teacher_id;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20111,
             'Teacher already exists for Person ID ' || v_person_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20112,
+            'Invalid value or data type for Teacher: ' || p_first_name || ' ' || p_last_name
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20113,
+            'Other error when adding Teacher: ' || p_first_name || ' ' || p_last_name || '. Error: ' || SQLERRM
          );
    end add_teacher;
 
@@ -156,15 +170,39 @@ create or replace package body pkg_teacher as
       );
       
       dbms_output.put_line('Teacher person info updated: ID ' || p_teacher_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No teacher found with ID ' || p_teacher_id);
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20114,
+            'Update would create duplicate teacher for email: ' || p_email
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20115,
+            'Invalid value or data type for Teacher update: ' || p_first_name || ' ' || p_last_name
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20116,
+            'No teacher found with ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20117,
+            'Other error when updating Teacher: ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end update_teacher_person_info;
 
    procedure delete_teacher (
       p_teacher_id in number
    ) as
       v_person_id number;
+      v_deleted number;
    begin
       -- Get the person_id for this teacher
       select person_id into v_person_id
@@ -173,18 +211,26 @@ create or replace package body pkg_teacher as
       
       -- Delete from teacher table first
       delete from teacher
-       where teacher_id = p_teacher_id;
+       where teacher_id = p_teacher_id
+       returning 1 into v_deleted;
        
       -- Then delete from person table
-      if sql%rowcount > 0 then
-         pkg_person.delete_person(v_person_id);
-         dbms_output.put_line('Teacher deleted: ID ' || p_teacher_id);
-      else
-         dbms_output.put_line('No teacher found with ID ' || p_teacher_id);
-      end if;
+      pkg_person.delete_person(v_person_id);
+      dbms_output.put_line('Teacher deleted: ID ' || p_teacher_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No teacher found with ID ' || p_teacher_id);
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20118,
+            'No teacher found with ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20119,
+            'Other error when deleting Teacher: ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end delete_teacher;
 
    function get_teacher_by_id (
@@ -206,8 +252,21 @@ create or replace package body pkg_teacher as
 
       return v_teacher;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20120,
+            'No teacher found with ID ' || p_teacher_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20121,
+            'Multiple teachers found with ID ' || p_teacher_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20122,
+            'Other error when reading Teacher: ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end get_teacher_by_id;
 
 end pkg_teacher;

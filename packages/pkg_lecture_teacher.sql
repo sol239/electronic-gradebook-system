@@ -87,11 +87,25 @@ create or replace package body pkg_lecture_teacher as
                            || p_lecture_id
                            || ', Teacher ID '
                            || p_teacher_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20241,
             'Lecture-Teacher link already exists for Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20242,
+            'Type or length error when adding Lecture-Teacher link: Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20243,
+            'Unexpected error when adding Lecture-Teacher link: Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
          );
    end add_lecture_teacher;
 
@@ -99,21 +113,30 @@ create or replace package body pkg_lecture_teacher as
       p_lecture_id in number,
       p_teacher_id in number
    ) as
+      v_deleted number;
    begin
       delete from lecture_teacher
        where lecture_id = p_lecture_id
-         and teacher_id = p_teacher_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No Lecture-Teacher link found for Lecture ID '
-                              || p_lecture_id
-                              || ', Teacher ID '
-                              || p_teacher_id);
-      else
-         dbms_output.put_line('Lecture-Teacher link deleted: Lecture ID '
-                              || p_lecture_id
-                              || ', Teacher ID '
-                              || p_teacher_id);
-      end if;
+         and teacher_id = p_teacher_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Lecture-Teacher link deleted: Lecture ID '
+                           || p_lecture_id
+                           || ', Teacher ID '
+                           || p_teacher_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20244,
+            'No Lecture-Teacher link found for Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20245,
+            'Unexpected error when deleting Lecture-Teacher link: Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end delete_lecture_teacher;
 
    function get_lectures_by_teacher (
@@ -127,6 +150,22 @@ create or replace package body pkg_lecture_teacher as
         from lecture_teacher
        where teacher_id = p_teacher_id;
       return v_lectures;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20246,
+            'No lectures found for Teacher ID ' || p_teacher_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20247,
+            'Multiple lectures found for Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20248,
+            'Unexpected error when reading lectures by teacher: Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end get_lectures_by_teacher;
 
    function get_teachers_by_lecture (
@@ -140,6 +179,22 @@ create or replace package body pkg_lecture_teacher as
         from lecture_teacher
        where lecture_id = p_lecture_id;
       return v_teachers;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20249,
+            'No teachers found for Lecture ID ' || p_lecture_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20250,
+            'Multiple teachers found for Lecture ID ' || p_lecture_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20251,
+            'Unexpected error when reading teachers by lecture: Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end get_teachers_by_lecture;
 
 end pkg_lecture_teacher;

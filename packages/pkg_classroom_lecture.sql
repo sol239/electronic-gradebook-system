@@ -67,6 +67,21 @@ create or replace package pkg_classroom_lecture as
       p_lecture_id in number
    ) return classroom_id_table;
 
+    /*
+       Updates an existing classroom-lecture link.
+       Parameters:
+         p_classroom_id      - old classroom ID
+         p_lecture_id        - old lecture ID
+         p_new_classroom_id  - new classroom ID
+         p_new_lecture_id    - new lecture ID
+    */
+    procedure update_classroom_lecture (
+        p_classroom_id      in number,
+        p_lecture_id        in number,
+        p_new_classroom_id  in number,
+        p_new_lecture_id    in number
+    );
+
 end pkg_classroom_lecture;
 /
 
@@ -87,33 +102,99 @@ create or replace package body pkg_classroom_lecture as
                            || p_classroom_id
                            || ', Lecture ID '
                            || p_lecture_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20191,
             'Classroom-Lecture link already exists for Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
          );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20192,
+            'Type or length error when adding Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20193,
+            'Unexpected error when adding Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end add_classroom_lecture;
+
+   procedure update_classroom_lecture (
+      p_classroom_id      in number,
+      p_lecture_id        in number,
+      p_new_classroom_id  in number,
+      p_new_lecture_id    in number
+   ) as
+      v_updated number;
+   begin
+      update classroom_lecture
+         set classroom_id = p_new_classroom_id,
+             lecture_id = p_new_lecture_id
+       where classroom_id = p_classroom_id
+         and lecture_id = p_lecture_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Classroom-Lecture link updated: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || ') -> New (Classroom ID ' || p_new_classroom_id || ', Lecture ID ' || p_new_lecture_id || ')');
+      commit;
+   exception
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20198,
+            'Update would create duplicate Classroom-Lecture link: Classroom ID ' || p_new_classroom_id || ', Lecture ID ' || p_new_lecture_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20199,
+            'Type or length error when updating Classroom-Lecture link: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || ')'
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20200,
+            'No Classroom-Lecture link found for: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20201,
+            'Unexpected error when updating Classroom-Lecture link: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '). Error: ' || SQLERRM
+         );
+   end update_classroom_lecture;
 
    procedure delete_classroom_lecture (
       p_classroom_id in number,
       p_lecture_id   in number
    ) as
+      v_deleted number;
    begin
       delete from classroom_lecture
        where classroom_id = p_classroom_id
-         and lecture_id = p_lecture_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No Classroom-Lecture link found for Classroom ID '
-                              || p_classroom_id
-                              || ', Lecture ID '
-                              || p_lecture_id);
-      else
-         dbms_output.put_line('Classroom-Lecture link deleted: Classroom ID '
-                              || p_classroom_id
-                              || ', Lecture ID '
-                              || p_lecture_id);
-      end if;
+         and lecture_id = p_lecture_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Classroom-Lecture link deleted: Classroom ID '
+                           || p_classroom_id
+                           || ', Lecture ID '
+                           || p_lecture_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20194,
+            'No Classroom-Lecture link found for Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20195,
+            'Unexpected error when deleting Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end delete_classroom_lecture;
 
    function get_lectures_by_classroom (
@@ -127,6 +208,12 @@ create or replace package body pkg_classroom_lecture as
         from classroom_lecture
        where classroom_id = p_classroom_id;
       return v_lectures;
+   exception
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20196,
+            'Unexpected error when reading lectures by classroom: Classroom ID ' || p_classroom_id || '. Error: ' || SQLERRM
+         );
    end get_lectures_by_classroom;
 
    function get_classrooms_by_lecture (
@@ -140,6 +227,12 @@ create or replace package body pkg_classroom_lecture as
         from classroom_lecture
        where lecture_id = p_lecture_id;
       return v_classrooms;
+   exception
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20197,
+            'Unexpected error when reading classrooms by lecture: Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end get_classrooms_by_lecture;
 
 end pkg_classroom_lecture;

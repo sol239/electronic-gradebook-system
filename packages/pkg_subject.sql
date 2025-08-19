@@ -131,6 +131,17 @@ create or replace package pkg_subject as
       p_subject_id in number
    ) return number;
 
+   /*
+      Returns subject_id by name.
+      Parameters:
+         p_name - name of the subject
+      Returns:
+         subject_id if found, NULL otherwise.
+   */
+   function get_subject_id_by_name (
+      p_name in varchar2
+   ) return number;
+
 end pkg_subject;
 /
 
@@ -143,11 +154,25 @@ create or replace package body pkg_subject as
    begin
       insert into subject ( name ) values ( p_name );
       dbms_output.put_line('Subject added: ' || p_name);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20081,
             'Subject with this name already exists: ' || p_name
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20082,
+            'Invalid value or data type for Subject: ' || p_name
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20083,
+            'Other error when adding Subject: ' || p_name || '. Error: ' || SQLERRM
          );
    end add_subject;
 
@@ -155,35 +180,65 @@ create or replace package body pkg_subject as
       p_subject_id in number,
       p_name       in varchar2
    ) as
+      v_updated number;
    begin
       update subject
          set
          name = p_name
-       where subject_id = p_subject_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No subject found with ID ' || p_subject_id);
-      else
-         dbms_output.put_line('Subject updated: ID ' || p_subject_id);
-      end if;
+       where subject_id = p_subject_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Subject updated: ID ' || p_subject_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
-            -20082,
+            -20084,
             'Subject with this name already exists: ' || p_name
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20085,
+            'Invalid value or data type for Subject update: ' || p_name
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20086,
+            'No subject found with ID ' || p_subject_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20087,
+            'Other error when updating Subject: ID ' || p_subject_id || '. Error: ' || SQLERRM
          );
    end update_subject;
 
    procedure delete_subject (
       p_subject_id in number
    ) as
+      v_deleted number;
    begin
       delete from subject
-       where subject_id = p_subject_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No subject found with ID ' || p_subject_id);
-      else
-         dbms_output.put_line('Subject deleted: ID ' || p_subject_id);
-      end if;
+       where subject_id = p_subject_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Subject deleted: ID ' || p_subject_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20088,
+            'No subject found with ID ' || p_subject_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20089,
+            'Other error when deleting Subject: ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end delete_subject;
 
    function get_subject_by_id (
@@ -199,8 +254,21 @@ create or replace package body pkg_subject as
 
       return v_subject;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20090,
+            'No subject found with ID ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20091,
+            'Multiple subjects found with ID ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20092,
+            'Other error when reading Subject: ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_subject_by_id;
 
    function get_student_average_grade (
@@ -209,7 +277,6 @@ create or replace package body pkg_subject as
    ) return number as
       v_average number;
    begin
-   -- Compute average
       select avg(grade)
         into v_average
         from grade_group_student
@@ -220,12 +287,21 @@ create or replace package body pkg_subject as
 
       return v_average;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for student '
-                              || p_student_id
-                              || ' in subject '
-                              || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20093,
+            'No grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20094,
+            'Multiple average grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20095,
+            'Other error when reading student average grade: student ' || p_student_id || ', subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_student_average_grade;
 
    function get_student_most_common_grade (
@@ -251,12 +327,21 @@ create or replace package body pkg_subject as
 
       return v_most_common;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for student '
-                              || p_student_id
-                              || ' in subject '
-                              || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20096,
+            'No grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20097,
+            'Multiple most common grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20098,
+            'Other error when reading student most common grade: student ' || p_student_id || ', subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_student_most_common_grade;
 
    function get_student_median_grade (
@@ -275,12 +360,21 @@ create or replace package body pkg_subject as
 
       return v_median;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for student '
-                              || p_student_id
-                              || ' in subject '
-                              || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20099,
+            'No grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20100,
+            'Multiple median grades found for student ' || p_student_id || ' in subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20101,
+            'Other error when reading student median grade: student ' || p_student_id || ', subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_student_median_grade;
 
    function get_subject_average_grade (
@@ -297,9 +391,21 @@ create or replace package body pkg_subject as
 
       return v_average;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for subject ' || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20102,
+            'No grades found for subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20103,
+            'Multiple average grades found for subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20104,
+            'Other error when reading subject average grade: subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_subject_average_grade;
 
    function get_subject_most_common_grade (
@@ -323,9 +429,21 @@ create or replace package body pkg_subject as
 
       return v_most_common;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for subject ' || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20105,
+            'No grades found for subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20106,
+            'Multiple most common grades found for subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20107,
+            'Other error when reading subject most common grade: subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_subject_most_common_grade;
 
    function get_subject_median_grade (
@@ -342,12 +460,43 @@ create or replace package body pkg_subject as
 
       return v_median;
    exception
-      when no_data_found then
-         dbms_output.put_line('No grades found for subject ' || p_subject_id);
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20108,
+            'No grades found for subject ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20109,
+            'Multiple median grades found for subject ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20110,
+            'Other error when reading subject median grade: subject ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_subject_median_grade;
 
+   function get_subject_id_by_name (
+      p_name in varchar2
+   ) return number as
+      v_subject_id number;
+   begin
+      select subject_id
+        into v_subject_id
+        from subject
+       where name = p_name;
+
+      return v_subject_id;
+   exception
+      when NO_DATA_FOUND then
+         return null;
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20111,
+            'Error when getting subject ID by name: ' || p_name || '. Error: ' || SQLERRM
+         );
+   end get_subject_id_by_name;
+
 end pkg_subject;
-
-
 /

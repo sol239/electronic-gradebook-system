@@ -87,11 +87,25 @@ create or replace package body pkg_subject_teacher as
                            || p_subject_id
                            || ', Teacher ID '
                            || p_teacher_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20101,
             'Subject-Teacher link already exists for Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20102,
+            'Invalid value or data type for Subject-Teacher link: Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20103,
+            'Other error when adding Subject-Teacher link: Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
          );
    end add_subject_teacher;
 
@@ -99,21 +113,30 @@ create or replace package body pkg_subject_teacher as
       p_subject_id in number,
       p_teacher_id in number
    ) as
+      v_deleted number;
    begin
       delete from subject_teacher
        where subject_id = p_subject_id
-         and teacher_id = p_teacher_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No Subject-Teacher link found for Subject ID '
-                              || p_subject_id
-                              || ', Teacher ID '
-                              || p_teacher_id);
-      else
-         dbms_output.put_line('Subject-Teacher link deleted: Subject ID '
-                              || p_subject_id
-                              || ', Teacher ID '
-                              || p_teacher_id);
-      end if;
+         and teacher_id = p_teacher_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Subject-Teacher link deleted: Subject ID '
+                           || p_subject_id
+                           || ', Teacher ID '
+                           || p_teacher_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20104,
+            'No Subject-Teacher link found for Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20105,
+            'Other error when deleting Subject-Teacher link: Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end delete_subject_teacher;
 
    function get_subjects_by_teacher (
@@ -127,6 +150,22 @@ create or replace package body pkg_subject_teacher as
         from subject_teacher
        where teacher_id = p_teacher_id;
       return v_subjects;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20106,
+            'No subjects found for Teacher ID ' || p_teacher_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20107,
+            'Multiple subjects found for Teacher ID ' || p_teacher_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20108,
+            'Other error when reading subjects by teacher: Teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
+         );
    end get_subjects_by_teacher;
 
    function get_teachers_by_subject (
@@ -140,6 +179,22 @@ create or replace package body pkg_subject_teacher as
         from subject_teacher
        where subject_id = p_subject_id;
       return v_teachers;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20109,
+            'No teachers found for Subject ID ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20110,
+            'Multiple teachers found for Subject ID ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20111,
+            'Other error when reading teachers by subject: Subject ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_teachers_by_subject;
 
 end pkg_subject_teacher;

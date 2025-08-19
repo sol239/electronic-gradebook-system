@@ -122,12 +122,26 @@ create or replace package body pkg_parent as
                            || ', Person ID: '
                            || v_person_id
                            || ')');
+      commit;
       return v_parent_id;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20131,
             'Parent already exists for Person ID ' || v_person_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20132,
+            'Invalid value or data type for Parent: ' || p_first_name || ' ' || p_last_name
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20133,
+            'Other error when adding Parent: ' || p_first_name || ' ' || p_last_name || '. Error: ' || SQLERRM
          );
    end add_parent;
 
@@ -140,6 +154,7 @@ create or replace package body pkg_parent as
       p_salt          in varchar2
    ) as
       v_person_id number;
+      v_updated number;
    begin
       -- Get the person_id for this parent
       select person_id into v_person_id
@@ -157,15 +172,39 @@ create or replace package body pkg_parent as
       );
       
       dbms_output.put_line('Parent person info updated: ID ' || p_parent_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No parent found with ID ' || p_parent_id);
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20134,
+            'Parent with this email already exists: ' || p_email
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20135,
+            'Invalid value or data type for Parent update: ' || p_first_name || ' ' || p_last_name
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20136,
+            'No parent found with ID ' || p_parent_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20137,
+            'Other error when updating Parent: ID ' || p_parent_id || '. Error: ' || SQLERRM
+         );
    end update_parent_person_info;
 
    procedure delete_parent (
       p_parent_id in number
    ) as
       v_person_id number;
+      v_deleted number;
    begin
       -- Get the person_id for this parent
       select person_id into v_person_id
@@ -174,18 +213,26 @@ create or replace package body pkg_parent as
       
       -- Delete from parent table first
       delete from parent
-       where parent_id = p_parent_id;
+       where parent_id = p_parent_id
+       returning 1 into v_deleted;
        
       -- Then delete from person table
-      if sql%rowcount > 0 then
-         pkg_person.delete_person(v_person_id);
-         dbms_output.put_line('Parent deleted: ID ' || p_parent_id);
-      else
-         dbms_output.put_line('No parent found with ID ' || p_parent_id);
-      end if;
+      pkg_person.delete_person(v_person_id);
+      dbms_output.put_line('Parent deleted: ID ' || p_parent_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No parent found with ID ' || p_parent_id);
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20138,
+            'No parent found with ID ' || p_parent_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20139,
+            'Other error when deleting Parent: ID ' || p_parent_id || '. Error: ' || SQLERRM
+         );
    end delete_parent;
 
    function get_parent_by_id (
@@ -207,8 +254,21 @@ create or replace package body pkg_parent as
 
       return v_parent;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20140,
+            'No parent found with ID ' || p_parent_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20141,
+            'Multiple parents found with ID ' || p_parent_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20142,
+            'Other error when reading Parent: ID ' || p_parent_id || '. Error: ' || SQLERRM
+         );
    end get_parent_by_id;
 
 end pkg_parent;

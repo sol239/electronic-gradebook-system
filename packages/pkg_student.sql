@@ -139,12 +139,26 @@ create or replace package body pkg_student as
                            || ', Person ID: '
                            || v_person_id
                            || ')');
+      commit;
       return v_student_id;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20121,
             'Student already exists for Person ID ' || v_person_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20122,
+            'Invalid value or data type for Student: ' || p_first_name || ' ' || p_last_name
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20123,
+            'Other error when adding Student: ' || p_first_name || ' ' || p_last_name || '. Error: ' || SQLERRM
          );
    end add_student;
 
@@ -152,15 +166,39 @@ create or replace package body pkg_student as
       p_student_id in number,
       p_class_id   in number
    ) as
+      v_updated number;
    begin
       update student
          set class_id = p_class_id
-       where student_id = p_student_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No student found with ID ' || p_student_id);
-      else
-         dbms_output.put_line('Student class updated: ID ' || p_student_id);
-      end if;
+       where student_id = p_student_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Student class updated: ID ' || p_student_id);
+      commit;
+   exception
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20124,
+            'Student with this class already exists: Student ID ' || p_student_id || ', Class ID ' || p_class_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20125,
+            'Invalid value or data type for Student class update: Student ID ' || p_student_id || ', Class ID ' || p_class_id
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20126,
+            'No student found with ID ' || p_student_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20127,
+            'Other error when updating Student class: Student ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end update_student_class;
 
    procedure update_student_person_info (
@@ -189,15 +227,39 @@ create or replace package body pkg_student as
       );
       
       dbms_output.put_line('Student person info updated: ID ' || p_student_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No student found with ID ' || p_student_id);
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20128,
+            'Student with this email already exists: ' || p_email
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20129,
+            'Invalid value or data type for Student update: ' || p_first_name || ' ' || p_last_name
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20130,
+            'No student found with ID ' || p_student_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20131,
+            'Other error when updating Student: ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end update_student_person_info;
 
    procedure delete_student (
       p_student_id in number
    ) as
       v_person_id number;
+      v_deleted number;
    begin
       -- Get the person_id for this student
       select person_id into v_person_id
@@ -206,18 +268,26 @@ create or replace package body pkg_student as
       
       -- Delete from student table first
       delete from student
-       where student_id = p_student_id;
+       where student_id = p_student_id
+       returning 1 into v_deleted;
        
       -- Then delete from person table
-      if sql%rowcount > 0 then
-         pkg_person.delete_person(v_person_id);
-         dbms_output.put_line('Student deleted: ID ' || p_student_id);
-      else
-         dbms_output.put_line('No student found with ID ' || p_student_id);
-      end if;
+      pkg_person.delete_person(v_person_id);
+      dbms_output.put_line('Student deleted: ID ' || p_student_id);
+      commit;
    exception
-      when no_data_found then
-         dbms_output.put_line('No student found with ID ' || p_student_id);
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20132,
+            'No student found with ID ' || p_student_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20133,
+            'Other error when deleting Student: ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end delete_student;
 
    function get_student_by_id (
@@ -240,8 +310,21 @@ create or replace package body pkg_student as
 
       return v_student;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20134,
+            'No student found with ID ' || p_student_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20135,
+            'Multiple students found with ID ' || p_student_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20136,
+            'Other error when reading Student: ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end get_student_by_id;
 
 end pkg_student;

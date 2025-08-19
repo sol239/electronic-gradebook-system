@@ -87,11 +87,25 @@ create or replace package body pkg_student_subject as
                            || p_student_id
                            || ', Subject ID '
                            || p_subject_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20071,
             'Student-Subject link already exists for Student ID ' || p_student_id || ', Subject ID ' || p_subject_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20072,
+            'Invalid value or data type for Student-Subject link: Student ID ' || p_student_id || ', Subject ID ' || p_subject_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20073,
+            'Other error when adding Student-Subject link: Student ID ' || p_student_id || ', Subject ID ' || p_subject_id || '. Error: ' || SQLERRM
          );
    end add_student_subject;
 
@@ -99,21 +113,30 @@ create or replace package body pkg_student_subject as
       p_student_id in number,
       p_subject_id in number
    ) as
+      v_deleted number;
    begin
       delete from student_subject
        where student_id = p_student_id
-         and subject_id = p_subject_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No Student-Subject link found for Student ID '
-                              || p_student_id
-                              || ', Subject ID '
-                              || p_subject_id);
-      else
-         dbms_output.put_line('Student-Subject link deleted: Student ID '
-                              || p_student_id
-                              || ', Subject ID '
-                              || p_subject_id);
-      end if;
+         and subject_id = p_subject_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Student-Subject link deleted: Student ID '
+                           || p_student_id
+                           || ', Subject ID '
+                           || p_subject_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20074,
+            'No Student-Subject link found for Student ID ' || p_student_id || ', Subject ID ' || p_subject_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20075,
+            'Other error when deleting Student-Subject link: Student ID ' || p_student_id || ', Subject ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end delete_student_subject;
 
    function get_students_by_subject (
@@ -127,6 +150,22 @@ create or replace package body pkg_student_subject as
         from student_subject
        where subject_id = p_subject_id;
       return v_students;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20076,
+            'No students found for Subject ID ' || p_subject_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20077,
+            'Multiple students found for Subject ID ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20078,
+            'Other error when reading students by subject: Subject ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
    end get_students_by_subject;
 
    function get_subjects_by_student (
@@ -140,6 +179,22 @@ create or replace package body pkg_student_subject as
         from student_subject
        where student_id = p_student_id;
       return v_subjects;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20079,
+            'No subjects found for Student ID ' || p_student_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20080,
+            'Multiple subjects found for Student ID ' || p_student_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20081,
+            'Other error when reading subjects by student: Student ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end get_subjects_by_student;
 
 end pkg_student_subject;

@@ -178,12 +178,26 @@ create or replace package body pkg_person as
                            || ' (ID: '
                            || v_person_id
                            || ')');
+      commit;
       return v_person_id;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20141,
             'Person with this email already exists: ' || p_email
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20142,
+            'Invalid value or data type for Person: ' || p_first_name || ' ' || p_last_name
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20143,
+            'Other error when adding Person: ' || p_first_name || ' ' || p_last_name || '. Error: ' || SQLERRM
          );
    end add_person;
 
@@ -195,6 +209,7 @@ create or replace package body pkg_person as
       p_password_hash in varchar2,
       p_salt          in varchar2
    ) as
+      v_updated number;
    begin
       update person
          set first_name = p_first_name,
@@ -202,31 +217,60 @@ create or replace package body pkg_person as
              email = p_email,
              password_hash = p_password_hash,
              salt = p_salt
-       where person_id = p_person_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No person found with ID ' || p_person_id);
-      else
-         dbms_output.put_line('Person updated: ID ' || p_person_id);
-      end if;
+       where person_id = p_person_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Person updated: ID ' || p_person_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
-            -20142,
+            -20144,
             'Person with this email already exists: ' || p_email
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20145,
+            'Invalid value or data type for Person update: ' || p_first_name || ' ' || p_last_name
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20146,
+            'No person found with ID ' || p_person_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20147,
+            'Other error when updating Person: ID ' || p_person_id || '. Error: ' || SQLERRM
          );
    end update_person;
 
    procedure delete_person (
       p_person_id in number
    ) as
+      v_deleted number;
    begin
       delete from person
-       where person_id = p_person_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No person found with ID ' || p_person_id);
-      else
-         dbms_output.put_line('Person deleted: ID ' || p_person_id);
-      end if;
+       where person_id = p_person_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Person deleted: ID ' || p_person_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20148,
+            'No person found with ID ' || p_person_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20149,
+            'Other error when deleting Person: ID ' || p_person_id || '. Error: ' || SQLERRM
+         );
    end delete_person;
 
    function get_person_by_id (
@@ -246,8 +290,21 @@ create or replace package body pkg_person as
 
       return v_person;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20150,
+            'No person found with ID ' || p_person_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20151,
+            'Multiple persons found with ID ' || p_person_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20152,
+            'Other error when reading Person: ID ' || p_person_id || '. Error: ' || SQLERRM
+         );
    end get_person_by_id;
 
    function login_person (
@@ -275,6 +332,11 @@ create or replace package body pkg_person as
       end if;
 
       return v_response;
+   exception
+      when OTHERS then
+         v_response.success := false;
+         v_response.message := 'Unexpected error during login: ' || SQLERRM;
+         return v_response;
    end login_person;
 
    function get_person_id_by_email (
@@ -288,8 +350,21 @@ create or replace package body pkg_person as
        where email = p_email;
       return v_person_id;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20153,
+            'No person found with email ' || p_email
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20154,
+            'Multiple persons found with email ' || p_email
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20155,
+            'Other error when reading person by email: ' || p_email || '. Error: ' || SQLERRM
+         );
    end get_person_id_by_email;
 
    function user_password_reset (
@@ -323,11 +398,24 @@ create or replace package body pkg_person as
 
       update person
          set password_hash = v_new_hashed
-       where person_id = v_person_id;
+       where person_id = v_person_id
+       returning 1 into v_person_id;
+      commit;
 
       v_response.success := true;
       v_response.message := 'Password reset successful.';
       return v_response;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         v_response.success := false;
+         v_response.message := 'No person found with email ' || p_email;
+         return v_response;
+      when OTHERS then
+         rollback;
+         v_response.success := false;
+         v_response.message := 'Unexpected error during password reset: ' || SQLERRM;
+         return v_response;
    end user_password_reset;
 
    procedure password_reset (
@@ -336,16 +424,16 @@ create or replace package body pkg_person as
    ) as
       v_person person_rec;
       v_new_hashed varchar2(256);
+      v_updated number;
    begin
       begin
          v_person := get_person_by_id(p_id);
-         -- Pokud osoba neexistuje, get_person_by_id vrátí null a vyvolá výjimku
          if v_person.person_id is null then
             dbms_output.put_line('No person found with ID ' || p_id);
             return;
          end if;
       exception
-         when others then
+         when OTHERS then
             dbms_output.put_line('No person found with ID ' || p_id);
             return;
       end;
@@ -354,9 +442,23 @@ create or replace package body pkg_person as
 
       update person
          set password_hash = v_new_hashed
-       where person_id = p_id;
-
+       where person_id = p_id
+       returning 1 into v_updated;
       dbms_output.put_line('Password reset for person ID ' || p_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20156,
+            'No person found with ID ' || p_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20157,
+            'Unexpected error during password reset for person ID ' || p_id || '. Error: ' || SQLERRM
+         );
    end password_reset;
 
 end pkg_person;

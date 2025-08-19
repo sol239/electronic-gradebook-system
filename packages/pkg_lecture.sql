@@ -80,6 +80,21 @@ create or replace package pkg_lecture as
       p_lecture_id in number
    ) return lecture_rec;
 
+    /*
+       Returns lecture_id by natural key components.
+       Parameters:
+         p_subject_id - ID of the subject
+         p_classroom_id - ID of the classroom
+         p_start_time - start time of the lecture
+       Returns:
+         lecture_id if found, NULL otherwise.
+    */
+   function get_lecture_id_by_natural_key (
+      p_subject_id in number,
+      p_classroom_id in number,
+      p_start_time in timestamp
+   ) return number;
+
 end pkg_lecture;
 /
 
@@ -111,11 +126,25 @@ create or replace package body pkg_lecture as
          p_description
       );
       dbms_output.put_line('Lecture added: Subject ID ' || p_subject_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20221,
             'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20222,
+            'Type or length error when adding lecture: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20223,
+            'Unexpected error when adding lecture: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || '. Error: ' || SQLERRM
          );
    end add_lecture;
 
@@ -128,6 +157,7 @@ create or replace package body pkg_lecture as
       p_lecture_name in varchar2,
       p_description  in varchar2 default null
    ) as
+      v_updated number;
    begin
       update lecture
          set subject_id   = p_subject_id,
@@ -136,31 +166,60 @@ create or replace package body pkg_lecture as
              end_time     = p_end_time,
              lecture_name = p_lecture_name,
              description  = p_description
-       where lecture_id = p_lecture_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No lecture found with ID ' || p_lecture_id);
-      else
-         dbms_output.put_line('Lecture updated: ID ' || p_lecture_id);
-      end if;
+       where lecture_id = p_lecture_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Lecture updated: ID ' || p_lecture_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
-            -20222,
+            -20224,
             'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20225,
+            'Type or length error when updating lecture: ID ' || p_lecture_id
+         );
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20226,
+            'No lecture found with ID ' || p_lecture_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20227,
+            'Unexpected error when updating lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
          );
    end update_lecture;
 
    procedure delete_lecture (
       p_lecture_id in number
    ) as
+      v_deleted number;
    begin
       delete from lecture
-       where lecture_id = p_lecture_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No lecture found with ID ' || p_lecture_id);
-      else
-         dbms_output.put_line('Lecture deleted: ID ' || p_lecture_id);
-      end if;
+       where lecture_id = p_lecture_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Lecture deleted: ID ' || p_lecture_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20228,
+            'No lecture found with ID ' || p_lecture_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20229,
+            'Unexpected error when deleting lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end delete_lecture;
 
    function get_lecture_by_id (
@@ -181,9 +240,49 @@ create or replace package body pkg_lecture as
 
       return v_lecture;
    exception
-      when no_data_found then
-         return null;
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20230,
+            'No lecture found with ID ' || p_lecture_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20231,
+            'Multiple lectures found with ID ' || p_lecture_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20232,
+            'Unexpected error when reading lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
+         );
    end get_lecture_by_id;
+
+   function get_lecture_id_by_natural_key (
+      p_subject_id in number,
+      p_classroom_id in number,
+      p_start_time in timestamp
+   ) return number as
+      v_lecture_id number;
+   begin
+      select lecture_id
+        into v_lecture_id
+        from lecture
+       where subject_id = p_subject_id
+         and classroom_id = p_classroom_id
+         and start_time = p_start_time;
+
+      return v_lecture_id;
+   exception
+      when NO_DATA_FOUND then
+         return null;
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20233,
+            'Error when getting lecture ID by natural key: subject_id=' || p_subject_id || 
+            ', classroom_id=' || p_classroom_id || ', start_time=' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS') || 
+            '. Error: ' || SQLERRM
+         );
+   end get_lecture_id_by_natural_key;
 
 end pkg_lecture;
 /

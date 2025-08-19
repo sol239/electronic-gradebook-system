@@ -6,7 +6,6 @@
    TODO: Maybe it shall be in create_commands.sql...
 */
 @create_commands/create_tables.sql
-@create_commands/create_sequences.sql
 @create_commands/create_packages.sql
 @create_commands/create_triggers.sql
 @create_commands/create_views.sql

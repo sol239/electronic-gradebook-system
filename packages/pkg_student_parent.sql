@@ -87,11 +87,25 @@ create or replace package body pkg_student_parent as
                            || p_student_id
                            || ', Parent ID '
                            || p_parent_id);
+      commit;
    exception
       when DUP_VAL_ON_INDEX then
+         rollback;
          RAISE_APPLICATION_ERROR(
             -20091,
             'Student-Parent link already exists for Student ID ' || p_student_id || ', Parent ID ' || p_parent_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20092,
+            'Invalid value or data type for Student-Parent link: Student ID ' || p_student_id || ', Parent ID ' || p_parent_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20093,
+            'Other error when adding Student-Parent link: Student ID ' || p_student_id || ', Parent ID ' || p_parent_id || '. Error: ' || SQLERRM
          );
    end add_student_parent;
 
@@ -99,21 +113,30 @@ create or replace package body pkg_student_parent as
       p_student_id in number,
       p_parent_id  in number
    ) as
+      v_deleted number;
    begin
       delete from student_parent
        where student_id = p_student_id
-         and parent_id = p_parent_id;
-      if sql%rowcount = 0 then
-         dbms_output.put_line('No Student-Parent link found for Student ID '
-                              || p_student_id
-                              || ', Parent ID '
-                              || p_parent_id);
-      else
-         dbms_output.put_line('Student-Parent link deleted: Student ID '
-                              || p_student_id
-                              || ', Parent ID '
-                              || p_parent_id);
-      end if;
+         and parent_id = p_parent_id
+       returning 1 into v_deleted;
+      dbms_output.put_line('Student-Parent link deleted: Student ID '
+                           || p_student_id
+                           || ', Parent ID '
+                           || p_parent_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20094,
+            'No Student-Parent link found for Student ID ' || p_student_id || ', Parent ID ' || p_parent_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20095,
+            'Other error when deleting Student-Parent link: Student ID ' || p_student_id || ', Parent ID ' || p_parent_id || '. Error: ' || SQLERRM
+         );
    end delete_student_parent;
 
    function get_students_by_parent (
@@ -127,6 +150,22 @@ create or replace package body pkg_student_parent as
         from student_parent
        where parent_id = p_parent_id;
       return v_students;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20096,
+            'No students found for Parent ID ' || p_parent_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20097,
+            'Multiple students found for Parent ID ' || p_parent_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20098,
+            'Other error when reading students by parent: Parent ID ' || p_parent_id || '. Error: ' || SQLERRM
+         );
    end get_students_by_parent;
 
    function get_parents_by_student (
@@ -140,6 +179,22 @@ create or replace package body pkg_student_parent as
         from student_parent
        where student_id = p_student_id;
       return v_parents;
+   exception
+      when NO_DATA_FOUND then
+         RAISE_APPLICATION_ERROR(
+            -20099,
+            'No parents found for Student ID ' || p_student_id
+         );
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20100,
+            'Multiple parents found for Student ID ' || p_student_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20101,
+            'Other error when reading parents by student: Student ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
    end get_parents_by_student;
 
 end pkg_student_parent;

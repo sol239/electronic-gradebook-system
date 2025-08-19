@@ -102,11 +102,25 @@ create or replace package body pkg_grade_group_student as
                              || p_grade_group_id
                              || ', Student ID '
                              || p_student_id);
+        commit;
     exception
         when DUP_VAL_ON_INDEX then
+            rollback;
             RAISE_APPLICATION_ERROR(
                 -20211,
                 'Grade group-student link already exists: Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id
+            );
+        when VALUE_ERROR then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20212,
+                'Type or length error when adding grade group-student link: Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20213,
+                'Unexpected error when adding grade group-student link: Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id || '. Error: ' || SQLERRM
             );
     end add_grade_group_student;
 
@@ -114,21 +128,30 @@ create or replace package body pkg_grade_group_student as
         p_grade_group_id in number,
         p_student_id     in number
     ) as
+        v_deleted number;
     begin
         delete from grade_group_student
          where grade_group_id = p_grade_group_id
-           and student_id = p_student_id;
-        if sql%rowcount = 0 then
-            dbms_output.put_line('No Grade Group-Student link found for Grade Group ID '
-                                 || p_grade_group_id
-                                 || ', Student ID '
-                                 || p_student_id);
-        else
-            dbms_output.put_line('Grade group-student link deleted: Grade Group ID '
-                                 || p_grade_group_id
-                                 || ', Student ID '
-                                 || p_student_id);
-        end if;
+           and student_id = p_student_id
+         returning 1 into v_deleted;
+        dbms_output.put_line('Grade group-student link deleted: Grade Group ID '
+                             || p_grade_group_id
+                             || ', Student ID '
+                             || p_student_id);
+        commit;
+    exception
+        when NO_DATA_FOUND then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20214,
+                'No Grade Group-Student link found for Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20215,
+                'Unexpected error when deleting Grade Group-Student link: Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id || '. Error: ' || SQLERRM
+            );
     end delete_grade_group_student;
 
     function get_grade_groups_by_student (
@@ -142,6 +165,22 @@ create or replace package body pkg_grade_group_student as
           from grade_group_student
          where student_id = p_student_id;
         return v_groups;
+    exception
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20216,
+                'No grade groups found for Student ID ' || p_student_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20217,
+                'Multiple grade groups found for Student ID ' || p_student_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20218,
+                'Unexpected error when reading grade groups by student: Student ID ' || p_student_id || '. Error: ' || SQLERRM
+            );
     end get_grade_groups_by_student;
 
     function get_students_by_grade_group (
@@ -155,6 +194,22 @@ create or replace package body pkg_grade_group_student as
           from grade_group_student
          where grade_group_id = p_grade_group_id;
         return v_students;
+    exception
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20219,
+                'No students found for Grade Group ID ' || p_grade_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20220,
+                'Multiple students found for Grade Group ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20221,
+                'Unexpected error when reading students by grade group: Grade Group ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end get_students_by_grade_group;
 
 end pkg_grade_group_student;

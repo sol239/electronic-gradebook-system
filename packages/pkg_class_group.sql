@@ -64,6 +64,19 @@ create or replace package pkg_class_group as
         p_class_group_id in number
     ) return class_group_rec;
 
+    /*
+       Returns class_group_id by natural key components.
+       Parameters:
+         p_class_id - ID of the class
+         p_group_name - name of the group
+       Returns:
+         class_group_id if found, NULL otherwise.
+    */
+    function get_class_group_id_by_natural_key (
+        p_class_id in number,
+        p_group_name in varchar2
+    ) return number;
+
 end pkg_class_group;
 /
 
@@ -84,11 +97,25 @@ create or replace package body pkg_class_group as
             p_group_name
         );
         dbms_output.put_line('Class group added: ' || p_group_name);
+        commit;
     exception
         when DUP_VAL_ON_INDEX then
+            rollback;
             RAISE_APPLICATION_ERROR(
                 -20171,
                 'Class group with this name already exists for class ID ' || p_class_id || ': ' || p_group_name
+            );
+        when VALUE_ERROR then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20172,
+                'Type or length error when adding class group: ' || p_group_name || ' for class ID ' || p_class_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20173,
+                'Unexpected error when adding class group: ' || p_group_name || ' for class ID ' || p_class_id || '. Error: ' || SQLERRM
             );
     end add_class_group;
 
@@ -97,35 +124,65 @@ create or replace package body pkg_class_group as
         p_class_id       in number,
         p_group_name     in varchar2
     ) as
+        v_updated number;
     begin
         update class_group
             set class_id = p_class_id,
                 group_name = p_group_name
-          where class_group_id = p_class_group_id;
-        if sql%rowcount = 0 then
-            dbms_output.put_line('No class group found with ID ' || p_class_group_id);
-        else
-            dbms_output.put_line('Class group updated: ID ' || p_class_group_id);
-        end if;
+          where class_group_id = p_class_group_id
+          returning 1 into v_updated;
+        dbms_output.put_line('Class group updated: ID ' || p_class_group_id);
+        commit;
     exception
         when DUP_VAL_ON_INDEX then
+            rollback;
             RAISE_APPLICATION_ERROR(
-                -20172,
+                -20174,
                 'Class group with this name already exists for class ID ' || p_class_id || ': ' || p_group_name
+            );
+        when VALUE_ERROR then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20175,
+                'Type or length error when updating class group: ' || p_group_name || ' for class ID ' || p_class_id
+            );
+        when NO_DATA_FOUND then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20176,
+                'No class group found with ID ' || p_class_group_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20177,
+                'Unexpected error when updating class group: ID ' || p_class_group_id || '. Error: ' || SQLERRM
             );
     end update_class_group;
 
     procedure delete_class_group (
         p_class_group_id in number
     ) as
+        v_deleted number;
     begin
         delete from class_group
-         where class_group_id = p_class_group_id;
-        if sql%rowcount = 0 then
-            dbms_output.put_line('No class group found with ID ' || p_class_group_id);
-        else
-            dbms_output.put_line('Class group deleted: ID ' || p_class_group_id);
-        end if;
+         where class_group_id = p_class_group_id
+         returning 1 into v_deleted;
+        dbms_output.put_line('Class group deleted: ID ' || p_class_group_id);
+        commit;
+    exception
+        when NO_DATA_FOUND then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20178,
+                'No class group found with ID ' || p_class_group_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20179,
+                'Unexpected error when deleting class group: ID ' || p_class_group_id || '. Error: ' || SQLERRM
+            );
     end delete_class_group;
 
     function get_class_group_by_id (
@@ -143,9 +200,46 @@ create or replace package body pkg_class_group as
 
         return v_class_group;
     exception
-        when no_data_found then
-            return null;
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20180,
+                'No class group found with ID ' || p_class_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20181,
+                'Multiple class groups found with ID ' || p_class_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20182,
+                'Unexpected error when reading class group: ID ' || p_class_group_id || '. Error: ' || SQLERRM
+            );
     end get_class_group_by_id;
+
+    function get_class_group_id_by_natural_key (
+        p_class_id in number,
+        p_group_name in varchar2
+    ) return number as
+        v_class_group_id number;
+    begin
+        select class_group_id
+          into v_class_group_id
+          from class_group
+         where class_id = p_class_id
+           and group_name = p_group_name;
+
+        return v_class_group_id;
+    exception
+        when NO_DATA_FOUND then
+            return null;
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20183,
+                'Error when getting class group ID by natural key: class_id=' || p_class_id || 
+                ', group_name=' || p_group_name || '. Error: ' || SQLERRM
+            );
+    end get_class_group_id_by_natural_key;
 
 end pkg_class_group;
 /

@@ -112,6 +112,23 @@ create or replace package pkg_grade_group as
         p_grade_group_id in number
     ) return number;
 
+    /*
+       Returns grade_group_id by natural key components.
+       Parameters:
+         p_subject_id - ID of the subject
+         p_teacher_id - ID of the teacher
+         p_grade_group_date - date of the grade group
+         p_name - name of the grade group
+       Returns:
+         grade_group_id if found, NULL otherwise.
+    */
+    function get_grade_group_id_by_natural_key (
+        p_subject_id in number,
+        p_teacher_id in number,
+        p_grade_group_date in timestamp,
+        p_name in varchar2
+    ) return number;
+
 end pkg_grade_group;
 /
 
@@ -140,11 +157,25 @@ create or replace package body pkg_grade_group as
             p_description
         );
         dbms_output.put_line('Grade group added for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id);
+        commit;
     exception
         when DUP_VAL_ON_INDEX then
+            rollback;
             RAISE_APPLICATION_ERROR(
                 -20201,
                 'Grade group with this name and date already exists for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id
+            );
+        when VALUE_ERROR then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20202,
+                'Type or length error when adding grade group: subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20203,
+                'Unexpected error when adding grade group: subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id || '. Error: ' || SQLERRM
             );
     end add_grade_group;
 
@@ -156,6 +187,7 @@ create or replace package body pkg_grade_group as
         p_name           in varchar2,
         p_description    in varchar2 default null
     ) as
+        v_updated number;
     begin
         update grade_group
            set subject_id  = p_subject_id,
@@ -163,31 +195,60 @@ create or replace package body pkg_grade_group as
                grade_group_date = p_grade_group_date,
                name        = p_name,
                description = p_description
-         where grade_group_id = p_grade_group_id;
-        if sql%rowcount = 0 then
-            dbms_output.put_line('No grade group found with ID ' || p_grade_group_id);
-        else
-            dbms_output.put_line('Grade group updated: ID ' || p_grade_group_id);
-        end if;
+         where grade_group_id = p_grade_group_id
+         returning 1 into v_updated;
+        dbms_output.put_line('Grade group updated: ID ' || p_grade_group_id);
+        commit;
     exception
         when DUP_VAL_ON_INDEX then
+            rollback;
             RAISE_APPLICATION_ERROR(
-                -20202,
+                -20204,
                 'Grade group with this name and date already exists for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id
+            );
+        when VALUE_ERROR then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20205,
+                'Type or length error when updating grade group: ID ' || p_grade_group_id
+            );
+        when NO_DATA_FOUND then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20206,
+                'No grade group found with ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20207,
+                'Unexpected error when updating grade group: ID ' || p_grade_group_id || '. Error: ' || SQLERRM
             );
     end update_grade_group;
 
     procedure delete_grade_group (
         p_grade_group_id in number
     ) as
+        v_deleted number;
     begin
         delete from grade_group
-         where grade_group_id = p_grade_group_id;
-        if sql%rowcount = 0 then
-            dbms_output.put_line('No grade group found with ID ' || p_grade_group_id);
-        else
-            dbms_output.put_line('Grade group deleted: ID ' || p_grade_group_id);
-        end if;
+         where grade_group_id = p_grade_group_id
+         returning 1 into v_deleted;
+        dbms_output.put_line('Grade group deleted: ID ' || p_grade_group_id);
+        commit;
+    exception
+        when NO_DATA_FOUND then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20208,
+                'No grade group found with ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            rollback;
+            RAISE_APPLICATION_ERROR(
+                -20209,
+                'Unexpected error when deleting grade group: ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end delete_grade_group;
 
     function get_grade_group_by_id (
@@ -208,8 +269,21 @@ create or replace package body pkg_grade_group as
 
         return v_rec;
     exception
-        when no_data_found then
-            return null;
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20210,
+                'No grade group found with ID ' || p_grade_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20211,
+                'Multiple grade groups found with ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20212,
+                'Unexpected error when reading grade group: ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end get_grade_group_by_id;
 
     function get_average_grade (
@@ -223,6 +297,22 @@ create or replace package body pkg_grade_group as
           from grade_group_student ggs
          where ggs.grade_group_id = p_grade_group_id;
         return v_avg_grade;
+    exception
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20213,
+                'No grades found for grade group ID ' || p_grade_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20214,
+                'Multiple average grades found for grade group ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20215,
+                'Unexpected error when reading average grade: grade group ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end get_average_grade;
 
     function get_most_common_grade (
@@ -239,8 +329,23 @@ create or replace package body pkg_grade_group as
          order by count(*) desc
          fetch first row only;
         return v_most_common_grade;
+    exception
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20216,
+                'No grades found for grade group ID ' || p_grade_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20217,
+                'Multiple most common grades found for grade group ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20218,
+                'Unexpected error when reading most common grade: grade group ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end get_most_common_grade;
-
 
     function get_median_grade (
         p_grade_group_id in number
@@ -253,7 +358,52 @@ create or replace package body pkg_grade_group as
           from grade_group_student ggs
          where ggs.grade_group_id = p_grade_group_id;
         return v_median_grade;
+    exception
+        when NO_DATA_FOUND then
+            RAISE_APPLICATION_ERROR(
+                -20219,
+                'No grades found for grade group ID ' || p_grade_group_id
+            );
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20220,
+                'Multiple median grades found for grade group ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20221,
+                'Unexpected error when reading median grade: grade group ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
     end get_median_grade;
+
+    function get_grade_group_id_by_natural_key (
+        p_subject_id in number,
+        p_teacher_id in number,
+        p_grade_group_date in timestamp,
+        p_name in varchar2
+    ) return number as
+        v_grade_group_id number;
+    begin
+        select grade_group_id
+          into v_grade_group_id
+          from grade_group
+         where subject_id = p_subject_id
+           and teacher_id = p_teacher_id
+           and grade_group_date = p_grade_group_date
+           and name = p_name;
+
+        return v_grade_group_id;
+    exception
+        when NO_DATA_FOUND then
+            return null;
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20222,
+                'Error when getting grade group ID by natural key: subject_id=' || p_subject_id || 
+                ', teacher_id=' || p_teacher_id || ', date=' || p_grade_group_date || 
+                ', name=' || p_name || '. Error: ' || SQLERRM
+            );
+    end get_grade_group_id_by_natural_key;
 
 end pkg_grade_group;
 /
