@@ -31,3 +31,13 @@ Pro každou tabulku:
 - Ověř, aby dotazy ve tvých pohledech nevyžadovaly full-scan hlavní tabulky, pokud to není nezbytné.
 
 #### 2.
+
+---
+
+### How to start Oracle DB
+
+```shell
+net start OracleOraDB21Home1TNSListener
+sqlplus / as sysdba
+startup;
+```
