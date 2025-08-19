@@ -82,7 +82,40 @@ create or replace package pkg_person as
     */
    function get_person_by_id (
       p_person_id in number
-   ) return person_rec;
+   ) return person_rec; 
+
+
+   /*
+       Type for return value of login function.
+   */
+   type response is record (
+         success boolean,
+         message varchar2(4000)
+   );
+
+   /*
+      Returns whether the login was successful. 
+      Parameters:
+         p_email    - email of the person
+         p_password  - password of the person
+      Returns:
+         response indicating success or failure
+   */
+   function login_person (
+      p_email    in varchar2,
+      p_password in varchar2
+   ) return response;
+
+    /*
+       Returns person_id by email.
+       Parameters:
+         p_email - email of the person
+       Returns:
+         person_id if found, NULL otherwise.
+    */
+    function get_person_id_by_email (
+        p_email in varchar2
+    ) return number;
 
 end pkg_person;
 /
@@ -109,9 +142,8 @@ create or replace package body pkg_person as
                  p_last_name,
                  p_email,
                  p_password_hash,
-                 p_salt )
-      returning person_id into v_person_id;
-      
+                 p_salt ) returning person_id into v_person_id;
+
       dbms_output.put_line('Person added: '
                            || p_first_name
                            || ' '
@@ -178,6 +210,45 @@ create or replace package body pkg_person as
       when no_data_found then
          return null;
    end get_person_by_id;
+
+   function login_person (
+      p_email    in varchar2,
+      p_password in varchar2
+   ) return response as
+      v_person_id number;
+      v_person person_rec;
+      v_input_hashed_password varchar2(256);
+      v_response response;
+   begin
+      v_person_id := get_person_id_by_email(p_email);
+      v_person := get_person_by_id(v_person_id);
+      v_input_hashed_password := pkg_utils.hash_password(p_password, v_person.salt);
+
+      if v_input_hashed_password = v_person.password_hash then
+         v_response.success := true;
+         v_response.message := 'Login successful.';
+      else
+         v_response.success := false;
+         v_response.message := 'Invalid email or password.';
+      end if;
+
+      return v_response;
+   end login_person;
+
+   function get_person_id_by_email (
+        p_email in varchar2
+    ) return number as
+        v_person_id number;
+    begin
+        select person_id
+          into v_person_id
+          from person
+         where email = p_email;
+        return v_person_id;
+    exception
+        when no_data_found then
+            return null;
+    end get_person_id_by_email;
 
 end pkg_person;
 /

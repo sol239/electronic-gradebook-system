@@ -35,6 +35,7 @@ create or replace package pkg_utils as
    function random_password (
       p_length number
    ) return varchar2;
+
 end pkg_utils;
 /
 
