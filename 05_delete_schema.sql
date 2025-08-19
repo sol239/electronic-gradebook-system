@@ -1,5 +1,11 @@
+/*
+    File: 05_delete_schema.sql
+    Author: David Válek
+    Created: 2025-08-15
+    Description: Script for deleting the schema.
+*/
+
 -- Drop all triggers
--- drop trigger trg_person_biur;
 drop trigger trg_grade_group_biu;
 drop trigger trg_grade_group_student_biu;
 drop trigger trg_class_group_student_biu;

@@ -2,7 +2,6 @@
    File: pkg_teacher.sql
    Author: David Válek
    Created: 2025-08-15
-   Modified: 2025-08-16 - Updated for new table structure with person_id FK
    Description: Package for CRUD operations on the Teacher table.
    Notes:
      - Uses auto-incrementing identity columns for primary keys.

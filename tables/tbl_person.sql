@@ -3,7 +3,6 @@
    Author: David Válek
    Description: Table definition for Person
    Created: 2025-08-15
-   Modified: 2025-08-16 - Simplified structure without role fields
 */
 create table person (
    person_id  number

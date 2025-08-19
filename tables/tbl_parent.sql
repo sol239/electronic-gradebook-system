@@ -3,7 +3,6 @@
    Author: David Válek
    Description: Table definition for Parent
    Created: 2025-08-15
-   Modified: 2025-08-16 - Simplified to only contain parent_id and person_id FK
 */
 create table parent (
    parent_id  number

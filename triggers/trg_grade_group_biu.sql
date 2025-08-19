@@ -1,3 +1,9 @@
+/*
+    File: trg_grade_group_biu.sql
+    Author: David Válek
+    Created: 2025-08-19
+    Description: Trigger for checking teacher enrollment in grade groups.
+*/
 create or replace trigger trg_grade_group_biu before
    insert or update on grade_group
    for each row

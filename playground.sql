@@ -90,3 +90,12 @@ COMMIT;
 
 insert into class_group_student (class_group_id, student_id) values (3, 1);
 commit;
+
+BEGIN
+    INSERT INTO CLASS_GROUP (CLASS_GROUP_id, class_id, group_name) VALUES (1, 1, 'ŠJ');
+
+
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+        DBMS_OUTPUT.PUT_LINE('Osoba s tímto rodným číslem už existuje!');
+END;

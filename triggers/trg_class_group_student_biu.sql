@@ -1,23 +1,34 @@
-CREATE OR REPLACE TRIGGER trg_class_group_student
-BEFORE INSERT OR UPDATE ON class_group_student
-FOR EACH ROW
-DECLARE
-    v_class_id_group NUMBER;
-    v_class_id_student NUMBER;
-BEGIN
+/*
+    File: trg_class_group_student_biu.sql
+    Author: David Válek
+    Created: 2025-08-19
+    Description: Trigger for checking student enrollment in class groups.
+*/
+create or replace trigger trg_class_group_student before
+   insert or update on class_group_student
+   for each row
+declare
+   v_class_id_group   number;
+   v_class_id_student number;
+begin
     -- Get class_id from class_group
-    SELECT class_id INTO v_class_id_group
-    FROM class_group
-    WHERE class_group_id = :NEW.class_group_id;
+   select class_id
+     into v_class_id_group
+     from class_group
+    where class_group_id = :new.class_group_id;
 
     -- Get class_id from student
-    SELECT class_id INTO v_class_id_student
-    FROM student
-    WHERE student_id = :NEW.student_id;
+   select class_id
+     into v_class_id_student
+     from student
+    where student_id = :new.student_id;
 
     -- Compare class IDs0
-    IF v_class_id_group != v_class_id_student THEN
-        RAISE_APPLICATION_ERROR(-20004, 'Class group belongs to different class than is the student one');
-    END IF;
-END;
+   if v_class_id_group != v_class_id_student then
+      raise_application_error(
+         -20004,
+         'Class group belongs to different class than is the student one'
+      );
+   end if;
+end;
 /
