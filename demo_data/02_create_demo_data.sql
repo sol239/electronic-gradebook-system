@@ -1095,7 +1095,102 @@ INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 12);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 11);
 COMMIT;
 
+-- Lecture Table
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+VALUES (1, TIMESTAMP '2025-08-15 11:00:00', TIMESTAMP '2025-08-15 11:45:00', 
+        'Literatura antické Řecko', 
+        'Probírali jsme učebnici na straně 45 a pracovní sešit na straně 14. Seznámení s antickou literaturou a mýty.');
+
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+VALUES (1, TIMESTAMP '2025-08-16 11:00:00', TIMESTAMP '2025-08-16 11:45:00', 
+        'Literatura antické Řím', 
+        'Analýza římské literatury, zaměření na Vergilia a Ovidia. Diskuze o významu literárních děl.');
+
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+VALUES (1, TIMESTAMP '2025-08-17 11:00:00', TIMESTAMP '2025-08-17 11:45:00', 
+        'Literatura antické Čína', 
+        'Představení čínských klasiků a filozofických textů, kontext historického vývoje.');
+
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+VALUES (1, TIMESTAMP '2025-08-18 11:00:00', TIMESTAMP '2025-08-18 11:45:00', 
+        'Literatura antické Indie', 
+        'Seznámení s eposy Mahábháráta a Rámájana, význam mýtů a literárních tradic v Indii.');
+  INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+VALUES (1, TIMESTAMP '2025-08-19 11:00:00', TIMESTAMP '2025-08-19 11:45:00', 
+        'Opakování antické literatury', 
+        'Dnes jsme opakovali antickou literaturu probranou tento týden');      
+
+COMMIT;
+
+-- Lecture-Student Table
+-- Only data for subject 1 for class 1
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 1);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 2);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 3);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 4);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 5);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 11);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 12);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 13);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 14);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (1, 15);
+
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 1);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 2);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 3);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 4);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 5);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 11);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 12);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 13);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 14);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (2, 15);
+
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 1);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 2);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 3);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 4);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 5);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 11);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 12);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 13);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 14);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (3, 15);
+
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 1);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 2);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 3);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 4);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 5);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 11);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 12);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 13);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 14);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (4, 15);
+
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 1);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 2);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 3);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 4);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 5);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 11);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 12);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 13);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 14);
+INSERT INTO Lecture_Student (lecture_id, student_id) VALUES (5, 15);
+COMMIT;
+
+-- Lecture-Teacher Table
+-- Only data for subject 1 for class 1
+INSERT INTO Lecture_Teacher (lecture_id, teacher_id) VALUES (1, 1);
+INSERT INTO Lecture_Teacher (lecture_id, teacher_id) VALUES (2, 1);
+INSERT INTO Lecture_Teacher (lecture_id, teacher_id) VALUES (3, 1);
+INSERT INTO Lecture_Teacher (lecture_id, teacher_id) VALUES (4, 1);
+INSERT INTO Lecture_Teacher (lecture_id, teacher_id) VALUES (5, 1);
+COMMIT;
+
 BEGIN
 	dbms_output.put_line('Demo data created successfully.');
+  
 END;
 /

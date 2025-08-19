@@ -25,6 +25,9 @@ select *
 
   select * from vw_student_grades_details;
 
+  select * from vw_student_lectures where student_id = 1;
+  select * from vw_teacher_lectures where teacher_id = 1;
+
 -- LOGIN EXAMPLE
 declare
    login_resp pkg_person.response;

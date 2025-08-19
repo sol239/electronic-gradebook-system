@@ -23,6 +23,7 @@ create or replace package pkg_lecture as
       p_subject_id   in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
+      p_lecture_name         in varchar2,
       p_description  in varchar2 default null
    );
 
@@ -40,6 +41,7 @@ create or replace package pkg_lecture as
       p_subject_id   in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
+      p_lecture_name   in varchar2 default null,
       p_description  in varchar2 default null
    );
 
@@ -60,6 +62,7 @@ create or replace package pkg_lecture as
          subject_id   number,
          start_time   timestamp,
          end_time     timestamp,
+         lecture_name         varchar2(100),
          description  varchar2(500)
    );
 
@@ -84,6 +87,7 @@ create or replace package body pkg_lecture as
       p_subject_id   in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
+      p_lecture_name       in varchar2,
       p_description  in varchar2 default null
    ) as
    begin
@@ -91,10 +95,12 @@ create or replace package body pkg_lecture as
          subject_id,
          start_time,
          end_time,
+         lecture_name,
          description
       ) values ( p_subject_id,
                  p_start_time,
                  p_end_time,
+                 p_lecture_name,
                  p_description );
       dbms_output.put_line('Lecture added: Subject ID '
                            || p_subject_id);
@@ -105,6 +111,7 @@ create or replace package body pkg_lecture as
       p_subject_id   in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
+      p_lecture_name in varchar2,
       p_description  in varchar2 default null
    ) as
    begin
@@ -112,6 +119,7 @@ create or replace package body pkg_lecture as
          set subject_id = p_subject_id,
              start_time = p_start_time,
              end_time = p_end_time,
+            lecture_name = p_lecture_name,
              description = p_description
        where lecture_id = p_lecture_id;
       if sql%rowcount = 0 then
@@ -143,6 +151,7 @@ create or replace package body pkg_lecture as
              subject_id,
              start_time,
              end_time,
+             lecture_name,
              description
         into v_lecture
         from lecture

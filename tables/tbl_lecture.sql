@@ -11,7 +11,8 @@ create table lecture (
    subject_id   number not null,
    start_time   timestamp not null,
    end_time     timestamp not null,
-   description  varchar2(500),
+   lecture_name varchar2(100) default null,
+   description  varchar2(500) default null,
    constraint fk_lecture_subject foreign key ( subject_id )
       references subject ( subject_id )
 );
