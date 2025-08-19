@@ -10,3 +10,4 @@
 @views/vw_class_students.sql
 @views/vw_teacher_subjects.sql
 @views/vw_students_parents.sql
+@views/vw_student_grades_summary.sql

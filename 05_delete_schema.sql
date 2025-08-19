@@ -6,6 +6,7 @@ drop view vw_class;
 drop view vw_teacher_subjects;
 drop view vw_class_students;
 drop view vw_students_parents;
+drop view vw_student_grades_summary;
 
 -- Drop all packages
 drop package pkg_class;

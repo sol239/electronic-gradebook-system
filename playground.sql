@@ -1,7 +1,7 @@
    SET SERVEROUTPUT ON;
 
 select *
-  from vw_student_grade
+  from vw_student_grades_summary
  order by full_name,
           subject_name;
 
@@ -22,6 +22,8 @@ select *
 
 select *
   from student_parent;
+
+  select * from vw_student_grades_details;
 
 -- LOGIN EXAMPLE
 declare

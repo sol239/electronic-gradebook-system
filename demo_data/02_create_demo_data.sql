@@ -731,7 +731,9 @@ INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (2, 
 -- Class 1
 -- Český jazyk
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 1, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 1, 2);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 2, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 2, 3);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 3, 3);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 4, 4);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 5, 2);
