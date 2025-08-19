@@ -3,7 +3,6 @@
    Author: David Válek
    Description: Table definition for Teacher, which stores information about teachers
    Created: 2025-08-15
-   Modified: 2025-08-16 - Simplified to only contain teacher_id and person_id FK
 */
 create table teacher (
    teacher_id number

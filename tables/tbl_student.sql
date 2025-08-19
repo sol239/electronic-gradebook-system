@@ -3,7 +3,6 @@
    Author: David Válek
    Description: Table definition for Student, which stores information about students
    Created: 2025-08-15
-   Modified: 2025-08-16 - Simplified to only contain student_id, person_id FK, and class_id
 */
 create table student (
    student_id    number
