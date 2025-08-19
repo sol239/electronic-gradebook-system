@@ -87,6 +87,12 @@ create or replace package body pkg_student_parent as
                            || p_student_id
                            || ', Parent ID '
                            || p_parent_id);
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20091,
+            'Student-Parent link already exists for Student ID ' || p_student_id || ', Parent ID ' || p_parent_id
+         );
    end add_student_parent;
 
    procedure delete_student_parent (

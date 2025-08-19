@@ -112,7 +112,6 @@ create or replace package body pkg_teacher as
       insert into teacher (person_id)
       values (v_person_id)
       returning teacher_id into v_teacher_id;
-      
       dbms_output.put_line('Teacher added: '
                            || p_first_name
                            || ' '
@@ -123,6 +122,12 @@ create or replace package body pkg_teacher as
                            || v_person_id
                            || ')');
       return v_teacher_id;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20111,
+            'Teacher already exists for Person ID ' || v_person_id
+         );
    end add_teacher;
 
    procedure update_teacher_person_info (

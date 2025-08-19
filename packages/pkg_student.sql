@@ -130,7 +130,6 @@ create or replace package body pkg_student as
       insert into student (person_id, class_id)
       values (v_person_id, p_class_id)
       returning student_id into v_student_id;
-      
       dbms_output.put_line('Student added: '
                            || p_first_name
                            || ' '
@@ -141,6 +140,12 @@ create or replace package body pkg_student as
                            || v_person_id
                            || ')');
       return v_student_id;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20121,
+            'Student already exists for Person ID ' || v_person_id
+         );
    end add_student;
 
    procedure update_student_class (

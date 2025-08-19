@@ -113,7 +113,6 @@ create or replace package body pkg_parent as
       insert into parent (person_id)
       values (v_person_id)
       returning parent_id into v_parent_id;
-      
       dbms_output.put_line('Parent added: '
                            || p_first_name
                            || ' '
@@ -124,6 +123,12 @@ create or replace package body pkg_parent as
                            || v_person_id
                            || ')');
       return v_parent_id;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20131,
+            'Parent already exists for Person ID ' || v_person_id
+         );
    end add_parent;
 
    procedure update_parent_person_info (

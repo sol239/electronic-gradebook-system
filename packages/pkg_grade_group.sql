@@ -140,6 +140,12 @@ create or replace package body pkg_grade_group as
             p_description
         );
         dbms_output.put_line('Grade group added for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20201,
+                'Grade group with this name and date already exists for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id
+            );
     end add_grade_group;
 
     procedure update_grade_group (
@@ -163,6 +169,12 @@ create or replace package body pkg_grade_group as
         else
             dbms_output.put_line('Grade group updated: ID ' || p_grade_group_id);
         end if;
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20202,
+                'Grade group with this name and date already exists for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id
+            );
     end update_grade_group;
 
     procedure delete_grade_group (

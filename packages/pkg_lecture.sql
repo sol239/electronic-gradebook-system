@@ -111,6 +111,12 @@ create or replace package body pkg_lecture as
          p_description
       );
       dbms_output.put_line('Lecture added: Subject ID ' || p_subject_id);
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20221,
+            'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+         );
    end add_lecture;
 
    procedure update_lecture (
@@ -136,6 +142,12 @@ create or replace package body pkg_lecture as
       else
          dbms_output.put_line('Lecture updated: ID ' || p_lecture_id);
       end if;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20222,
+            'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+         );
    end update_lecture;
 
    procedure delete_lecture (

@@ -83,6 +83,12 @@ create or replace package body pkg_classroom as
             p_capacity
         );
         dbms_output.put_line('Classroom added: ' || p_name);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20161,
+                'Classroom with this name already exists: ' || p_name
+            );
     end add_classroom;
 
     procedure update_classroom (
@@ -100,6 +106,12 @@ create or replace package body pkg_classroom as
         else
             dbms_output.put_line('Classroom updated: ID ' || p_classroom_id);
         end if;
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20162,
+                'Classroom with this name already exists: ' || p_name
+            );
     end update_classroom;
 
     procedure delete_classroom (

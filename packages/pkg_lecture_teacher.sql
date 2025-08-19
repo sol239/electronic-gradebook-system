@@ -87,6 +87,12 @@ create or replace package body pkg_lecture_teacher as
                            || p_lecture_id
                            || ', Teacher ID '
                            || p_teacher_id);
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20241,
+            'Lecture-Teacher link already exists for Lecture ID ' || p_lecture_id || ', Teacher ID ' || p_teacher_id
+         );
    end add_lecture_teacher;
 
    procedure delete_lecture_teacher (

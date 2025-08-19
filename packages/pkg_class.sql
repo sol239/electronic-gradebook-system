@@ -83,6 +83,12 @@ create or replace package body pkg_class as
             p_teacher_id
         );
         dbms_output.put_line('Class added: ' || p_name);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20151,
+                'Class with this name already exists: ' || p_name
+            );
     end add_class;
 
     procedure update_class (
@@ -100,6 +106,12 @@ create or replace package body pkg_class as
         else
             dbms_output.put_line('Class updated: ID ' || p_class_id);
         end if;
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20152,
+                'Class with this name already exists: ' || p_name
+            );
     end update_class;
 
     procedure delete_class (

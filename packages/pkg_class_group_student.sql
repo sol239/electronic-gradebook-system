@@ -74,6 +74,12 @@ create or replace package body pkg_class_group_student as
             p_student_id
         );
         dbms_output.put_line('Student ' || p_student_id || ' added to class group ' || p_class_group_id);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20181,
+                'Student already assigned to this class group: ' || p_class_group_id || ', ' || p_student_id
+            );
     end add_class_group_student;
 
     procedure delete_class_group_student (

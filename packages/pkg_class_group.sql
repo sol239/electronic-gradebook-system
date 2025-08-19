@@ -84,6 +84,12 @@ create or replace package body pkg_class_group as
             p_group_name
         );
         dbms_output.put_line('Class group added: ' || p_group_name);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20171,
+                'Class group with this name already exists for class ID ' || p_class_id || ': ' || p_group_name
+            );
     end add_class_group;
 
     procedure update_class_group (
@@ -101,6 +107,12 @@ create or replace package body pkg_class_group as
         else
             dbms_output.put_line('Class group updated: ID ' || p_class_group_id);
         end if;
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20172,
+                'Class group with this name already exists for class ID ' || p_class_id || ': ' || p_group_name
+            );
     end update_class_group;
 
     procedure delete_class_group (

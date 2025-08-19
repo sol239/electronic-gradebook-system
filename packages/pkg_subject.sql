@@ -143,6 +143,12 @@ create or replace package body pkg_subject as
    begin
       insert into subject ( name ) values ( p_name );
       dbms_output.put_line('Subject added: ' || p_name);
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20081,
+            'Subject with this name already exists: ' || p_name
+         );
    end add_subject;
 
    procedure update_subject (
@@ -159,6 +165,12 @@ create or replace package body pkg_subject as
       else
          dbms_output.put_line('Subject updated: ID ' || p_subject_id);
       end if;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20082,
+            'Subject with this name already exists: ' || p_name
+         );
    end update_subject;
 
    procedure delete_subject (

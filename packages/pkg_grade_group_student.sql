@@ -102,6 +102,12 @@ create or replace package body pkg_grade_group_student as
                              || p_grade_group_id
                              || ', Student ID '
                              || p_student_id);
+    exception
+        when DUP_VAL_ON_INDEX then
+            RAISE_APPLICATION_ERROR(
+                -20211,
+                'Grade group-student link already exists: Grade Group ID ' || p_grade_group_id || ', Student ID ' || p_student_id
+            );
     end add_grade_group_student;
 
     procedure delete_grade_group_student (

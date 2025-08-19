@@ -87,6 +87,12 @@ create or replace package body pkg_subject_teacher as
                            || p_subject_id
                            || ', Teacher ID '
                            || p_teacher_id);
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20101,
+            'Subject-Teacher link already exists for Subject ID ' || p_subject_id || ', Teacher ID ' || p_teacher_id
+         );
    end add_subject_teacher;
 
    procedure delete_subject_teacher (

@@ -179,6 +179,12 @@ create or replace package body pkg_person as
                            || v_person_id
                            || ')');
       return v_person_id;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20141,
+            'Person with this email already exists: ' || p_email
+         );
    end add_person;
 
    procedure update_person (
@@ -202,6 +208,12 @@ create or replace package body pkg_person as
       else
          dbms_output.put_line('Person updated: ID ' || p_person_id);
       end if;
+   exception
+      when DUP_VAL_ON_INDEX then
+         RAISE_APPLICATION_ERROR(
+            -20142,
+            'Person with this email already exists: ' || p_email
+         );
    end update_person;
 
    procedure delete_person (
