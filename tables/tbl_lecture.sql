@@ -18,5 +18,7 @@ create table lecture (
    constraint fk_lecture_subject foreign key ( subject_id )
       references subject ( subject_id ),
    constraint fk_lecture_classroom foreign key ( classroom_id )
-      references classroom ( classroom_id )
+      references classroom ( classroom_id ),
+   constraint chk_start_before_end check (start_time < end_time)
+
 );

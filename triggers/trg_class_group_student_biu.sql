@@ -4,7 +4,7 @@
     Created: 2025-08-19
     Description: Trigger for checking student enrollment in class groups.
 */
-create or replace trigger trg_class_group_student before
+create or replace trigger trg_class_group_student_biu before
    insert or update on class_group_student
    for each row
 declare

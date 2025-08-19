@@ -17,5 +17,7 @@ create table grade_group_student (
    constraint fk_gs_grade_group foreign key ( grade_group_id )
       references grade_group ( grade_group_id ),
    constraint fk_gs_student foreign key ( student_id )
-      references student ( student_id )
+      references student ( student_id ),
+   constraint chk_grade_range check (grade >= 1 and grade <= 5)
+
 );

@@ -13,5 +13,7 @@ create table person (
    email      varchar2(100) not null,
    password_hash   varchar2(256) default 'password' not null,
    salt       varchar2(32) default 'salt' not null,
-   constraint uq_person_email unique (email)
+   constraint uq_person_email unique (email),
+   constraint chk_email_format check (email like '%@%.%')
+
 );
