@@ -3,219 +3,136 @@
    Author: David Válek
    Description: Gather table statistics for all tables in the VDA schema
    Created: 2025-08-16
-   Notes: 
-     - Statistics help the Oracle optimizer choose the best execution plans
-     - Should be run after data is loaded or when significant data changes occur
-     - Using ESTIMATE_PERCENT => DBMS_STATS.AUTO_SAMPLE_SIZE for automatic sampling
 */
 
--- Gather statistics for Person table (base table for all people)
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'PERSON',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for PERSON table');
-END;
-/
+-- Gather statistics for all tables in schema
+EXEC DBMS_STATS.GATHER_SCHEMA_STATS(USER);
 
--- Gather statistics for Student table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'STUDENT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for STUDENT table');
-END;
-/
+-- stats for table PERSON
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'PERSON', cascade => TRUE);
 
--- Gather statistics for Teacher table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'TEACHER',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for TEACHER table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'PERSON';
 
--- Gather statistics for Parent table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'PARENT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for PARENT table');
-END;
-/
+-- stats for table PARENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'PARENT', cascade => TRUE);
 
--- Gather statistics for Subject table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'SUBJECT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for SUBJECT table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'PARENT';
 
--- Gather statistics for Class table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'CLASS',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for CLASS table');
-END;
-/
+-- stats for table TEACHER
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'TEACHER', cascade => TRUE);
 
--- Gather statistics for Classroom table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'CLASSROOM',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for CLASSROOM table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'TEACHER';
 
--- Gather statistics for Lecture table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'LECTURE',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for LECTURE table');
-END;
-/
+-- stats for table SUBJECT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'SUBJECT', cascade => TRUE);
 
--- Gather statistics for Grade table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'GRADE_GROUP',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for GRADE_GROUP table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'SUBJECT';
 
--- Gather statistics for Grade table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'GRADE_GROUP_STUDENT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for GRADE_GROUP_STUDENT table');
-END;
-/
+-- stats for table CLASS
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'CLASS', cascade => TRUE);
 
--- Gather statistics for Student_Parent junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'STUDENT_PARENT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for STUDENT_PARENT table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'CLASS';
 
--- Gather statistics for Student_Subject junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'STUDENT_SUBJECT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for STUDENT_SUBJECT table');
-END;
-/
+-- stats for table CLASS_GROUP
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'CLASS_GROUP', cascade => TRUE);
 
--- Gather statistics for Subject_Teacher junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'SUBJECT_TEACHER',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for SUBJECT_TEACHER table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'CLASS_GROUP';
 
--- Gather statistics for Lecture_Student junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'LECTURE_STUDENT',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for LECTURE_STUDENT table');
-END;
-/
+-- stats for table STUDENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'STUDENT', cascade => TRUE);
 
--- Gather statistics for Lecture_Teacher junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'LECTURE_TEACHER',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for LECTURE_TEACHER table');
-END;
-/
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'STUDENT';
 
--- Gather statistics for Classroom_Lecture junction table
-BEGIN
-    DBMS_STATS.GATHER_TABLE_STATS(
-        ownname => USER,
-        tabname => 'CLASSROOM_LECTURE',
-        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
-        cascade => TRUE,
-        degree => DBMS_STATS.AUTO_DEGREE
-    );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for CLASSROOM_LECTURE table');
-END;
-/
+-- stats for table CLASS_GROUP_STUDENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'CLASS_GROUP_STUDENT', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'CLASS_GROUP_STUDENT';
+
+-- stats for table CLASSROOM
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'CLASSROOM', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'CLASSROOM';
+
+-- stats for table LECTURE
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'LECTURE', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'LECTURE';
+
+-- stats for table GRADE_GROUP
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'GRADE_GROUP', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'GRADE_GROUP';
+
+-- stats for table GRADE_GROUP_STUDENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'GRADE_GROUP_STUDENT', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'GRADE_GROUP_STUDENT';
+
+-- stats for table STUDENT_SUBJECT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'STUDENT_SUBJECT', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'STUDENT_SUBJECT';
+
+-- stats for table SUBJECT_TEACHER
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'SUBJECT_TEACHER', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'SUBJECT_TEACHER';
+
+-- stats for table STUDENT_PARENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'STUDENT_PARENT', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'STUDENT_PARENT';
+
+-- stats for table LECTURE_STUDENT
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'LECTURE_STUDENT', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'LECTURE_STUDENT';
+
+-- stats for table LECTURE_TEACHER
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'LECTURE_TEACHER', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'LECTURE_TEACHER';
+
+-- stats for table CLASSROOM_LECTURE
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'CLASSROOM_LECTURE', cascade => TRUE);
+
+SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
+FROM ALL_TAB_COLUMNS
+WHERE table_name = 'CLASSROOM_LECTURE';
 
 -- Final completion message
 BEGIN
