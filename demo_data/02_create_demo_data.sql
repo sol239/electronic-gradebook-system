@@ -525,24 +525,9 @@ COMMIT;
 INSERT INTO Subject (subject_id, name) VALUES (1, 'Český jazyk');
 INSERT INTO Subject (subject_id, name) VALUES (2, 'Anglický jazyk');
 INSERT INTO Subject (subject_id, name) VALUES (3, 'Matematika');
-INSERT INTO Subject (subject_id, name) VALUES (4, 'Fyzika');
-INSERT INTO Subject (subject_id, name) VALUES (5, 'Chemie');
-INSERT INTO Subject (subject_id, name) VALUES (6, 'Biologie');
-INSERT INTO Subject (subject_id, name) VALUES (7, 'Informatika');
-INSERT INTO Subject (subject_id, name) VALUES (8, 'Dějepis');
-INSERT INTO Subject (subject_id, name) VALUES (9, 'Zeměpis');
-INSERT INTO Subject (subject_id, name) VALUES (10, 'Hudební výchova');
-INSERT INTO Subject (subject_id, name) VALUES (11, 'Výtvarná výchova');
-INSERT INTO Subject (subject_id, name) VALUES (12, 'Tělesná výchova');
-INSERT INTO Subject (subject_id, name) VALUES (13, 'Španělský jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (14, 'Německý jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (15, 'Deskriptivní geometrie');
-INSERT INTO Subject (subject_id, name) VALUES (16, 'Ekonomie');
-INSERT INTO Subject (subject_id, name) VALUES (17, 'Ruský jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (18, 'Analytická chemie');
-INSERT INTO Subject (subject_id, name) VALUES (19, 'Základy práva');
-INSERT INTO Subject (subject_id, name) VALUES (20, 'Volná hodina');
-INSERT INTO Subject (subject_id, name) VALUES (21, 'Školní akce');
+INSERT INTO Subject (subject_id, name) VALUES (4, 'Španělský jazyk');
+INSERT INTO Subject (subject_id, name) VALUES (5, 'Německý jazyk');
+
 COMMIT;
 
 -- Class table
@@ -724,6 +709,134 @@ END;
 /
 COMMIT;
 
+-- Subject-Teacher table
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 1);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 2);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (2, 2);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 2);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 3);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 4);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (5, 4);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 5);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (5, 6);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 9);
+COMMIT;
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 9);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 10);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (2, 11);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 13);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 13);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 15);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 16);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 19);
+INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 19);
+COMMIT;
+
+-- Student-Subject table
+-- Students 1–10 (subjects 1,2,3,5)
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 5);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 5);
+COMMIT;
+
+-- Students 11–20 (subjects 1,2,3,4)
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 4);
+
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 1);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 2);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 3);
+INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 4);
+COMMIT;
+
 INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 1, 'Diktát 1', 'Diktát na malá/velká písmena');
 INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 4, 'Slohová práce', 'Slohová práce na téma „Můj nejlepší přítel“');
 INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (2, 2, 'Essay', 'Essay on "My Favorite Hobby"');
@@ -778,56 +891,7 @@ INSERT INTO Classroom (classroom_id, name, capacity) VALUES (9, 'Tělocvična', 
 INSERT INTO Classroom (classroom_id, name, capacity) VALUES (10, 'Neuvedeno', 1000);
 COMMIT;
 
--- Subject-Teacher table
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 1);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (14, 1);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (5, 2);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 2);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 3);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (10, 3);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (15, 4);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 4);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (5, 4);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 5);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (11, 5);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (16, 6);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (5, 6);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (17, 7);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (6, 7);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (11, 8);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (12, 8);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (8, 8);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 9);
-COMMIT;
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 9);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (7, 10);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 10);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (12, 11);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (2, 11);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (17, 12);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (19, 12);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 13);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 13);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (13, 13);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (15, 14);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (13, 14);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (12, 14);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (4, 15);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (9, 15);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (13, 15);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (16, 16);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 16);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (16, 17);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (9, 17);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (15, 17);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (18, 18);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (13, 18);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (1, 19);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (15, 19);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (3, 19);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (10, 20);
-INSERT INTO Subject_Teacher (subject_id, teacher_id) VALUES (17, 20);
-COMMIT;
+
 
 -- Student-Parent table (id: 1-26 = male parents, id: 27-52 = female parents) (id: 1-10 = male students, id: 11-20 = female students)
 INSERT INTO Student_Parent (student_id, parent_id) VALUES (1, 1);
@@ -888,239 +952,60 @@ INSERT INTO Student_Parent (student_id, parent_id) VALUES (20, 10);
 INSERT INTO Student_Parent (student_id, parent_id) VALUES (20, 36);
 COMMIT;
 
--- Student-Subject table
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 17);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 9);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (1, 12);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 17);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (2, 16);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (3, 11);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (4, 3);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 11);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (5, 1);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (6, 9);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (7, 4);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (8, 13);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (9, 12);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 9);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (10, 14);
-COMMIT;
-
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (11, 5);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 17);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (12, 2);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 8);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (13, 10);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (14, 4);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 10);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (15, 9);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 9);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 11);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (16, 3);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 5);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 9);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (17, 19);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 19);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 16);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 2);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (18, 1);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 7);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 9);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 11);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 18);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 4);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 3);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (19, 5);
-COMMIT;
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 6);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 14);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 1);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 13);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 15);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 12);
-INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 11);
-COMMIT;
-
 -- Lecture Table
-INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
 VALUES (1, TIMESTAMP '2025-08-15 11:00:00', TIMESTAMP '2025-08-15 11:45:00', 
         'Literatura antické Řecko', 
-        'Probírali jsme učebnici na straně 45 a pracovní sešit na straně 14. Seznámení s antickou literaturou a mýty.');
+        'Probírali jsme učebnici na straně 45 a pracovní sešit na straně 14. Seznámení s antickou literaturou a mýty.', 1);
 
-INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
 VALUES (1, TIMESTAMP '2025-08-16 11:00:00', TIMESTAMP '2025-08-16 11:45:00', 
         'Literatura antické Řím', 
-        'Analýza římské literatury, zaměření na Vergilia a Ovidia. Diskuze o významu literárních děl.');
+        'Analýza římské literatury, zaměření na Vergilia a Ovidia. Diskuze o významu literárních děl.', 1);
 
-INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
 VALUES (1, TIMESTAMP '2025-08-17 11:00:00', TIMESTAMP '2025-08-17 11:45:00', 
         'Literatura antické Čína', 
-        'Představení čínských klasiků a filozofických textů, kontext historického vývoje.');
+        'Představení čínských klasiků a filozofických textů, kontext historického vývoje.', 1);
 
-INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
 VALUES (1, TIMESTAMP '2025-08-18 11:00:00', TIMESTAMP '2025-08-18 11:45:00', 
         'Literatura antické Indie', 
-        'Seznámení s eposy Mahábháráta a Rámájana, význam mýtů a literárních tradic v Indii.');
-  INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description) 
+        'Seznámení s eposy Mahábháráta a Rámájana, význam mýtů a literárních tradic v Indii.', 1);
+  INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
 VALUES (1, TIMESTAMP '2025-08-19 11:00:00', TIMESTAMP '2025-08-19 11:45:00', 
         'Opakování antické literatury', 
-        'Dnes jsme opakovali antickou literaturu probranou tento týden');      
+        'Dnes jsme opakovali antickou literaturu probranou tento týden', 1);      
 
 COMMIT;
+
+-- Class Group Table
+INSERT INTO CLASS_GROUP (class_id, group_name) VALUES (1, 'ŠJ');
+INSERT INTO CLASS_GROUP (class_id, group_name) VALUES (1, 'NJ');
+INSERT INTO CLASS_GROUP (class_id, group_name) VALUES (2, 'ŠJ');
+INSERT INTO CLASS_GROUP (class_id, group_name) VALUES (2, 'NJ');
+
+insert into class_group_student (class_group_id, student_id) values (2, 1);
+insert into class_group_student (class_group_id, student_id) values (2, 2);
+insert into class_group_student (class_group_id, student_id) values (2, 3);
+insert into class_group_student (class_group_id, student_id) values (2, 4);
+insert into class_group_student (class_group_id, student_id) values (2, 5);
+insert into class_group_student (class_group_id, student_id) values (4, 6);
+insert into class_group_student (class_group_id, student_id) values (4, 7);
+insert into class_group_student (class_group_id, student_id) values (4, 8);
+insert into class_group_student (class_group_id, student_id) values (4, 9);
+insert into class_group_student (class_group_id, student_id) values (4, 10);
+insert into class_group_student (class_group_id, student_id) values (1, 11);
+insert into class_group_student (class_group_id, student_id) values (1, 12);
+insert into class_group_student (class_group_id, student_id) values (1, 13);
+insert into class_group_student (class_group_id, student_id) values (1, 14);
+insert into class_group_student (class_group_id, student_id) values (1, 15);
+insert into class_group_student (class_group_id, student_id) values (3, 16);
+insert into class_group_student (class_group_id, student_id) values (3, 17);
+insert into class_group_student (class_group_id, student_id) values (3, 18);
+insert into class_group_student (class_group_id, student_id) values (3, 19);
+insert into class_group_student (class_group_id, student_id) values (3, 20);
+
 
 -- Lecture-Student Table
 -- Only data for subject 1 for class 1

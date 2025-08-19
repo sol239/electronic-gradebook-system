@@ -21,6 +21,7 @@ create or replace package pkg_lecture as
     */
    procedure add_lecture (
       p_subject_id   in number,
+      p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
       p_lecture_name         in varchar2,
@@ -39,6 +40,7 @@ create or replace package pkg_lecture as
    procedure update_lecture (
       p_lecture_id   in number,
       p_subject_id   in number,
+      p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
       p_lecture_name   in varchar2 default null,
@@ -60,9 +62,10 @@ create or replace package pkg_lecture as
    type lecture_rec is record (
          lecture_id   number,
          subject_id   number,
+         classroom_id number,
          start_time   timestamp,
          end_time     timestamp,
-         lecture_name         varchar2(100),
+         lecture_name varchar2(100),
          description  varchar2(500)
    );
 
@@ -85,6 +88,7 @@ create or replace package body pkg_lecture as
 
    procedure add_lecture (
       p_subject_id   in number,
+      p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
       p_lecture_name       in varchar2,
@@ -93,22 +97,26 @@ create or replace package body pkg_lecture as
    begin
       insert into lecture (
          subject_id,
+         classroom_id,
          start_time,
          end_time,
          lecture_name,
          description
-      ) values ( p_subject_id,
-                 p_start_time,
-                 p_end_time,
-                 p_lecture_name,
-                 p_description );
-      dbms_output.put_line('Lecture added: Subject ID '
-                           || p_subject_id);
+      ) values (
+         p_subject_id,
+         p_classroom_id,
+         p_start_time,
+         p_end_time,
+         p_lecture_name,
+         p_description
+      );
+      dbms_output.put_line('Lecture added: Subject ID ' || p_subject_id);
    end add_lecture;
 
    procedure update_lecture (
       p_lecture_id   in number,
       p_subject_id   in number,
+      p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
       p_lecture_name in varchar2,
@@ -116,11 +124,12 @@ create or replace package body pkg_lecture as
    ) as
    begin
       update lecture
-         set subject_id = p_subject_id,
-             start_time = p_start_time,
-             end_time = p_end_time,
-            lecture_name = p_lecture_name,
-             description = p_description
+         set subject_id   = p_subject_id,
+             classroom_id = p_classroom_id,
+             start_time   = p_start_time,
+             end_time     = p_end_time,
+             lecture_name = p_lecture_name,
+             description  = p_description
        where lecture_id = p_lecture_id;
       if sql%rowcount = 0 then
          dbms_output.put_line('No lecture found with ID ' || p_lecture_id);
@@ -149,6 +158,7 @@ create or replace package body pkg_lecture as
    begin
       select lecture_id,
              subject_id,
+             classroom_id,
              start_time,
              end_time,
              lecture_name,

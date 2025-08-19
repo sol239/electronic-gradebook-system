@@ -18,8 +18,8 @@ create or replace package pkg_classroom as
          p_capacity - capacity of the classroom
     */
     procedure add_classroom (
-        p_name     in varchar2,
-        p_capacity in number
+        p_name      in varchar2,
+        p_capacity  in number
     );
 
     /*
@@ -30,9 +30,9 @@ create or replace package pkg_classroom as
          p_capacity     - new capacity of the classroom
     */
     procedure update_classroom (
-        p_classroom_id in number,
-        p_name         in varchar2,
-        p_capacity     in number
+        p_classroom_id  in number,
+        p_name          in varchar2,
+        p_capacity      in number
     );
 
     /*
@@ -71,8 +71,8 @@ end pkg_classroom;
 create or replace package body pkg_classroom as
 
     procedure add_classroom (
-        p_name     in varchar2,
-        p_capacity in number
+        p_name      in varchar2,
+        p_capacity  in number
     ) as
     begin
         insert into classroom (
@@ -86,9 +86,9 @@ create or replace package body pkg_classroom as
     end add_classroom;
 
     procedure update_classroom (
-        p_classroom_id in number,
-        p_name         in varchar2,
-        p_capacity     in number
+        p_classroom_id  in number,
+        p_name          in varchar2,
+        p_capacity      in number
     ) as
     begin
         update classroom
@@ -135,4 +135,3 @@ create or replace package body pkg_classroom as
     end get_classroom_by_id;
 
 end pkg_classroom;
-/

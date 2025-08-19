@@ -28,6 +28,8 @@ select *
   select * from vw_student_lectures where student_id = 1;
   select * from vw_teacher_lectures where teacher_id = 1;
 
+
+
 -- LOGIN EXAMPLE
 declare
    login_resp pkg_person.response;
@@ -81,3 +83,10 @@ BEGIN
 end;
 
 /
+
+INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (4, 1, 'Espana', 'Madrid');
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 1, 1);
+COMMIT;
+
+insert into class_group_student (class_group_id, student_id) values (3, 1);
+commit;
