@@ -737,9 +737,9 @@ INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 2
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 3, 3);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 4, 4);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 5, 2);
-INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 11, 1);
-INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 12, 2);
-INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 13, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 11, 4);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 12, 4);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 13, 4);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 14, 4);
 INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 15, 2);
 

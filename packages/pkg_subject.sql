@@ -59,6 +59,19 @@ create or replace package pkg_subject as
       p_subject_id in number
    ) return subject_rec;
 
+   /*
+       Returns the average grade of a student in a specific subject.
+       Parameters:
+         p_student_id  - ID of the student
+         p_subject_id  - ID of the subject
+       Returns:
+         Average grade as a number, or NULL if not found.
+   */
+   function get_student_average_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number;
+
 end pkg_subject;
 /
 
@@ -119,5 +132,32 @@ create or replace package body pkg_subject as
          return null;
    end get_subject_by_id;
 
+   function get_student_average_grade (
+      p_student_id in number,
+      p_subject_id in number
+   ) return number as
+      v_average number;
+   begin
+   -- Compute average
+      select avg(grade)
+        into v_average
+        from grade_group_student
+        join grade_group gg
+      on gg.grade_group_id = grade_group_student.grade_group_id
+       where student_id = p_student_id
+         and gg.subject_id = p_subject_id;
+
+      return v_average;
+   exception
+      when no_data_found then
+         dbms_output.put_line('No grades found for student '
+                              || p_student_id
+                              || ' in subject '
+                              || p_subject_id);
+         return null;
+   end get_student_average_grade;
+
 end pkg_subject;
+
+
 /

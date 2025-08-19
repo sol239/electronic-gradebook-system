@@ -49,11 +49,17 @@ begin
     login_resp := pkg_person.LOGIN_PERSON('zdeněk.veselý22@gmail.com', 'password111');
     DBMS_OUTPUT.PUT_LINE('Success: ' || CASE WHEN login_resp.success THEN 'TRUE' ELSE 'FALSE' END);
     DBMS_OUTPUT.PUT_LINE('Message: ' || login_resp.message);
-    
-    
 end;
+/
 
-
+-- GRADE GROUP STATS EXAMPLE
+declare
+begin
+DBMS_OUTPUT.PUT_LINE(PKG_GRADE_GROUP.GET_AVERAGE_GRADE(1));
+DBMS_OUTPUT.PUT_LINE(PKG_GRADE_GROUP.GET_MOST_COMMON_GRADE(1));
+DBMS_OUTPUT.PUT_LINE(PKG_GRADE_GROUP.GET_MEDIAN_GRADE(1));
+DBMS_OUTPUT.PUT_LINE(PKG_SUBJECT.GET_STUDENT_AVERAGE_GRADE(1, 1));
+end;
 
 
 
