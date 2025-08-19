@@ -2,7 +2,7 @@
    File: vw_student_grade.sql
    Author: David Válek
    Created: 2025-08-15
-   Description: View for displaying student grades. It shows the average grade per subject of each student.
+   Description: Displays each student's grades, average grade and grade count per each student's subject if the student has some grades in the subject.
 */
 CREATE OR REPLACE VIEW vw_student_grade AS    
 SELECT 

@@ -2,7 +2,7 @@
    File: vw_class.sql
    Author: David Válek
    Created: 2025-08-15
-   Description: View for displaying class information.
+   Description: Displays main teacher's name and email of each class.
 */
 create or replace view vw_class as
    select c.name as class_name,
