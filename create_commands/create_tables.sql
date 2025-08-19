@@ -14,7 +14,8 @@
 @tables/tbl_student.sql
 @tables/tbl_classroom.sql
 @tables/tbl_lecture.sql
-@tables/tbl_grade.sql
+@tables/tbl_grade_group.sql
+@tables/tbl_grade_group_student.sql
 @tables/tbl_student_subject.sql
 @tables/tbl_subject_teacher.sql
 @tables/tbl_student_parent.sql

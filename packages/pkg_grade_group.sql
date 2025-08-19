@@ -1,0 +1,171 @@
+/*
+   File: pkg_grade_group.sql
+   Author: David Válek
+   Created: 2025-08-15
+   Description: Package for CRUD operations on the Grade_Group table.
+   Notes:
+     - Uses auto-incrementing identity column for primary key.
+     - Includes procedures: add, update, delete, get by ID.
+*/
+
+-- Package specification
+create or replace package pkg_grade_group as
+
+    /*
+       Adds a new grade group to the Grade_Group table.
+       Parameters:
+         p_subject_id   - ID of the subject
+         p_teacher_id   - ID of the teacher
+         p_grade_group_date - date of the grade group (optional, defaults to current_timestamp)
+         p_name         - name of the grade group
+         p_description  - description (optional)
+    */
+    procedure add_grade_group (
+        p_subject_id   in number,
+        p_teacher_id   in number,
+        p_grade_group_date in timestamp default current_timestamp,
+        p_name         in varchar2,
+        p_description  in varchar2 default null
+    );
+
+    /*
+       Updates an existing grade group in the Grade_Group table.
+       Parameters:
+         p_grade_group_id - ID of the grade group to update
+         p_subject_id     - new subject ID
+         p_teacher_id     - new teacher ID
+         p_grade_group_date - new date (optional, defaults to current_timestamp)
+         p_name           - new name
+         p_description    - new description (optional)
+    */
+    procedure update_grade_group (
+        p_grade_group_id in number,
+        p_subject_id     in number,
+        p_teacher_id     in number,
+        p_grade_group_date in timestamp default current_timestamp,
+        p_name           in varchar2,
+        p_description    in varchar2 default null
+    );
+
+    /*
+       Deletes a grade group from the Grade_Group table.
+       Parameters:
+         p_grade_group_id - ID of the grade group to delete
+    */
+    procedure delete_grade_group (
+        p_grade_group_id in number
+    );
+
+    /*
+       Type for return value of get_grade_group_by_id function.
+    */
+    type grade_group_rec is record (
+        grade_group_id number,
+        subject_id     number,
+        teacher_id     number,
+        grade_group_date timestamp,
+        name           varchar2(50),
+        description    varchar2(255)
+    );
+
+    /*
+       Returns grade group details by ID.
+       Parameters:
+         p_grade_group_id - ID of the grade group
+       Returns:
+         grade_group_rec with grade group details, or NULL if not found.
+    */
+    function get_grade_group_by_id (
+        p_grade_group_id in number
+    ) return grade_group_rec;
+
+end pkg_grade_group;
+/
+
+-- Package body
+create or replace package body pkg_grade_group as
+
+    procedure add_grade_group (
+        p_subject_id   in number,
+        p_teacher_id   in number,
+        p_grade_group_date in timestamp default current_timestamp,
+        p_name         in varchar2,
+        p_description  in varchar2 default null
+    ) as
+    begin
+        insert into grade_group (
+            subject_id,
+            teacher_id,
+            grade_group_date,
+            name,
+            description
+        ) values (
+            p_subject_id,
+            p_teacher_id,
+            p_grade_group_date,
+            p_name,
+            p_description
+        );
+        dbms_output.put_line('Grade group added for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id);
+    end add_grade_group;
+
+    procedure update_grade_group (
+        p_grade_group_id in number,
+        p_subject_id     in number,
+        p_teacher_id     in number,
+        p_grade_group_date in timestamp default current_timestamp,
+        p_name           in varchar2,
+        p_description    in varchar2 default null
+    ) as
+    begin
+        update grade_group
+           set subject_id  = p_subject_id,
+               teacher_id  = p_teacher_id,
+               grade_group_date = p_grade_group_date,
+               name        = p_name,
+               description = p_description
+         where grade_group_id = p_grade_group_id;
+        if sql%rowcount = 0 then
+            dbms_output.put_line('No grade group found with ID ' || p_grade_group_id);
+        else
+            dbms_output.put_line('Grade group updated: ID ' || p_grade_group_id);
+        end if;
+    end update_grade_group;
+
+    procedure delete_grade_group (
+        p_grade_group_id in number
+    ) as
+    begin
+        delete from grade_group
+         where grade_group_id = p_grade_group_id;
+        if sql%rowcount = 0 then
+            dbms_output.put_line('No grade group found with ID ' || p_grade_group_id);
+        else
+            dbms_output.put_line('Grade group deleted: ID ' || p_grade_group_id);
+        end if;
+    end delete_grade_group;
+
+    function get_grade_group_by_id (
+        p_grade_group_id in number
+    ) return grade_group_rec
+    as
+        v_rec grade_group_rec;
+    begin
+        select grade_group_id,
+               subject_id,
+               teacher_id,
+               grade_group_date,
+               name,
+               description
+          into v_rec
+          from grade_group
+         where grade_group_id = p_grade_group_id;
+
+        return v_rec;
+    exception
+        when no_data_found then
+            return null;
+    end get_grade_group_by_id;
+
+end pkg_grade_group;
+/

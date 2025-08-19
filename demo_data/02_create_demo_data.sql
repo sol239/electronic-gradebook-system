@@ -724,85 +724,43 @@ END;
 /
 COMMIT;
 
+INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 1, 'Diktát 1', 'Diktát na malá/velká písmena');
+INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 4, 'Slohová práce', 'Slohová práce na téma „Můj nejlepší přítel“');
+INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (2, 2, 'Essay', 'Essay on "My Favorite Hobby"');
+
 -- Class 1
 -- Český jazyk
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 1, 1, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (3, 1, 1, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (3, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (3, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (4, 1, 1, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (4, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (4, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (4, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (5, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (5, 1, 1, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (5, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (11, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (11, 1, 1, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (11, 1, 1, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (11, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (12, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (12, 1, 1, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (13, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (13, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (13, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (14, 1, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (15, 1, 1, 2);
-COMMIT;
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 1, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 2, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 3, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 4, 4);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 5, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 11, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 12, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 13, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 14, 4);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (1, 15, 2);
+
 
 -- Anglický jazyk
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 2, 1, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (1, 2, 1, 2);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 2, 1, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (2, 2, 1, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (3, 1, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (3, 2, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (3, 3, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (3, 4, 2);
 COMMIT;
 
 -- Class 2
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (6, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (6, 1, 4, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (6, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (6, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (7, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (7, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (7, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (7, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (8, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (8, 1, 4, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (9, 1, 4, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (9, 1, 4, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (9, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (9, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (10, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (10, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (16, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (16, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (16, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (17, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (17, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (17, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (18, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (18, 1, 4, 5);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (19, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (19, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (19, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (19, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (19, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (20, 1, 4, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (20, 1, 4, 1);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (20, 1, 4, 4);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (20, 1, 4, 3);
-INSERT INTO Grade (student_id, subject_id, teacher_id, grade) VALUES (20, 1, 4, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 6, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 7, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 8, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 9, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 10, 4);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 16, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 17, 2);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 18, 3);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 19, 1);
+INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 20, 4);
+
 COMMIT;
 
 -- Classroom table

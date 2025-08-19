@@ -117,12 +117,25 @@ END;
 BEGIN
     DBMS_STATS.GATHER_TABLE_STATS(
         ownname => USER,
-        tabname => 'GRADE',
+        tabname => 'GRADE_GROUP',
         estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
         cascade => TRUE,
         degree => DBMS_STATS.AUTO_DEGREE
     );
-    DBMS_OUTPUT.PUT_LINE('Statistics gathered for GRADE table');
+    DBMS_OUTPUT.PUT_LINE('Statistics gathered for GRADE_GROUP table');
+END;
+/
+
+-- Gather statistics for Grade table
+BEGIN
+    DBMS_STATS.GATHER_TABLE_STATS(
+        ownname => USER,
+        tabname => 'GRADE_GROUP_STUDENT',
+        estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
+        cascade => TRUE,
+        degree => DBMS_STATS.AUTO_DEGREE
+    );
+    DBMS_OUTPUT.PUT_LINE('Statistics gathered for GRADE_GROUP_STUDENT table');
 END;
 /
 

@@ -34,17 +34,25 @@ begin
    v_user_id := pkg_person.get_person_id_by_email('zdeněk.veselý22@gmail.com');
    dbms_output.put_line('User ID: ' || v_user_id);
    pkg_person.password_reset(v_user_id, 'passwordWQE');
-    */
-
+    */ 
+    
+    /*
+    -- USER PASSWORD RESET EXAMPLE
     login_resp := pkg_person.USER_PASSWORD_RESET('zdeněk.veselý22@gmail.com', 'password', 'password111');
     DBMS_OUTPUT.PUT_LINE('Success: ' || CASE WHEN login_resp.success THEN 'TRUE' ELSE 'FALSE' END);
     DBMS_OUTPUT.PUT_LINE('Message: ' || login_resp.message);
+    */
 
     -- USER LOGIN EXAMPLE
-    login_resp := pkg_person.LOGIN_PERSON('zdeněk.veselý22@gmail.com', 'password');
+    login_resp := pkg_person.LOGIN_PERSON('zdeněk.veselý22@gmail.com', 'password111');
     DBMS_OUTPUT.PUT_LINE('Success: ' || CASE WHEN login_resp.success THEN 'TRUE' ELSE 'FALSE' END);
     DBMS_OUTPUT.PUT_LINE('Message: ' || login_resp.message);
     
     
 end;
+
+
+
+
+
 /

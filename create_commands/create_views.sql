@@ -7,5 +7,6 @@
 */
 
 @views/vw_class.sql
-@views/vw_student_grade.sql
-@views/vw_teacher_subject.sql
+@views/vw_class_students.sql
+@views/vw_teacher_subjects.sql
+@views/vw_students_parents.sql

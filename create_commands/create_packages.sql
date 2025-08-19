@@ -8,7 +8,8 @@
 @packages/pkg_utils.sql
 @packages/pkg_class.sql
 @packages/pkg_classroom.sql
-@packages/pkg_grade.sql
+@packages/pkg_grade_group.sql
+@packages/pkg_grade_group_student.sql
 @packages/pkg_lecture.sql
 @packages/pkg_person.sql
 @packages/pkg_parent.sql
