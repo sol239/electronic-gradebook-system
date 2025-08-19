@@ -50,16 +50,6 @@ drop table lecture_student cascade constraints;
 drop table classroom_lecture cascade constraints;
 drop table person cascade constraints;
 
--- Drop all sequences
-drop sequence seq_class_id;
-drop sequence seq_classroom_id;
-drop sequence seq_grade_id;
-drop sequence seq_lecture_id;
-drop sequence seq_parent_id;
-drop sequence seq_student_id;
-drop sequence seq_subject_id;
-drop sequence seq_teacher_id;
-
 begin
    dbms_output.put_line('Schema deleted successfully.');
 end;
