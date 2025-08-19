@@ -7,7 +7,7 @@
 create table lecture_teacher (
    lecture_id number not null,
    teacher_id number not null,
-   primary key ( lecture_id,
+   CONSTRAINT pk_lecture_teacher PRIMARY KEY ( lecture_id,
                  teacher_id ),
    constraint fk_lt_lecture foreign key ( lecture_id )
       references lecture ( lecture_id ),

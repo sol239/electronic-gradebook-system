@@ -7,7 +7,7 @@
 create table class_group_student (
     class_group_id number not null,
     student_id     number not null,
-    primary key ( class_group_id, student_id ),
+    CONSTRAINT pk_class_group_student PRIMARY KEY ( class_group_id, student_id ),
     constraint fk_cgs_class_group foreign key ( class_group_id )
         references class_group ( class_group_id ),
     constraint fk_cgs_student foreign key ( student_id )

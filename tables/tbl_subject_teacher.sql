@@ -7,7 +7,7 @@
 create table subject_teacher (
    subject_id number not null,
    teacher_id number not null,
-   primary key ( subject_id,
+   CONSTRAINT pk_subject_teacher PRIMARY KEY ( subject_id,
                  teacher_id ),
    constraint fk_st_subject foreign key ( subject_id )
       references subject ( subject_id ),

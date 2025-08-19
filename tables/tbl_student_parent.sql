@@ -7,7 +7,7 @@
 create table student_parent (
    student_id number not null,
    parent_id  number not null,
-   primary key ( student_id,
+   CONSTRAINT pk_student_parent PRIMARY KEY ( student_id,
                  parent_id ),
    constraint fk_sp_student foreign key ( student_id )
       references student ( student_id ),

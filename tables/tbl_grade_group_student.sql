@@ -12,7 +12,7 @@ create table grade_group_student (
    message varchar2(255) null,
    grade_date timestamp default current_timestamp not null,
 
-   primary key ( grade_group_id,
+   CONSTRAINT pk_grade_group_student PRIMARY KEY ( grade_group_id,
                  student_id ),
    constraint fk_gs_grade_group foreign key ( grade_group_id )
       references grade_group ( grade_group_id ),
