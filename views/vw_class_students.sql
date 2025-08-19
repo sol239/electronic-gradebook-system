@@ -7,7 +7,7 @@
 create or replace view vw_class_students as
    select
           c.name as class_name,
-          p.first_name || ' ' || p.last_name as parent_name,
+          p.first_name || ' ' || p.last_name as student_name,
           p.email as parent_email
      from student s
      join class c on c.class_id = s.class_id
