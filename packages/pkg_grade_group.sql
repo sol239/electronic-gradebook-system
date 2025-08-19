@@ -79,6 +79,39 @@ create or replace package pkg_grade_group as
         p_grade_group_id in number
     ) return grade_group_rec;
 
+    /*
+       Returns the average grade for a specific grade group.
+       Parameters:
+         p_grade_group_id - ID of the grade group
+       Returns:
+         Average grade as a number, or NULL if not found.
+    */
+    function get_average_grade (
+        p_grade_group_id in number
+    ) return number;
+
+    /*
+       Returns the most common grade for a specific grade group.
+       Parameters:
+         p_grade_group_id - ID of the grade group
+       Returns:
+         Most common grade as a number, or NULL if not found.
+    */
+    function get_most_common_grade (
+        p_grade_group_id in number
+    ) return number;
+
+    /*
+       Returns the median grade for a specific grade group.
+       Parameters:
+         p_grade_group_id - ID of the grade group
+       Returns:
+         Median grade as a number, or NULL if not found.
+    */
+    function get_median_grade (
+        p_grade_group_id in number
+    ) return number;
+
 end pkg_grade_group;
 /
 
@@ -166,6 +199,49 @@ create or replace package body pkg_grade_group as
         when no_data_found then
             return null;
     end get_grade_group_by_id;
+
+    function get_average_grade (
+        p_grade_group_id in number
+    ) return number
+    as 
+        v_avg_grade number;
+    begin
+        select avg(ggs.grade)
+          into v_avg_grade
+          from grade_group_student ggs
+         where ggs.grade_group_id = p_grade_group_id;
+        return v_avg_grade;
+    end get_average_grade;
+
+    function get_most_common_grade (
+        p_grade_group_id in number
+    ) return number
+    as
+        v_most_common_grade number;
+    begin
+        select ggs.grade
+          into v_most_common_grade
+          from grade_group_student ggs
+         where ggs.grade_group_id = p_grade_group_id
+         group by ggs.grade
+         order by count(*) desc
+         fetch first row only;
+        return v_most_common_grade;
+    end get_most_common_grade;
+
+
+    function get_median_grade (
+        p_grade_group_id in number
+    ) return number
+    as
+        v_median_grade number;
+    begin
+        select median(ggs.grade)
+          into v_median_grade
+          from grade_group_student ggs
+         where ggs.grade_group_id = p_grade_group_id;
+        return v_median_grade;
+    end get_median_grade;
 
 end pkg_grade_group;
 /
