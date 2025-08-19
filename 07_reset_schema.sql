@@ -2,11 +2,11 @@
     File: 07_reset_schema.sql
     Author: David Válek
     Created: 2025-08-15
-    Description: Script for resetting the schema.
+    Description: Script for resetting the schema = Deleting schema with data -> Recreating schema with fresh demo data
 */
 
 @05_delete_schema.sql
 @01_create_schema.sql
-@demo_data/02_create_demo_data.sql
+@02_create_demo_data.sql
 
 
