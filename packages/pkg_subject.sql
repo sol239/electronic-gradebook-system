@@ -142,6 +142,17 @@ create or replace package pkg_subject as
       p_name in varchar2
    ) return number;
 
+   /*
+      Returns the name of a subject by its ID.
+      Parameters:
+         p_subject_id - ID of the subject
+      Returns:
+         Name of the subject as varchar2, or NULL if not found.
+   */
+   function get_subject_name_by_id (
+      p_subject_id in number
+   ) return varchar2;
+
 end pkg_subject;
 /
 
@@ -497,6 +508,32 @@ create or replace package body pkg_subject as
             'Error when getting subject ID by name: ' || p_name || '. Error: ' || SQLERRM
          );
    end get_subject_id_by_name;
+
+   function get_subject_name_by_id (
+      p_subject_id in number
+   ) return varchar2
+   as
+      v_name varchar2(100);
+   begin
+      select name
+        into v_name
+        from subject
+       where subject_id = p_subject_id;
+      return v_name;
+   exception
+      when NO_DATA_FOUND then
+         return null;
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20112,
+            'Multiple subjects found with ID ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20113,
+            'Other error when reading subject name: ID ' || p_subject_id || '. Error: ' || SQLERRM
+         );
+   end get_subject_name_by_id;
 
 end pkg_subject;
 /

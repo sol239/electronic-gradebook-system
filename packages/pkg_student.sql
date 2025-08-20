@@ -98,7 +98,16 @@ create or replace package pkg_student as
       p_student_id in number
    ) return student_rec;
 
-   
+    /*
+       Returns the full name (first name + last name) of a student by ID.
+       Parameters:
+         p_student_id - ID of the student
+       Returns:
+         Full name as varchar2, or NULL if not found.
+    */
+    function get_student_full_name_by_id (
+        p_student_id in number
+    ) return varchar2;
 
 end pkg_student;
 /
@@ -326,6 +335,33 @@ create or replace package body pkg_student as
             'Other error when reading Student: ID ' || p_student_id || '. Error: ' || SQLERRM
          );
    end get_student_by_id;
+
+   function get_student_full_name_by_id (
+      p_student_id in number
+   ) return varchar2
+   as
+      v_full_name varchar2(101);
+   begin
+      select p.first_name || ' ' || p.last_name
+        into v_full_name
+        from student s
+        join person p on s.person_id = p.person_id
+       where s.student_id = p_student_id;
+      return v_full_name;
+   exception
+      when NO_DATA_FOUND then
+         return null;
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
+            -20137,
+            'Multiple students found with ID ' || p_student_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20138,
+            'Other error when reading student full name: ID ' || p_student_id || '. Error: ' || SQLERRM
+         );
+   end get_student_full_name_by_id;
 
 end pkg_student;
 /

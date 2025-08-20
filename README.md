@@ -1,43 +1,49 @@
-Databázový systém pro základní a střední školy (Oracle SQL)
-Mělo by se jednat o DB systém, který by mohl sloužit jako DB pro např. Bakaláři (https://www.bakalari.cz/), tj. systém pro elektronickou žákovskou, ale umožňuje také zobrazení rozvrhu a další funkce.
-Systém by měl obsahovat tabulky jako: žák, učitel, rodič, předmět, rozvrh, žákovská, atd.
-DB systém bude mít  hodně funkcí, zatím uvedu pár - např.: prozkoumat jak se liší průměr známek  z matematiky napříč ročníky/učiteli/třídami.
+# Electronic gradebook system
 
-Pokud by DB systém nebyl dostatečně velký, tak by do něj šlo zakomponovat:
-- rozšíření pro VŠ - zkoušky, odstranění rodiče, atd.
-- pro ZŠ a SŠ třeba ještě nějaké tabulky a funkce pro školní jídelnu
+## Overview
+
+This project is designed to create an electronic gradebook system for primary and secondary schools using **Oracle SQL**. The system aims to manage student records, grades, schedules, and other related functionalities.
 
 ---
 
-### Naming
+### Folder Structure
 
-- `tables/`: tbl_<table_name>.sql
+- `create_commands/`: Contains SQL scripts for creating database objects
 - `packages/`: pkg_<package_name>.sql
-- `views/`: vw_<view_name>.sql
-- `sequences/`: seq_<sequence_name>.sql
+- `tables/`: tbl_<table_name>.sql
 - `triggers/`: trg_<trigger_name>.sql
-- `indexes/`: idx_<index_name>.sql
+- `views/`: vw_<view_name>.sql
 
 ---
 
-### TO-DO's
-
-#### 1. indexy
-Přidat potřebné indexy
-Pro každou tabulku:
-- Index přes primární klíč (většinou automaticky)
-- Indexy přes cizí klíče
-- Eventuálně další indexy pro rychlé dotazy v pohledech
-- Ověř, aby dotazy ve tvých pohledech nevyžadovaly full-scan hlavní tabulky, pokud to není nezbytné.
-
-#### 2.
-
----
-
-### How to start Oracle DB
+### How to start Oracle DB locally
 
 ```shell
 net start OracleOraDB21Home1TNSListener
 sqlplus / as sysdba
 startup;
 ```
+
+---
+
+### Scripts
+
+- `01_create_schema.sql`: Creates the initial database schema, including tables, views, and other objects.
+- `02_create_demo_data.sql`: Inserts demo data into the database for testing purposes.
+- `03_create_stats.sql`: Creates database statistics for query optimization.
+- `04_delete_stats.sql`: Deletes database statistics.
+- `05_delete_schema.sql`: Deletes the database schema and all associated objects.
+- `06_test_script.sql`: Contains demonstration of views and procedures/functions.
+- `07_reset_schema.sql`: Resets the database schema to its initial state.
+
+--- 
+
+### Schema
+
+You can find schema of the database in `./schema.png`.
+
+---
+
+## Contact
+
+Feel free to reach me at [david.valek17@gmail.com](mailto:david.valek17@gmail.com).

@@ -12,7 +12,7 @@
 */
 
 -- =====================================================
--- FOREIGN KEY INDEXES (32 indexes)
+-- FOREIGN KEY INDEXES
 -- =====================================================
 
 -- Student table foreign key indexes
@@ -72,7 +72,7 @@ CREATE INDEX idx_class_group_student_class_group_id ON class_group_student(class
 CREATE INDEX idx_class_group_student_student_id ON class_group_student(student_id);
 
 -- =====================================================
--- DATE COLUMN INDEXES (4 indexes)
+-- DATE COLUMN INDEXES
 -- =====================================================
 
 -- Grade Group table date indexes
@@ -86,7 +86,7 @@ CREATE INDEX idx_lecture_end_time ON lecture(end_time);
 CREATE INDEX idx_grade_group_student_grade_date ON grade_group_student(grade_date);
 
 -- =====================================================
--- COMPOSITE INDEXES FOR COMMON QUERY PATTERNS (7 indexes)
+-- COMPOSITE INDEXES FOR COMMON QUERY PATTERNS
 -- =====================================================
 
 -- Composite index for grade queries by student and date range (from vw_student_grades_details)
@@ -111,7 +111,7 @@ CREATE INDEX idx_grade_group_teacher_date ON grade_group(teacher_id, grade_group
 CREATE INDEX idx_lecture_classroom_time ON lecture(classroom_id, start_time, end_time);
 
 -- =====================================================
--- ADDITIONAL PERFORMANCE INDEXES (4 indexes)
+-- ADDITIONAL PERFORMANCE INDEXES
 -- =====================================================
 
 -- Index for person name lookups (common in views)

@@ -129,6 +129,17 @@ create or replace package pkg_grade_group as
         p_name in varchar2
     ) return number;
 
+    /*
+       Returns the name of a grade group by its ID.
+       Parameters:
+         p_grade_group_id - ID of the grade group
+       Returns:
+         Name of the grade group as varchar2, or NULL if not found.
+    */
+    function get_grade_group_name_by_id (
+        p_grade_group_id in number
+    ) return varchar2;
+
 end pkg_grade_group;
 /
 
@@ -404,6 +415,32 @@ create or replace package body pkg_grade_group as
                 ', name=' || p_name || '. Error: ' || SQLERRM
             );
     end get_grade_group_id_by_natural_key;
+
+    function get_grade_group_name_by_id (
+        p_grade_group_id in number
+    ) return varchar2
+    as
+        v_name varchar2(50);
+    begin
+        select name
+          into v_name
+          from grade_group
+         where grade_group_id = p_grade_group_id;
+        return v_name;
+    exception
+        when NO_DATA_FOUND then
+            return null;
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20223,
+                'Multiple grade groups found with ID ' || p_grade_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20224,
+                'Unexpected error when reading grade group name: ID ' || p_grade_group_id || '. Error: ' || SQLERRM
+            );
+    end get_grade_group_name_by_id;
 
 end pkg_grade_group;
 /

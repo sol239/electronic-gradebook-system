@@ -77,6 +77,17 @@ create or replace package pkg_class_group as
         p_group_name in varchar2
     ) return number;
 
+    /*
+       Returns the group name of a class group by its ID.
+       Parameters:
+         p_class_group_id - ID of the class group
+       Returns:
+         group_name as varchar2, or NULL if not found.
+    */
+    function get_class_group_name_by_id (
+        p_class_group_id in number
+    ) return varchar2;
+
 end pkg_class_group;
 /
 
@@ -240,6 +251,32 @@ create or replace package body pkg_class_group as
                 ', group_name=' || p_group_name || '. Error: ' || SQLERRM
             );
     end get_class_group_id_by_natural_key;
+
+    function get_class_group_name_by_id (
+        p_class_group_id in number
+    ) return varchar2
+    as
+        v_group_name varchar2(100);
+    begin
+        select group_name
+          into v_group_name
+          from class_group
+         where class_group_id = p_class_group_id;
+        return v_group_name;
+    exception
+        when NO_DATA_FOUND then
+            return null;
+        when TOO_MANY_ROWS then
+            RAISE_APPLICATION_ERROR(
+                -20184,
+                'Multiple class groups found with ID ' || p_class_group_id
+            );
+        when OTHERS then
+            RAISE_APPLICATION_ERROR(
+                -20185,
+                'Unexpected error when reading class group name: ID ' || p_class_group_id || '. Error: ' || SQLERRM
+            );
+    end get_class_group_name_by_id;
 
 end pkg_class_group;
 /
