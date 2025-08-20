@@ -7,7 +7,7 @@
 create or replace view vw_teacher_subjects as
    select p.first_name || ' ' || p.last_name as teacher_name,
           p.email as teacher_email,
-          sub.name as subject_name
+          sub.subject_name as subject_name
      from teacher t
      join person p on p.person_id = t.person_id
      join subject_teacher st on st.teacher_id = t.teacher_id

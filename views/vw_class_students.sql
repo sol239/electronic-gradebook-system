@@ -6,7 +6,7 @@
 */
 create or replace view vw_class_students as
    select
-          c.name as class_name,
+          c.class_name as class_name,
           p.first_name || ' ' || p.last_name as student_name,
           p.email as student_email
      from student s

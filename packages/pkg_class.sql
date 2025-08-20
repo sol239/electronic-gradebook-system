@@ -14,11 +14,11 @@ create or replace package pkg_class as
     /*
        Adds a new class to the Class table.
        Parameters:
-         p_name       - name of the class
+         p_class_name  - name of the class
          p_teacher_id - ID of the teacher for the class
     */
     procedure add_class (
-        p_name       in varchar2,
+        p_class_name  in varchar2,
         p_teacher_id in number
     );
 
@@ -26,12 +26,12 @@ create or replace package pkg_class as
        Updates an existing class in the Class table.
        Parameters:
          p_class_id   - ID of the class to update
-         p_name       - new name of the class
+         p_class_name  - new name of the class
          p_teacher_id - new teacher ID for the class
     */
     procedure update_class (
         p_class_id   in number,
-        p_name       in varchar2,
+        p_class_name  in varchar2,
         p_teacher_id in number
     );
 
@@ -49,7 +49,7 @@ create or replace package pkg_class as
     */
     type class_rec is record (
         class_id    number,
-        name        varchar2(100),
+        class_name  varchar2(100),
         teacher_id  number
     );
 
@@ -67,12 +67,12 @@ create or replace package pkg_class as
     /*
        Returns class_id by name.
        Parameters:
-         p_name - name of the class
+         p_class_name - name of the class
        Returns:
          class_id if found, NULL otherwise.
     */
     function get_class_id_by_name (
-        p_name in varchar2
+        p_class_name in varchar2
     ) return number;
 
 end pkg_class;
@@ -82,49 +82,49 @@ end pkg_class;
 create or replace package body pkg_class as
 
     procedure add_class (
-        p_name       in varchar2,
+        p_class_name  in varchar2,
         p_teacher_id in number
     ) as
     begin
         insert into class (
-            name,
+            class_name,
             teacher_id
         ) values (
-            p_name,
+            p_class_name,
             p_teacher_id
         );
-        dbms_output.put_line('Class added: ' || p_name);
+        dbms_output.put_line('Class added: ' || p_class_name);
         commit;
     exception
         when DUP_VAL_ON_INDEX then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20151,
-                'Class with this name already exists: ' || p_name
+                'Class with this name already exists: ' || p_class_name
             );
         when VALUE_ERROR then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20152,
-                'Invalid value or data type for Class: ' || p_name || ', teacher_id: ' || p_teacher_id
+                'Invalid value or data type for Class: ' || p_class_name || ', teacher_id: ' || p_teacher_id
             );
         when OTHERS then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20153,
-                'Other error when adding Class: ' || p_name || ', teacher_id: ' || p_teacher_id || '. Error: ' || SQLERRM
+                'Other error when adding Class: ' || p_class_name || ', teacher_id: ' || p_teacher_id || '. Error: ' || SQLERRM
             );
     end add_class;
 
     procedure update_class (
         p_class_id   in number,
-        p_name       in varchar2,
+        p_class_name  in varchar2,
         p_teacher_id in number
     ) as
         v_updated number;
     begin
         update class
-            set name = p_name,
+            set class_name = p_class_name,
                 teacher_id = p_teacher_id
           where class_id = p_class_id
           returning 1 into v_updated;
@@ -135,13 +135,13 @@ create or replace package body pkg_class as
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20154,
-                'Class with this name already exists: ' || p_name
+                'Class with this name already exists: ' || p_class_name
             );
         when VALUE_ERROR then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20155,
-                'Invalid value or data type when updating Class: ' || p_name || ', teacher_id: ' || p_teacher_id
+                'Invalid value or data type when updating Class: ' || p_class_name || ', teacher_id: ' || p_teacher_id
             );
         when NO_DATA_FOUND then
             rollback;
@@ -189,7 +189,7 @@ create or replace package body pkg_class as
         v_class class_rec;
     begin
         select class_id,
-               name,
+               class_name,
                teacher_id
           into v_class
           from class
@@ -215,14 +215,14 @@ create or replace package body pkg_class as
     end get_class_by_id;
 
     function get_class_id_by_name (
-        p_name in varchar2
+        p_class_name in varchar2
     ) return number as
         v_class_id number;
     begin
         select class_id
           into v_class_id
           from class
-         where name = p_name;
+         where class_name = p_class_name;
 
         return v_class_id;
     exception
@@ -231,7 +231,7 @@ create or replace package body pkg_class as
         when OTHERS then
             RAISE_APPLICATION_ERROR(
                 -20163,
-                'Error when getting class ID by name: ' || p_name || '. Error: ' || SQLERRM
+                'Error when getting class ID by name: ' || p_class_name || '. Error: ' || SQLERRM
             );
     end get_class_id_by_name;
 

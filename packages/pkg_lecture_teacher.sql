@@ -67,6 +67,29 @@ create or replace package pkg_lecture_teacher as
       p_lecture_id in number
    ) return teacher_id_table;
 
+   /*
+      Type for linking lectures to teachers.
+   */
+   type lecture_teacher_rec is record (
+      lecture_id number,
+      teacher_id number
+   );
+
+    /*
+       Updates a lecture-teacher link in the Lecture_Teacher table.
+       Parameters:
+         p_old_lecture_id - Existing lecture ID
+         p_old_teacher_id - Existing teacher ID
+         p_new_lecture_id - New lecture ID
+         p_new_teacher_id - New teacher ID
+    */
+   procedure update_lecture_teacher (
+      p_old_lecture_id in number,
+      p_old_teacher_id in number,
+      p_new_lecture_id in number,
+      p_new_teacher_id in number
+   );
+
 end pkg_lecture_teacher;
 /
 
@@ -196,6 +219,69 @@ create or replace package body pkg_lecture_teacher as
             'Unexpected error when reading teachers by lecture: Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
          );
    end get_teachers_by_lecture;
+
+   procedure update_lecture_teacher (
+      p_old_lecture_id in number,
+      p_old_teacher_id in number,
+      p_new_lecture_id in number,
+      p_new_teacher_id in number
+   ) as
+      v_updated number;
+   begin
+      update lecture_teacher
+         set lecture_id = p_new_lecture_id,
+             teacher_id = p_new_teacher_id
+       where lecture_id = p_old_lecture_id
+         and teacher_id = p_old_teacher_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Lecture-Teacher link updated: Old Lecture ID '
+                           || p_old_lecture_id
+                           || ', Old Teacher ID '
+                           || p_old_teacher_id
+                           || ' -> New Lecture ID '
+                           || p_new_lecture_id
+                           || ', New Teacher ID '
+                           || p_new_teacher_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20252,
+            'No Lecture-Teacher link found to update: Old Lecture ID '
+            || p_old_lecture_id
+            || ', Old Teacher ID '
+            || p_old_teacher_id
+         );
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20253,
+            'Lecture-Teacher link already exists for New Lecture ID '
+            || p_new_lecture_id
+            || ', New Teacher ID '
+            || p_new_teacher_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20254,
+            'Type or length error when updating Lecture-Teacher link: New Lecture ID '
+            || p_new_lecture_id
+            || ', New Teacher ID '
+            || p_new_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20255,
+            'Unexpected error when updating Lecture-Teacher link: Old Lecture ID '
+            || p_old_lecture_id
+            || ', Old Teacher ID '
+            || p_old_teacher_id
+            || '. Error: ' || SQLERRM
+         );
+   end update_lecture_teacher;
 
 end pkg_lecture_teacher;
 /

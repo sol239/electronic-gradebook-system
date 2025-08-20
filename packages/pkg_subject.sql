@@ -17,7 +17,7 @@ create or replace package pkg_subject as
          p_name - name of the subject
     */
    procedure add_subject (
-      p_name in varchar2
+      p_subject_name in varchar2
    );
 
     /*
@@ -28,7 +28,7 @@ create or replace package pkg_subject as
     */
    procedure update_subject (
       p_subject_id in number,
-      p_name       in varchar2
+      p_subject_name       in varchar2
    );
 
     /*
@@ -45,7 +45,7 @@ create or replace package pkg_subject as
     */
    type subject_rec is record (
          subject_id number,
-         name       varchar2(100)
+         subject_name       varchar2(100)
    );
 
     /*
@@ -132,22 +132,22 @@ create or replace package pkg_subject as
    ) return number;
 
    /*
-      Returns subject_id by name.
+      Returns the subject_id for a given subject name.
       Parameters:
          p_name - name of the subject
       Returns:
-         subject_id if found, NULL otherwise.
+         subject_id as a number, or NULL if not found.
    */
    function get_subject_id_by_name (
-      p_name in varchar2
+      p_subject_name in varchar2
    ) return number;
 
    /*
-      Returns the name of a subject by its ID.
+      Returns the subject name for a given subject ID.
       Parameters:
          p_subject_id - ID of the subject
       Returns:
-         Name of the subject as varchar2, or NULL if not found.
+         name as varchar2, or NULL if not found.
    */
    function get_subject_name_by_id (
       p_subject_id in number
@@ -160,42 +160,47 @@ end pkg_subject;
 create or replace package body pkg_subject as
 
    procedure add_subject (
-      p_name in varchar2
+      p_subject_name in varchar2
    ) as
+      v_exists number;
    begin
-      insert into subject ( name ) values ( p_name );
-      dbms_output.put_line('Subject added: ' || p_name);
-      commit;
-   exception
-      when DUP_VAL_ON_INDEX then
-         rollback;
+      select count(*) into v_exists
+        from subject
+       where UPPER(TRIM(subject_name)) = UPPER(TRIM(p_subject_name));
+      if v_exists > 0 then
          RAISE_APPLICATION_ERROR(
             -20081,
-            'Subject with this name already exists: ' || p_name
+            'Subject with this name already exists: ' || p_subject_name
          );
+      end if;
+
+      insert into subject (subject_name) values (p_subject_name);
+      dbms_output.put_line('Subject added: ' || p_subject_name);
+      commit;
+   exception
       when VALUE_ERROR then
          rollback;
          RAISE_APPLICATION_ERROR(
             -20082,
-            'Invalid value or data type for Subject: ' || p_name
+            'Invalid value or data type for Subject: ' || p_subject_name
          );
       when OTHERS then
          rollback;
          RAISE_APPLICATION_ERROR(
             -20083,
-            'Other error when adding Subject: ' || p_name || '. Error: ' || SQLERRM
+            'Other error when adding Subject: ' || p_subject_name || '. Error: ' || SQLERRM
          );
    end add_subject;
 
    procedure update_subject (
       p_subject_id in number,
-      p_name       in varchar2
+      p_subject_name in varchar2
    ) as
       v_updated number;
    begin
       update subject
          set
-         name = p_name
+         subject_name = p_subject_name
        where subject_id = p_subject_id
        returning 1 into v_updated;
       dbms_output.put_line('Subject updated: ID ' || p_subject_id);
@@ -205,13 +210,13 @@ create or replace package body pkg_subject as
          rollback;
          RAISE_APPLICATION_ERROR(
             -20084,
-            'Subject with this name already exists: ' || p_name
+            'Subject with this name already exists: ' || p_subject_name
          );
       when VALUE_ERROR then
          rollback;
          RAISE_APPLICATION_ERROR(
             -20085,
-            'Invalid value or data type for Subject update: ' || p_name
+            'Invalid value or data type for Subject update: ' || p_subject_name
          );
       when NO_DATA_FOUND then
          rollback;
@@ -258,7 +263,7 @@ create or replace package body pkg_subject as
       v_subject subject_rec;
    begin
       select subject_id,
-             name
+             subject_name
         into v_subject
         from subject
        where subject_id = p_subject_id;
@@ -489,49 +494,52 @@ create or replace package body pkg_subject as
    end get_subject_median_grade;
 
    function get_subject_id_by_name (
-      p_name in varchar2
+      p_subject_name in varchar2
    ) return number as
       v_subject_id number;
    begin
       select subject_id
         into v_subject_id
         from subject
-       where name = p_name;
-
+       where UPPER(TRIM(subject_name)) = UPPER(TRIM(p_subject_name));
       return v_subject_id;
-   exception
-      when NO_DATA_FOUND then
-         return null;
-      when OTHERS then
-         RAISE_APPLICATION_ERROR(
-            -20111,
-            'Error when getting subject ID by name: ' || p_name || '. Error: ' || SQLERRM
-         );
-   end get_subject_id_by_name;
-
-   function get_subject_name_by_id (
-      p_subject_id in number
-   ) return varchar2
-   as
-      v_name varchar2(100);
-   begin
-      select name
-        into v_name
-        from subject
-       where subject_id = p_subject_id;
-      return v_name;
    exception
       when NO_DATA_FOUND then
          return null;
       when TOO_MANY_ROWS then
          RAISE_APPLICATION_ERROR(
-            -20112,
-            'Multiple subjects found with ID ' || p_subject_id
+            -20111,
+            'Multiple subjects found with name: ' || p_subject_name
          );
       when OTHERS then
          RAISE_APPLICATION_ERROR(
+            -20112,
+            'Other error when reading subject ID by name: ' || p_subject_name || '. Error: ' || SQLERRM
+         );
+   end get_subject_id_by_name;
+
+   function get_subject_name_by_id (
+      p_subject_id in number
+   ) return varchar2 as
+      v_subject_name varchar2(100);
+   begin
+      select subject_name
+        into v_subject_name
+        from subject
+       where subject_id = p_subject_id;
+      return v_subject_name;
+   exception
+      when NO_DATA_FOUND then
+         return null;
+      when TOO_MANY_ROWS then
+         RAISE_APPLICATION_ERROR(
             -20113,
-            'Other error when reading subject name: ID ' || p_subject_id || '. Error: ' || SQLERRM
+            'Multiple subjects found with ID: ' || p_subject_id
+         );
+      when OTHERS then
+         RAISE_APPLICATION_ERROR(
+            -20114,
+            'Other error when reading subject name by ID: ' || p_subject_id || '. Error: ' || SQLERRM
          );
    end get_subject_name_by_id;
 

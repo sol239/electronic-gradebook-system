@@ -24,7 +24,7 @@ create or replace package pkg_grade_group as
         p_subject_id   in number,
         p_teacher_id   in number,
         p_grade_group_date in timestamp default current_timestamp,
-        p_name         in varchar2,
+        p_grade_group_name in varchar2,
         p_description  in varchar2 default null
     );
 
@@ -43,7 +43,7 @@ create or replace package pkg_grade_group as
         p_subject_id     in number,
         p_teacher_id     in number,
         p_grade_group_date in timestamp default current_timestamp,
-        p_name           in varchar2,
+        p_grade_group_name in varchar2,
         p_description    in varchar2 default null
     );
 
@@ -64,7 +64,7 @@ create or replace package pkg_grade_group as
         subject_id     number,
         teacher_id     number,
         grade_group_date timestamp,
-        name           varchar2(50),
+        grade_group_name varchar2(50),
         description    varchar2(255)
     );
 
@@ -126,7 +126,7 @@ create or replace package pkg_grade_group as
         p_subject_id in number,
         p_teacher_id in number,
         p_grade_group_date in timestamp,
-        p_name in varchar2
+        p_grade_group_name in varchar2
     ) return number;
 
     /*
@@ -150,7 +150,7 @@ create or replace package body pkg_grade_group as
         p_subject_id   in number,
         p_teacher_id   in number,
         p_grade_group_date in timestamp default current_timestamp,
-        p_name         in varchar2,
+        p_grade_group_name in varchar2,
         p_description  in varchar2 default null
     ) as
     begin
@@ -158,13 +158,13 @@ create or replace package body pkg_grade_group as
             subject_id,
             teacher_id,
             grade_group_date,
-            name,
+            grade_group_name,
             description
         ) values (
             p_subject_id,
             p_teacher_id,
             p_grade_group_date,
-            p_name,
+            p_grade_group_name,
             p_description
         );
         dbms_output.put_line('Grade group added for subject ID ' || p_subject_id || ', teacher ID ' || p_teacher_id);
@@ -195,7 +195,7 @@ create or replace package body pkg_grade_group as
         p_subject_id     in number,
         p_teacher_id     in number,
         p_grade_group_date in timestamp default current_timestamp,
-        p_name           in varchar2,
+        p_grade_group_name in varchar2,
         p_description    in varchar2 default null
     ) as
         v_updated number;
@@ -204,7 +204,7 @@ create or replace package body pkg_grade_group as
            set subject_id  = p_subject_id,
                teacher_id  = p_teacher_id,
                grade_group_date = p_grade_group_date,
-               name        = p_name,
+               grade_group_name = p_grade_group_name,
                description = p_description
          where grade_group_id = p_grade_group_id
          returning 1 into v_updated;
@@ -272,7 +272,7 @@ create or replace package body pkg_grade_group as
                subject_id,
                teacher_id,
                grade_group_date,
-               name,
+               grade_group_name,
                description
           into v_rec
           from grade_group
@@ -391,7 +391,7 @@ create or replace package body pkg_grade_group as
         p_subject_id in number,
         p_teacher_id in number,
         p_grade_group_date in timestamp,
-        p_name in varchar2
+        p_grade_group_name in varchar2
     ) return number as
         v_grade_group_id number;
     begin
@@ -401,7 +401,7 @@ create or replace package body pkg_grade_group as
          where subject_id = p_subject_id
            and teacher_id = p_teacher_id
            and grade_group_date = p_grade_group_date
-           and name = p_name;
+           and grade_group_name = p_grade_group_name;
 
         return v_grade_group_id;
     exception
@@ -412,7 +412,7 @@ create or replace package body pkg_grade_group as
                 -20222,
                 'Error when getting grade group ID by natural key: subject_id=' || p_subject_id || 
                 ', teacher_id=' || p_teacher_id || ', date=' || p_grade_group_date || 
-                ', name=' || p_name || '. Error: ' || SQLERRM
+                ', name=' || p_grade_group_name || '. Error: ' || SQLERRM
             );
     end get_grade_group_id_by_natural_key;
 
@@ -420,13 +420,13 @@ create or replace package body pkg_grade_group as
         p_grade_group_id in number
     ) return varchar2
     as
-        v_name varchar2(50);
+        v_grade_group_name varchar2(50);
     begin
-        select name
-          into v_name
+        select grade_group_name
+          into v_grade_group_name
           from grade_group
          where grade_group_id = p_grade_group_id;
-        return v_name;
+        return v_grade_group_name;
     exception
         when NO_DATA_FOUND then
             return null;

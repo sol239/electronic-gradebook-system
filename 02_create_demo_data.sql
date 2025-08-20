@@ -522,23 +522,23 @@ END;
 COMMIT;
 
 -- Subject table
-INSERT INTO Subject (subject_id, name) VALUES (1, 'Český jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (2, 'Anglický jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (3, 'Matematika');
-INSERT INTO Subject (subject_id, name) VALUES (4, 'Španělský jazyk');
-INSERT INTO Subject (subject_id, name) VALUES (5, 'Německý jazyk');
+INSERT INTO Subject (subject_name) VALUES ('Český jazyk');
+INSERT INTO Subject (subject_name) VALUES ('Anglický jazyk');
+INSERT INTO Subject (subject_name) VALUES ('Matematika');
+INSERT INTO Subject (subject_name) VALUES ('Španělský jazyk');
+INSERT INTO Subject (subject_name) VALUES ('Německý jazyk');
 
 COMMIT;
 
 -- Class table
-INSERT INTO Class (class_id, name, teacher_id) VALUES (1, 'Prima', 1);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (2, 'Sekunda', 2);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (3, 'Tercie', 3);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (4, 'Kvarta', 4);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (5, 'Kvinta', 5);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (6, 'Sexta', 6);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (7, 'Septima', 7);
-INSERT INTO Class (class_id, name, teacher_id) VALUES (8, 'Oktava', 8);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Prima', 1);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Sekunda', 2);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Tercie', 3);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Kvarta', 4);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Kvinta', 5);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Sexta', 6);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Septima', 7);
+INSERT INTO Class (class_name, teacher_id) VALUES ('Oktava', 8);
 COMMIT;
 
 -- Student table
@@ -837,9 +837,9 @@ INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 3);
 INSERT INTO Student_Subject (student_id, subject_id) VALUES (20, 4);
 COMMIT;
 
-INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 1, 'Diktát 1', 'Diktát na malá/velká písmena');
-INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (1, 4, 'Slohová práce', 'Slohová práce na téma „Můj nejlepší přítel“');
-INSERT INTO Grade_Group (subject_id, teacher_id, name, description ) VALUES (2, 2, 'Essay', 'Essay on "My Favorite Hobby"');
+INSERT INTO Grade_Group (subject_id, teacher_id, grade_group_name, description ) VALUES (1, 1, 'Diktát 1', 'Diktát na malá/velká písmena');
+INSERT INTO Grade_Group (subject_id, teacher_id, grade_group_name, description ) VALUES (1, 4, 'Slohová práce', 'Slohová práce na téma „Můj nejlepší přítel“');
+INSERT INTO Grade_Group (subject_id, teacher_id, grade_group_name, description ) VALUES (2, 2, 'Essay', 'Essay on "My Favorite Hobby"');
 
 -- Class 1
 -- Český jazyk
@@ -879,16 +879,16 @@ INSERT INTO Grade_Group_Student (grade_group_id, student_id, grade) VALUES (2, 2
 COMMIT;
 
 -- Classroom table
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (1, 'Učebna 101', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (2, 'Učebna 102', 15);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (3, 'Učebna 103', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (4, 'Učebna 104', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (5, 'Učebna 105', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (6, 'Učebna 201', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (7, 'Učebna 202', 15);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (8, 'Učebna 203', 30);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (9, 'Tělocvična', 120);
-INSERT INTO Classroom (classroom_id, name, capacity) VALUES (10, 'Neuvedeno', 1000);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 101', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 102', 15);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 103', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 104', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 105', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 201', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 202', 15);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Učebna 203', 30);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ('Tělocvična', 120);
+INSERT INTO Classroom (classroom_name, capacity) VALUES ( 'Neuvedeno', 1000);
 COMMIT;
 
 

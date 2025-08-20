@@ -67,6 +67,11 @@ create or replace package pkg_classroom_lecture as
       p_lecture_id in number
    ) return classroom_id_table;
 
+   type classroom_lecture_rec is record (
+         classroom_id number,
+         lecture_id   number
+   );
+
     /*
        Updates an existing classroom-lecture link.
        Parameters:
@@ -75,12 +80,12 @@ create or replace package pkg_classroom_lecture as
          p_new_classroom_id  - new classroom ID
          p_new_lecture_id    - new lecture ID
     */
-    procedure update_classroom_lecture (
-        p_classroom_id      in number,
-        p_lecture_id        in number,
-        p_new_classroom_id  in number,
-        p_new_lecture_id    in number
-    );
+   procedure update_classroom_lecture (
+      p_classroom_id     in number,
+      p_lecture_id       in number,
+      p_new_classroom_id in number,
+      p_new_lecture_id   in number
+   );
 
 end pkg_classroom_lecture;
 /
@@ -104,31 +109,42 @@ create or replace package body pkg_classroom_lecture as
                            || p_lecture_id);
       commit;
    exception
-      when DUP_VAL_ON_INDEX then
+      when dup_val_on_index then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20191,
-            'Classroom-Lecture link already exists for Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+            'Classroom-Lecture link already exists for Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
          );
-      when VALUE_ERROR then
+      when value_error then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20192,
-            'Type or length error when adding Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+            'Type or length error when adding Classroom-Lecture link: Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20193,
-            'Unexpected error when adding Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when adding Classroom-Lecture link: Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end add_classroom_lecture;
 
    procedure update_classroom_lecture (
-      p_classroom_id      in number,
-      p_lecture_id        in number,
-      p_new_classroom_id  in number,
-      p_new_lecture_id    in number
+      p_classroom_id     in number,
+      p_lecture_id       in number,
+      p_new_classroom_id in number,
+      p_new_lecture_id   in number
    ) as
       v_updated number;
    begin
@@ -136,34 +152,56 @@ create or replace package body pkg_classroom_lecture as
          set classroom_id = p_new_classroom_id,
              lecture_id = p_new_lecture_id
        where classroom_id = p_classroom_id
-         and lecture_id = p_lecture_id
-       returning 1 into v_updated;
-      dbms_output.put_line('Classroom-Lecture link updated: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || ') -> New (Classroom ID ' || p_new_classroom_id || ', Lecture ID ' || p_new_lecture_id || ')');
+         and lecture_id = p_lecture_id returning 1 into v_updated;
+      dbms_output.put_line('Classroom-Lecture link updated: Old (Classroom ID '
+                           || p_classroom_id
+                           || ', Lecture ID '
+                           || p_lecture_id
+                           || ') -> New (Classroom ID '
+                           || p_new_classroom_id
+                           || ', Lecture ID '
+                           || p_new_lecture_id
+                           || ')');
       commit;
    exception
-      when DUP_VAL_ON_INDEX then
+      when dup_val_on_index then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20198,
-            'Update would create duplicate Classroom-Lecture link: Classroom ID ' || p_new_classroom_id || ', Lecture ID ' || p_new_lecture_id
+            'Update would create duplicate Classroom-Lecture link: Classroom ID '
+            || p_new_classroom_id
+            || ', Lecture ID '
+            || p_new_lecture_id
          );
-      when VALUE_ERROR then
+      when value_error then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20199,
-            'Type or length error when updating Classroom-Lecture link: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || ')'
+            'Type or length error when updating Classroom-Lecture link: Old (Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
+            || ')'
          );
-      when NO_DATA_FOUND then
+      when no_data_found then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20200,
-            'No Classroom-Lecture link found for: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+            'No Classroom-Lecture link found for: Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20201,
-            'Unexpected error when updating Classroom-Lecture link: Old (Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '). Error: ' || SQLERRM
+            'Unexpected error when updating Classroom-Lecture link: Old (Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
+            || '). Error: '
+            || sqlerrm
          );
    end update_classroom_lecture;
 
@@ -175,25 +213,32 @@ create or replace package body pkg_classroom_lecture as
    begin
       delete from classroom_lecture
        where classroom_id = p_classroom_id
-         and lecture_id = p_lecture_id
-       returning 1 into v_deleted;
+         and lecture_id = p_lecture_id returning 1 into v_deleted;
       dbms_output.put_line('Classroom-Lecture link deleted: Classroom ID '
                            || p_classroom_id
                            || ', Lecture ID '
                            || p_lecture_id);
       commit;
    exception
-      when NO_DATA_FOUND then
+      when no_data_found then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20194,
-            'No Classroom-Lecture link found for Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id
+            'No Classroom-Lecture link found for Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20195,
-            'Unexpected error when deleting Classroom-Lecture link: Classroom ID ' || p_classroom_id || ', Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when deleting Classroom-Lecture link: Classroom ID '
+            || p_classroom_id
+            || ', Lecture ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end delete_classroom_lecture;
 
@@ -209,10 +254,13 @@ create or replace package body pkg_classroom_lecture as
        where classroom_id = p_classroom_id;
       return v_lectures;
    exception
-      when OTHERS then
-         RAISE_APPLICATION_ERROR(
+      when others then
+         raise_application_error(
             -20196,
-            'Unexpected error when reading lectures by classroom: Classroom ID ' || p_classroom_id || '. Error: ' || SQLERRM
+            'Unexpected error when reading lectures by classroom: Classroom ID '
+            || p_classroom_id
+            || '. Error: '
+            || sqlerrm
          );
    end get_lectures_by_classroom;
 
@@ -228,10 +276,13 @@ create or replace package body pkg_classroom_lecture as
        where lecture_id = p_lecture_id;
       return v_classrooms;
    exception
-      when OTHERS then
-         RAISE_APPLICATION_ERROR(
+      when others then
+         raise_application_error(
             -20197,
-            'Unexpected error when reading classrooms by lecture: Lecture ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when reading classrooms by lecture: Lecture ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end get_classrooms_by_lecture;
 

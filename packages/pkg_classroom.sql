@@ -14,11 +14,11 @@ create or replace package pkg_classroom as
     /*
        Adds a new classroom to the Classroom table.
        Parameters:
-         p_name     - name of the classroom
+         p_classroom_name     - name of the classroom
          p_capacity - capacity of the classroom
     */
     procedure add_classroom (
-        p_name      in varchar2,
+        p_classroom_name      in varchar2,
         p_capacity  in number
     );
 
@@ -26,12 +26,12 @@ create or replace package pkg_classroom as
        Updates an existing classroom in the Classroom table.
        Parameters:
          p_classroom_id      - old classroom ID
-         p_name              - new name
+         p_classroom_name              - new name
          p_capacity          - new capacity
     */
     procedure update_classroom (
         p_classroom_id  in number,
-        p_name          in varchar2,
+        p_classroom_name in varchar2,
         p_capacity      in number
     );
 
@@ -49,7 +49,7 @@ create or replace package pkg_classroom as
     */
     type classroom_rec is record (
         classroom_id number,
-        name         varchar2(50),
+        classroom_name varchar2(50),
         capacity     number
     );
 
@@ -67,12 +67,12 @@ create or replace package pkg_classroom as
     /*
        Returns classroom_id by name.
        Parameters:
-         p_name - name of the classroom
+         p_classroom_name - name of the classroom
        Returns:
          classroom_id if found, NULL otherwise.
     */
     function get_classroom_id_by_name (
-        p_name in varchar2
+        p_classroom_name in varchar2
     ) return number;
 
 end pkg_classroom;
@@ -82,49 +82,49 @@ end pkg_classroom;
 create or replace package body pkg_classroom as
 
     procedure add_classroom (
-        p_name      in varchar2,
+        p_classroom_name in varchar2,
         p_capacity  in number
     ) as
     begin
         insert into classroom (
-            name,
+            classroom_name,
             capacity
         ) values (
-            p_name,
+            p_classroom_name,
             p_capacity
         );
-        dbms_output.put_line('Classroom added: ' || p_name);
+        dbms_output.put_line('Classroom added: ' || p_classroom_name);
         commit;
     exception
         when DUP_VAL_ON_INDEX then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20161,
-                'Classroom with this name already exists: ' || p_name
+                'Classroom with this name already exists: ' || p_classroom_name
             );
         when VALUE_ERROR then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20162,
-                'Invalid value or data type for Classroom: ' || p_name || ', capacity: ' || p_capacity
+                'Invalid value or data type for Classroom: ' || p_classroom_name || ', capacity: ' || p_capacity
             );
         when OTHERS then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20163,
-                'Other error when adding Classroom: ' || p_name || ', capacity: ' || p_capacity || '. Error: ' || SQLERRM
+                'Other error when adding Classroom: ' || p_classroom_name || ', capacity: ' || p_capacity || '. Error: ' || SQLERRM
             );
     end add_classroom;
 
     procedure update_classroom (
         p_classroom_id  in number,
-        p_name          in varchar2,
+        p_classroom_name in varchar2,
         p_capacity      in number
     ) as
         v_updated number;
     begin
         update classroom
-            set name     = p_name,
+            set classroom_name = p_classroom_name,
                 capacity = p_capacity
           where classroom_id = p_classroom_id
           returning 1 into v_updated;
@@ -135,13 +135,13 @@ create or replace package body pkg_classroom as
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20164,
-                'Classroom with this name already exists: ' || p_name
+                'Classroom with this name already exists: ' || p_classroom_name
             );
         when VALUE_ERROR then
             rollback;
             RAISE_APPLICATION_ERROR(
                 -20165,
-                'Invalid value or data type for Classroom: ' || p_name || ', capacity: ' || p_capacity
+                'Invalid value or data type for Classroom: ' || p_classroom_name || ', capacity: ' || p_capacity
             );
         when NO_DATA_FOUND then
             rollback;
@@ -189,7 +189,7 @@ create or replace package body pkg_classroom as
         v_classroom classroom_rec;
     begin
         select classroom_id,
-               name,
+               classroom_name,
                capacity
           into v_classroom
           from classroom
@@ -215,14 +215,14 @@ create or replace package body pkg_classroom as
     end get_classroom_by_id;
 
     function get_classroom_id_by_name (
-        p_name in varchar2
+        p_classroom_name in varchar2
     ) return number as
         v_classroom_id number;
     begin
         select classroom_id
           into v_classroom_id
           from classroom
-         where name = p_name;
+         where classroom_name = p_classroom_name;
 
         return v_classroom_id;
     exception
@@ -231,8 +231,9 @@ create or replace package body pkg_classroom as
         when OTHERS then
             RAISE_APPLICATION_ERROR(
                 -20173,
-                'Error when getting classroom ID by name: ' || p_name || '. Error: ' || SQLERRM
+                'Error when getting classroom ID by name: ' || p_classroom_name || '. Error: ' || SQLERRM
             );
     end get_classroom_id_by_name;
 
 end pkg_classroom;
+/

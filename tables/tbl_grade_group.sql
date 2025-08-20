@@ -10,9 +10,9 @@ create table grade_group (
    subject_id number not null,
    teacher_id number not null,
    grade_group_date timestamp default current_timestamp not null,
-   name varchar2(50) not null,
+   grade_group_name varchar2(50) not null,
    description varchar2(255),
    constraint fk_grade_group_subject foreign key (subject_id) references subject(subject_id),
    constraint fk_grade_group_teacher foreign key (teacher_id) references teacher(teacher_id),
-   CONSTRAINT uq_grade_group UNIQUE (subject_id, teacher_id, grade_group_date, name)
+   CONSTRAINT uq_grade_group UNIQUE (subject_id, teacher_id, grade_group_date, grade_group_name)
 );

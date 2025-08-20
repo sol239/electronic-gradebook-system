@@ -7,8 +7,8 @@
 CREATE OR REPLACE VIEW vw_student_grades_details AS
 SELECT 
     p.first_name || ' ' || p.last_name AS full_name,
-    sub.name AS subject_name,
-    gg.name AS grade_group_name,
+    sub.subject_name AS subject_name,
+    gg.grade_group_name AS grade_group_name,
     gg.grade_group_date AS grade_group_date,
     gg.description AS grade_description,
     ggs.grade AS grade,

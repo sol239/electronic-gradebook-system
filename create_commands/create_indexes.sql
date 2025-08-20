@@ -8,7 +8,7 @@
      - Date column indexes improve WHERE clause performance on date/time filters
      - Composite indexes optimize common query patterns from views and packages
      - All indexes follow naming convention: idx_<table_name>_<column_names>
-     - Note: Some columns are already indexed by unique constraints (subject.name, class.name, etc.)
+     - Note: Some columns are already indexed by unique constraints (subject.subject_name, class.class_name, etc.)
 */
 
 -- =====================================================
@@ -89,19 +89,19 @@ CREATE INDEX idx_grade_group_student_grade_date ON grade_group_student(grade_dat
 -- COMPOSITE INDEXES FOR COMMON QUERY PATTERNS
 -- =====================================================
 
--- Composite index for grade queries by student and date range (from vw_student_grades_details)
+-- Composite index for grade queries by student and date range
 CREATE INDEX idx_grade_group_student_student_date ON grade_group_student(student_id, grade_date);
 
--- Composite index for lecture queries by subject and time range (from vw_student_lectures, vw_teacher_lectures)
+-- Composite index for lecture queries by subject and time range 
 CREATE INDEX idx_lecture_subject_time ON lecture(subject_id, start_time, end_time);
 
--- Composite index for grade group queries by subject and date (from vw_student_grades_summary)
+-- Composite index for grade group queries by subject and date
 CREATE INDEX idx_grade_group_subject_date ON grade_group(subject_id, grade_group_date);
 
--- Composite index for student queries by class (from vw_class_students)
+-- Composite index for student queries by class
 CREATE INDEX idx_student_class ON student(class_id, student_id);
 
--- Composite index for teacher-subject relationships (from vw_teacher_subjects)
+-- Composite index for teacher-subject relationships
 CREATE INDEX idx_subject_teacher_teacher_subject ON subject_teacher(teacher_id, subject_id);
 
 -- Composite index for grade group queries by teacher and date
@@ -114,11 +114,11 @@ CREATE INDEX idx_lecture_classroom_time ON lecture(classroom_id, start_time, end
 -- ADDITIONAL PERFORMANCE INDEXES
 -- =====================================================
 
--- Index for person name lookups (common in views)
+-- Index for person name lookups
 CREATE INDEX idx_person_name ON person(last_name, first_name);
 
--- Index for grade filtering (common in grade statistics)
+-- Index for grade filtering 
 CREATE INDEX idx_grade_group_student_grade ON grade_group_student(grade);
 
--- Index for message filtering (common in grade queries)
+-- Index for message filtering
 CREATE INDEX idx_grade_group_student_message ON grade_group_student(message);

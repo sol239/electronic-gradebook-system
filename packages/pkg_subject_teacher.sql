@@ -67,6 +67,29 @@ create or replace package pkg_subject_teacher as
       p_subject_id in number
    ) return teacher_id_table;
 
+   /*
+      Type for linking subjects to teachers.
+   */
+   type subject_teacher_rec is record (
+      subject_id number,
+      teacher_id number
+   );
+
+    /*
+       Updates a subject-teacher link in the Subject_Teacher table.
+       Parameters:
+         p_old_subject_id - Existing subject ID
+         p_old_teacher_id - Existing teacher ID
+         p_new_subject_id - New subject ID
+         p_new_teacher_id - New teacher ID
+    */
+   procedure update_subject_teacher (
+      p_old_subject_id in number,
+      p_old_teacher_id in number,
+      p_new_subject_id in number,
+      p_new_teacher_id in number
+   );
+
 end pkg_subject_teacher;
 /
 
@@ -157,6 +180,7 @@ create or replace package body pkg_subject_teacher as
             'No subjects found for Teacher ID ' || p_teacher_id
          );
       when TOO_MANY_ROWS then
+
          RAISE_APPLICATION_ERROR(
             -20107,
             'Multiple subjects found for Teacher ID ' || p_teacher_id
@@ -196,6 +220,69 @@ create or replace package body pkg_subject_teacher as
             'Other error when reading teachers by subject: Subject ID ' || p_subject_id || '. Error: ' || SQLERRM
          );
    end get_teachers_by_subject;
+
+   procedure update_subject_teacher (
+      p_old_subject_id in number,
+      p_old_teacher_id in number,
+      p_new_subject_id in number,
+      p_new_teacher_id in number
+   ) as
+      v_updated number;
+   begin
+      update subject_teacher
+         set subject_id = p_new_subject_id,
+             teacher_id = p_new_teacher_id
+       where subject_id = p_old_subject_id
+         and teacher_id = p_old_teacher_id
+       returning 1 into v_updated;
+      dbms_output.put_line('Subject-Teacher link updated: Old Subject ID '
+                           || p_old_subject_id
+                           || ', Old Teacher ID '
+                           || p_old_teacher_id
+                           || ' -> New Subject ID '
+                           || p_new_subject_id
+                           || ', New Teacher ID '
+                           || p_new_teacher_id);
+      commit;
+   exception
+      when NO_DATA_FOUND then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20112,
+            'No Subject-Teacher link found to update: Old Subject ID '
+            || p_old_subject_id
+            || ', Old Teacher ID '
+            || p_old_teacher_id
+         );
+      when DUP_VAL_ON_INDEX then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20113,
+            'Subject-Teacher link already exists for New Subject ID '
+            || p_new_subject_id
+            || ', New Teacher ID '
+            || p_new_teacher_id
+         );
+      when VALUE_ERROR then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20114,
+            'Invalid value or data type for updating Subject-Teacher link: New Subject ID '
+            || p_new_subject_id
+            || ', New Teacher ID '
+            || p_new_teacher_id
+         );
+      when OTHERS then
+         rollback;
+         RAISE_APPLICATION_ERROR(
+            -20115,
+            'Other error when updating Subject-Teacher link: Old Subject ID '
+            || p_old_subject_id
+            || ', Old Teacher ID '
+            || p_old_teacher_id
+            || '. Error: ' || SQLERRM
+         );
+   end update_subject_teacher;
 
 end pkg_subject_teacher;
 /
