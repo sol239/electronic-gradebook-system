@@ -7,7 +7,7 @@
 
 -- NOTE: At the end of the file are NON-CRUD operations
 
-SET SERVEROUTPUT ON;
+   SET SERVEROUTPUT ON;
 
 -- =====================================
 --                VIEWS
@@ -63,12 +63,12 @@ select *
  order by teacher_name,
           subject_name;
 
-select * from vw_student_subject_teacher;
+select *
+  from vw_student_subject_teacher;
 
 
 /*
 TODO:
-      Add timetable functions 40MIN
       Add attendance functions 40MIN
       Add Fix Errors in 06 30MIN
       Add testing for functions above 30MIN
@@ -1099,8 +1099,41 @@ begin
    v_subject_id := 1;
    dbms_output.put_line('Student name: ' || pkg_student.get_student_full_name_by_id(v_student_id));
    dbms_output.put_line('Subject name: ' || pkg_subject.get_subject_name_by_id(v_subject_id));
-   dbms_output.put_line(' * Student attendance rate: ' || pkg_subject.attendance_rate(v_student_id, v_subject_id));
+   dbms_output.put_line(' * Student attendance rate: '
+                        || pkg_subject.attendance_rate(
+      v_student_id,
+      v_subject_id
+   ));
 end;
+
+-- Generate lectures for a subject
+declare
+   v_subject_id number;
+begin
+   v_subject_id := 2;
+
+   pkg_lecture.generate_lectures(
+      p_from_date       => to_timestamp('2025-09-01',
+             'YYYY-MM-DD'),
+      p_to_date         => to_timestamp('2025-09-30',
+             'YYYY-MM-DD'),
+      p_subject_id      => v_subject_id,
+      p_classroom_id    => 3,
+     -- Only time H:M:S is used in the method:
+      p_start_time      => to_timestamp('1970-01-01 08:00:00',
+             'YYYY-MM-DD HH24:MI:SS'),
+      p_length_minutes  => 45,
+      repeats_monday    => true,
+      repeats_wednesday => true
+   );
+
+   -- For clean up:
+   -- pkg_lecture.delete_subject_lectures(v_subject_id);
+
+end;
+/
+
+
 
 -- =====================================
 --                TRIGGERS

@@ -23,6 +23,9 @@ corresponding files represeting the objects. Eg. in tbl_lecture.sql you can find
 Note: 
 Currently the subject should not be eg. Math or Physics but Math 1, Physics 1 so it is clear to which class does the subject belongs.
 
+Note:
+Many more triggers and constraint could be implemented to enforce some rule. But application would be much bigger than it is currently.
+
 You can see the schema of the database in the file `schema.png`.
 More information about the project can be found in the project documentation README.md.
 */

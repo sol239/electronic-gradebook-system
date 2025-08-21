@@ -11,7 +11,7 @@ This project is designed to create an electronic gradebook system for primary an
 - `create_commands/`: Contains SQL scripts for creating database objects
 - `packages/`: pkg_<package_name>.sql
 - `tables/`: tbl_<table_name>.sql
-- `triggers/`: trg_<trigger_name>_<trigger_type>.sql
+- `triggers/`: trg_<trigger_nam>_<trigger_type>.sql
 - `views/`: vw_<view_name>.sql
 
 ---

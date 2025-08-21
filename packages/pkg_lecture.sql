@@ -21,7 +21,7 @@ create or replace package pkg_lecture as
       p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
-      p_lecture_name         in varchar2,
+      p_lecture_name in varchar2,
       p_description  in varchar2 default null
    );
 
@@ -40,7 +40,7 @@ create or replace package pkg_lecture as
       p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
-      p_lecture_name   in varchar2 default null,
+      p_lecture_name in varchar2 default null,
       p_description  in varchar2 default null
    );
 
@@ -51,6 +51,15 @@ create or replace package pkg_lecture as
     */
    procedure delete_lecture (
       p_lecture_id in number
+   );
+
+   /*
+      Deletes all subject's lectures
+      Parameters:
+         p_subject_id - ID of the subject
+   */
+   procedure delete_subject_lectures (
+      p_subject_id in number
    );
 
     /*
@@ -87,9 +96,9 @@ create or replace package pkg_lecture as
          lecture_id if found, NULL otherwise.
     */
    function get_lecture_id_by_natural_key (
-      p_subject_id in number,
+      p_subject_id   in number,
       p_classroom_id in number,
-      p_start_time in timestamp
+      p_start_time   in timestamp
    ) return number;
 
    /*
@@ -101,20 +110,127 @@ create or replace package pkg_lecture as
    */
    function get_lecture_by_subject_id (
       p_subject_id in number
-   ) return lecture_id;
+   ) return number;
+
+   /*
+      Generates lecture entries for a subject.
+      Parameters:
+         p_from_date - start date for the lecture generation
+         p_to_date   - end date for the lecture generation
+         p_subject_id - ID of the subject for which to generate lectures
+         p_start_time  - start time for the lecture generation
+         p_length_minutes - length of the lecture in minutes
+         p_repeats_monday - whether to repeat on Monday
+         p_repeats_tuesday - whether to repeat on Tuesday
+         p_repeats_wednesday - whether to repeat on Wednesday
+         p_repeats_thursday - whether to repeat on Thursday
+         p_repeats_friday - whether to repeat on Friday
+   */
+   procedure generate_lectures (
+      p_from_date       in timestamp,
+      p_to_date         in timestamp,
+      p_subject_id      in number,
+      p_classroom_id    in number,      -- ADDED
+      p_start_time      in timestamp, -- keep as timestamp, but only H:M:S is used
+      p_length_minutes  in number,
+      repeats_monday    in boolean default false,
+      repeats_tuesday   in boolean default false,
+      repeats_wednesday in boolean default false,
+      repeats_thursday  in boolean default false,
+      repeats_friday    in boolean default false
+   );
 
 end pkg_lecture;
 /
 
 -- Package body
 create or replace package body pkg_lecture as
+   procedure generate_lectures (
+      p_from_date       in timestamp,
+      p_to_date         in timestamp,
+      p_subject_id      in number,
+      p_classroom_id    in number,      -- ADDED
+      p_start_time      in timestamp,
+      p_length_minutes  in number,
+      repeats_monday    in boolean default false,
+      repeats_tuesday   in boolean default false,
+      repeats_wednesday in boolean default false,
+      repeats_thursday  in boolean default false,
+      repeats_friday    in boolean default false
+   ) as
+      v_date     timestamp;
+      v_start_time timestamp;
+      v_end_time timestamp;
+      v_dow      number;
+   begin
+      v_date := p_from_date;
+      while v_date <= p_to_date loop
+         v_dow := to_number ( to_char(
+            v_date,
+            'D'
+         ) );
+         -- Oracle 'D' returns 1=Sunday, 2=Monday, ..., 7=Saturday (NLS_TERRITORY dependent)
+         -- Adjust for Monday-Friday
+         if (
+            v_dow = 2
+            and repeats_monday
+         )
+         or (
+            v_dow = 3
+            and repeats_tuesday
+         )
+         or (
+            v_dow = 4
+            and repeats_wednesday
+         )
+         or (
+            v_dow = 5
+            and repeats_thursday
+         )
+         or (
+            v_dow = 6
+            and repeats_friday
+         ) then
+            v_start_time := trunc(v_date) + (extract(hour from p_start_time)/24)
+                                         + (extract(minute from p_start_time)/1440)
+                                         + (extract(second from p_start_time)/86400);
+            v_end_time := v_start_time + (p_length_minutes / 1440);
+            insert into lecture (
+               subject_id,
+               classroom_id,      -- ADDED
+               start_time,
+               end_time,
+               lecture_name
+            ) values ( p_subject_id,
+                       p_classroom_id, -- ADDED
+                       v_start_time,
+                       v_end_time,
+                       'Lecture for subject '
+                       || p_subject_id
+                       || ' on '
+                       || to_char(
+                          v_start_time,
+                          'YYYY-MM-DD HH24:MI'
+                       ) );
+         end if;
+         v_date := v_date + 1;
+      end loop;
+      commit;
+   exception
+      when others then
+         rollback;
+         raise_application_error(
+            -20235,
+            'Error generating lectures: ' || sqlerrm
+         );
+   end generate_lectures;
 
    procedure add_lecture (
       p_subject_id   in number,
       p_classroom_id in number,
       p_start_time   in timestamp,
       p_end_time     in timestamp,
-      p_lecture_name       in varchar2,
+      p_lecture_name in varchar2,
       p_description  in varchar2 default null
    ) as
    begin
@@ -125,34 +241,48 @@ create or replace package body pkg_lecture as
          end_time,
          lecture_name,
          description
-      ) values (
-         p_subject_id,
-         p_classroom_id,
-         p_start_time,
-         p_end_time,
-         p_lecture_name,
-         p_description
-      );
+      ) values ( p_subject_id,
+                 p_classroom_id,
+                 p_start_time,
+                 p_end_time,
+                 p_lecture_name,
+                 p_description );
       dbms_output.put_line('Lecture added: Subject ID ' || p_subject_id);
       commit;
    exception
-      when DUP_VAL_ON_INDEX then
+      when dup_val_on_index then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20221,
-            'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+            'Lecture with this subject, classroom, and start time already exists: Subject ID '
+            || p_subject_id
+            || ', Classroom ID '
+            || p_classroom_id
+            || ', Start Time '
+            || to_char(
+               p_start_time,
+               'YYYY-MM-DD HH24:MI:SS'
+            )
          );
-      when VALUE_ERROR then
+      when value_error then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20222,
-            'Type or length error when adding lecture: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id
+            'Type or length error when adding lecture: Subject ID '
+            || p_subject_id
+            || ', Classroom ID '
+            || p_classroom_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20223,
-            'Unexpected error when adding lecture: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || '. Error: ' || SQLERRM
+            'Unexpected error when adding lecture: Subject ID '
+            || p_subject_id
+            || ', Classroom ID '
+            || p_classroom_id
+            || '. Error: '
+            || sqlerrm
          );
    end add_lecture;
 
@@ -168,40 +298,50 @@ create or replace package body pkg_lecture as
       v_updated number;
    begin
       update lecture
-         set subject_id   = p_subject_id,
+         set subject_id = p_subject_id,
              classroom_id = p_classroom_id,
-             start_time   = p_start_time,
-             end_time     = p_end_time,
+             start_time = p_start_time,
+             end_time = p_end_time,
              lecture_name = p_lecture_name,
-             description  = p_description
-       where lecture_id = p_lecture_id
-       returning 1 into v_updated;
+             description = p_description
+       where lecture_id = p_lecture_id returning 1 into v_updated;
       dbms_output.put_line('Lecture updated: ID ' || p_lecture_id);
       commit;
    exception
-      when DUP_VAL_ON_INDEX then
+      when dup_val_on_index then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20224,
-            'Lecture with this subject, classroom, and start time already exists: Subject ID ' || p_subject_id || ', Classroom ID ' || p_classroom_id || ', Start Time ' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS')
+            'Lecture with this subject, classroom, and start time already exists: Subject ID '
+            || p_subject_id
+            || ', Classroom ID '
+            || p_classroom_id
+            || ', Start Time '
+            || to_char(
+               p_start_time,
+               'YYYY-MM-DD HH24:MI:SS'
+            )
          );
-      when VALUE_ERROR then
+      when value_error then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20225,
             'Type or length error when updating lecture: ID ' || p_lecture_id
          );
-      when NO_DATA_FOUND then
+      when no_data_found then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20226,
             'No lecture found with ID ' || p_lecture_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20227,
-            'Unexpected error when updating lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when updating lecture: ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end update_lecture;
 
@@ -211,24 +351,47 @@ create or replace package body pkg_lecture as
       v_deleted number;
    begin
       delete from lecture
-       where lecture_id = p_lecture_id
-       returning 1 into v_deleted;
+       where lecture_id = p_lecture_id returning 1 into v_deleted;
       dbms_output.put_line('Lecture deleted: ID ' || p_lecture_id);
       commit;
    exception
-      when NO_DATA_FOUND then
+      when no_data_found then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20228,
             'No lecture found with ID ' || p_lecture_id
          );
-      when OTHERS then
+      when others then
          rollback;
-         RAISE_APPLICATION_ERROR(
+         raise_application_error(
             -20229,
-            'Unexpected error when deleting lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when deleting lecture: ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end delete_lecture;
+
+   procedure delete_subject_lectures (
+      p_subject_id in number
+   ) as
+      v_deleted number;
+   begin
+      delete from lecture
+       where subject_id = p_subject_id;
+      dbms_output.put_line('Deleted lectures for subject: ' || p_subject_id);
+      commit;
+   exception
+      when others then
+         rollback;
+         raise_application_error(
+            -20236,
+            'Unexpected error when deleting lectures for subject: '
+            || p_subject_id
+            || '. Error: '
+            || sqlerrm
+         );
+   end delete_subject_lectures;
 
    function get_lecture_by_id (
       p_lecture_id in number
@@ -248,53 +411,29 @@ create or replace package body pkg_lecture as
 
       return v_lecture;
    exception
-      when NO_DATA_FOUND then
-         RAISE_APPLICATION_ERROR(
+      when no_data_found then
+         raise_application_error(
             -20230,
             'No lecture found with ID ' || p_lecture_id
          );
-      when TOO_MANY_ROWS then
-         RAISE_APPLICATION_ERROR(
+      when too_many_rows then
+         raise_application_error(
             -20231,
             'Multiple lectures found with ID ' || p_lecture_id
          );
-      when OTHERS then
-         RAISE_APPLICATION_ERROR(
+      when others then
+         raise_application_error(
             -20232,
-            'Unexpected error when reading lecture: ID ' || p_lecture_id || '. Error: ' || SQLERRM
+            'Unexpected error when reading lecture: ID '
+            || p_lecture_id
+            || '. Error: '
+            || sqlerrm
          );
    end get_lecture_by_id;
 
-   function get_lecture_id_by_natural_key (
-      p_subject_id in number,
-      p_classroom_id in number,
-      p_start_time in timestamp
-   ) return number as
-      v_lecture_id number;
-   begin
-      select lecture_id
-        into v_lecture_id
-        from lecture
-       where subject_id = p_subject_id
-         and classroom_id = p_classroom_id
-         and start_time = p_start_time;
-
-      return v_lecture_id;
-   exception
-      when NO_DATA_FOUND then
-         return null;
-      when OTHERS then
-         RAISE_APPLICATION_ERROR(
-            -20233,
-            'Error when getting lecture ID by natural key: subject_id=' || p_subject_id || 
-            ', classroom_id=' || p_classroom_id || ', start_time=' || TO_CHAR(p_start_time, 'YYYY-MM-DD HH24:MI:SS') || 
-            '. Error: ' || SQLERRM
-         );
-   end get_lecture_id_by_natural_key;
-
    function get_lecture_by_subject_id (
       p_subject_id in number
-   ) return lecture_id is
+   ) return number is
       v_lecture_id number;
    begin
       select lecture_id
@@ -309,9 +448,48 @@ create or replace package body pkg_lecture as
       when others then
          raise_application_error(
             -20234,
-            'Error when getting lecture by subject_id: ' || p_subject_id || '. Error: ' || sqlerrm
+            'Error when getting lecture by subject_id: '
+            || p_subject_id
+            || '. Error: '
+            || sqlerrm
          );
    end get_lecture_by_subject_id;
+
+   function get_lecture_id_by_natural_key (
+      p_subject_id   in number,
+      p_classroom_id in number,
+      p_start_time   in timestamp
+   ) return number as
+      v_lecture_id number;
+   begin
+      select lecture_id
+        into v_lecture_id
+        from lecture
+       where subject_id = p_subject_id
+         and classroom_id = p_classroom_id
+         and start_time = p_start_time;
+
+      return v_lecture_id;
+   exception
+      when no_data_found then
+         return null;
+      when others then
+         raise_application_error(
+            -20233,
+            'Error when getting lecture ID by natural key: subject_id='
+            || p_subject_id
+            || ', classroom_id='
+            || p_classroom_id
+            || ', start_time='
+            || to_char(
+               p_start_time,
+               'YYYY-MM-DD HH24:MI:SS'
+            )
+            || '. Error: '
+            || sqlerrm
+         );
+   end get_lecture_id_by_natural_key;
+
 
 end pkg_lecture;
 /
