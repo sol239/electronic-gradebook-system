@@ -3,12 +3,6 @@
    Author: David Válek
    Created: 2025-08-19
    Description: Creates comprehensive indexes for foreign keys, date columns, and common query patterns
-   Notes:
-     - Foreign key indexes improve JOIN performance
-     - Date column indexes improve WHERE clause performance on date/time filters
-     - Composite indexes optimize common query patterns from views and packages
-     - All indexes follow naming convention: idx_<table_name>_<column_names>
-     - Note: Some columns are already indexed by unique constraints (subject.subject_name, class.class_name, etc.)
 */
 
 -- =====================================================

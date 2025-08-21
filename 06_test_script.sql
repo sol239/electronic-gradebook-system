@@ -1,4 +1,6 @@
-   SET SERVEROUTPUT ON;
+
+
+SET SERVEROUTPUT ON;
 
 -- =====================================
 --                VIEWS
