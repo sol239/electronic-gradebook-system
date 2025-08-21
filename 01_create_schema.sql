@@ -86,7 +86,6 @@ More information about the project can be found in the project documentation REA
 @views/vw_students_parents.sql
 @views/vw_teacher_lectures.sql
 @views/vw_teacher_subjects.sql
-@views/vw_student_teacher.sql
 -- =====================================
 --             Create Indexes
 -- =====================================

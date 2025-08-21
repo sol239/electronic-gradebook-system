@@ -5,7 +5,9 @@
    Created: 2025-08-19
 */
 
-   SET SERVEROUTPUT ON;
+-- NOTE: At the end of the file are NON-CRUD operations
+
+SET SERVEROUTPUT ON;
 
 -- =====================================
 --                VIEWS
@@ -60,6 +62,18 @@ select *
   from vw_teacher_subjects
  order by teacher_name,
           subject_name;
+
+
+/*
+TODO: Add teacher student table many to many with unique id pair key + create view 30MIN
+      Add timetable functions 40MIN
+      Add attendance functions 40MIN
+      Add Fix Errors in 06 30MIN
+      Add testing for functions above 30MIN
+      Final assignment check 5MIN
+      Submit 5MIN
+*/
+
 
 -- =====================================
 --      PROCEDURES & FUNCTIONS
@@ -1010,6 +1024,10 @@ begin
    dbms_output.put_line('Grade group-student relationship deleted');
 end;
 /
+
+-- =====================================
+--             END OF CRUD
+-- =====================================
 
 -- =====================================
 -- Package: pkg_grade_group - Statistics
