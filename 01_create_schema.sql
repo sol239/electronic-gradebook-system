@@ -16,11 +16,11 @@ similarly as https://www.skolaonline.cz/ or https://www.bakalari.cz/. These stud
 allow to store a large amount of data for students, teachers, etc. This application allows some basic school evidence.
 Extending the schema is not difficult. Eg. adding personal number or phone number would be ideal. 
 
+Note:
 In assignment is stated that in script 1) should be object/procedure/function description. I put that description into the 
 corresponding files represeting the objects. Eg. in tbl_lecture.sql you can find the description of the table lecture.
 
 You can see the schema of the database in the file `schema.png`.
-
 More information about the project can be found in the project documentation README.md.
 */
 
@@ -28,7 +28,6 @@ More information about the project can be found in the project documentation REA
 -- =====================================
 --             Create Tables
 -- =====================================
-
 @tables/tbl_person.sql
 @tables/tbl_parent.sql
 @tables/tbl_teacher.sql
@@ -51,7 +50,6 @@ More information about the project can be found in the project documentation REA
 -- =====================================
 --             Create Packages
 -- =====================================
-
 @packages/pkg_utils.sql
 @packages/pkg_class.sql
 @packages/pkg_grade_group.sql
@@ -73,7 +71,6 @@ More information about the project can be found in the project documentation REA
 -- =====================================
 --             Create Triggers
 -- =====================================
-
 @triggers/trg_grade_group_biu.sql
 @triggers/trg_grade_group_student_biu.sql
 @triggers/trg_class_group_student_biu.sql
@@ -81,17 +78,18 @@ More information about the project can be found in the project documentation REA
 -- =====================================
 --             Create Views
 -- =====================================
-
-@views/vw_class.sql
 @views/vw_class_students.sql
-@views/vw_teacher_subjects.sql
-@views/vw_students_parents.sql
+@views/vw_class.sql
+@views/vw_student_grades_details.sql
 @views/vw_student_grades_summary.sql
+@views/vw_student_lectures.sql
+@views/vw_students_parents.sql
+@views/vw_teacher_lectures.sql
+@views/vw_teacher_subjects.sql
 
 -- =====================================
 --             Create Indexes
 -- =====================================
-
 -- There are many of indexes so they are created in a separate script
 @create_commands/create_indexes.sql
 

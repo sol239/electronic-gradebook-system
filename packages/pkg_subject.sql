@@ -149,6 +149,7 @@ create or replace package pkg_subject as
    function get_subject_name_by_id (
       p_subject_id in number
    ) return varchar2;
+   
 
 end pkg_subject;
 /

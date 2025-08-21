@@ -5,7 +5,7 @@
    Created: 2025-08-19
 */
 
-SET SERVEROUTPUT ON;
+   SET SERVEROUTPUT ON;
 
 -- =====================================
 --                VIEWS
@@ -956,7 +956,7 @@ end;
 -- Package: pkg_grade_group_student - CRUD Operations
 -- =====================================
 
-/* TODO FIX ERRORS IN SCRIPT, ADD  1) by mělo být popsané zadání úlohy.  kript 1) by měl popisovat význam jednotlivých objektů ve schématu, včetně sloupců tabulek a parametrů procedur a funkcí, TRIGGER ERROR  */
+/* TODO FIX ERRORS IN SCRIPT,  TRIGGER ERROR  */
 
 -- Test grade group-student relationship operations
 declare
@@ -1073,6 +1073,7 @@ end;
 
 -- Test of trg_class_group_student_biu -> insert student into class group which does not belong to student's class
 -- It will raise exception because class_group:3 belongs to class:2 but student:1 is in class:1
+-- Exception expected ⛔
 declare
    v_student_id     number;
    v_class_group_id number;
