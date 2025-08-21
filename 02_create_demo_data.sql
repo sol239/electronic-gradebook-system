@@ -962,26 +962,26 @@ COMMIT;
 
 -- Lecture Table
 INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
-VALUES (1, TIMESTAMP '2025-08-15 11:00:00', TIMESTAMP '2025-08-15 11:45:00', 
+VALUES (1, TIMESTAMP '2025-09-01 11:00:00', TIMESTAMP '2025-09-01 11:45:00', 
         'Literatura antické Řecko', 
         'Probírali jsme učebnici na straně 45 a pracovní sešit na straně 14. Seznámení s antickou literaturou a mýty.', 1);
 
 INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
-VALUES (1, TIMESTAMP '2025-08-16 11:00:00', TIMESTAMP '2025-08-16 11:45:00', 
+VALUES (1, TIMESTAMP '2025-09-02 11:00:00', TIMESTAMP '2025-09-02 11:45:00', 
         'Literatura antické Řím', 
         'Analýza římské literatury, zaměření na Vergilia a Ovidia. Diskuze o významu literárních děl.', 1);
 
 INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
-VALUES (1, TIMESTAMP '2025-08-17 11:00:00', TIMESTAMP '2025-08-17 11:45:00', 
+VALUES (1, TIMESTAMP '2025-09-03 11:00:00', TIMESTAMP '2025-09-03 11:45:00', 
         'Literatura antické Čína', 
         'Představení čínských klasiků a filozofických textů, kontext historického vývoje.', 1);
 
 INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
-VALUES (1, TIMESTAMP '2025-08-18 11:00:00', TIMESTAMP '2025-08-18 11:45:00', 
+VALUES (1, TIMESTAMP '2025-09-04 11:00:00', TIMESTAMP '2025-09-04 11:45:00', 
         'Literatura antické Indie', 
         'Seznámení s eposy Mahábháráta a Rámájana, význam mýtů a literárních tradic v Indii.', 1);
   INSERT INTO lecture (subject_id, start_time, end_time, lecture_name, description, classroom_id) 
-VALUES (1, TIMESTAMP '2025-08-19 11:00:00', TIMESTAMP '2025-08-19 11:45:00', 
+VALUES (1, TIMESTAMP '2025-09-05 11:00:00', TIMESTAMP '2025-09-05 11:45:00', 
         'Opakování antické literatury', 
         'Dnes jsme opakovali antickou literaturu probranou tento týden', 1);      
 
