@@ -13,4 +13,4 @@
 @views/vw_students_parents.sql
 @views/vw_teacher_lectures.sql
 @views/vw_teacher_subjects.sql
-@views/vw_student_teacher.sql
+@views/vw_student_subject_teacher.sql

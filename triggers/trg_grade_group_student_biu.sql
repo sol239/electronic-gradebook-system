@@ -18,7 +18,7 @@ begin
 
    select count(*)
      into v_count
-     from student_subject
+     from student_subject_teacher
     where student_id = :new.student_id
       and subject_id = v_subject_id;
 

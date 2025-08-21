@@ -92,6 +92,17 @@ create or replace package pkg_lecture as
       p_start_time in timestamp
    ) return number;
 
+   /*
+      Returns lecture ID by subject ID.
+      Parameters:
+         p_subject_id - ID of the subject
+      Returns:
+         lecture_id if found, NULL otherwise.
+   */
+   function get_lecture_by_subject_id (
+      p_subject_id in number
+   ) return lecture_id;
+
 end pkg_lecture;
 /
 
@@ -280,6 +291,27 @@ create or replace package body pkg_lecture as
             '. Error: ' || SQLERRM
          );
    end get_lecture_id_by_natural_key;
+
+   function get_lecture_by_subject_id (
+      p_subject_id in number
+   ) return lecture_id is
+      v_lecture_id number;
+   begin
+      select lecture_id
+        into v_lecture_id
+        from lecture
+       where subject_id = p_subject_id
+         and rownum = 1;
+      return v_lecture_id;
+   exception
+      when no_data_found then
+         return null;
+      when others then
+         raise_application_error(
+            -20234,
+            'Error when getting lecture by subject_id: ' || p_subject_id || '. Error: ' || sqlerrm
+         );
+   end get_lecture_by_subject_id;
 
 end pkg_lecture;
 /

@@ -12,7 +12,7 @@
 @packages/pkg_person.sql
 @packages/pkg_parent.sql
 @packages/pkg_student_parent.sql
-@packages/pkg_student_subject.sql
+@packages/pkg_student_subject_teacher.sql
 @packages/pkg_student.sql
 @packages/pkg_class_group.sql
 @packages/pkg_class_group_student.sql

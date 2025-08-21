@@ -92,12 +92,12 @@ SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
 FROM ALL_TAB_COLUMNS
 WHERE table_name = 'GRADE_GROUP_STUDENT';
 
--- stats for table STUDENT_SUBJECT
-EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'STUDENT_SUBJECT', cascade => TRUE);
+-- stats for table student_subject_teacher
+EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'student_subject_teacher', cascade => TRUE);
 
 SELECT column_name, nullable, num_distinct, num_nulls, density, histogram
 FROM ALL_TAB_COLUMNS
-WHERE table_name = 'STUDENT_SUBJECT';
+WHERE table_name = 'student_subject_teacher';
 
 -- stats for table SUBJECT_TEACHER
 EXEC DBMS_STATS.GATHER_TABLE_STATS(USER, 'SUBJECT_TEACHER', cascade => TRUE);

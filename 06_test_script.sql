@@ -45,7 +45,7 @@ select *
 -- to create a timetable view for current/next/past weeks
 select *
   from vw_student_lectures
- where student_id = 1;
+ where student_id = 6;
 
 -- Display specific teacher's lectures - timetable, with WHERE clause for start_time/end_time it can be use
 -- to create a timetable view for current/next/past weeks
@@ -63,14 +63,16 @@ select *
  order by teacher_name,
           subject_name;
 
+select * from vw_student_subject_teacher;
+
 
 /*
-TODO: Add teacher student table many to many with unique id pair key + create view 30MIN
+TODO:
       Add timetable functions 40MIN
       Add attendance functions 40MIN
       Add Fix Errors in 06 30MIN
       Add testing for functions above 30MIN
-      Final assignment check 5MIN
+      Final assignment check 5MINd
       Submit 5MIN
 */
 
@@ -713,24 +715,24 @@ end;
 /
 
 -- =====================================
--- Package: pkg_student_subject - CRUD Operations
+-- Package: pkg_student_subject_teacher - CRUD Operations
 -- =====================================
 
 -- Test student-subject relationship operations
 declare
    v_student_id number := 1;
    v_subject_id number := 1;
-   v_rec        pkg_student_subject.student_subject_rec;
+   v_rec        pkg_student_subject_teacher.student_subject_teacher_rec;
 begin
    -- Add student-subject relationship
-   pkg_student_subject.add_student_subject(
+   pkg_student_subject_teacher.add_student_subject_teacher(
       v_student_id,
       v_subject_id
    );
    dbms_output.put_line('Student-subject relationship added');
    
    -- Update relationship
-   pkg_student_subject.update_student_subject(
+   pkg_student_subject_teacher.update_student_subject_teacher(
       v_student_id,
       v_subject_id,
       2,
@@ -740,14 +742,14 @@ begin
    
    -- Get subjects by student
    declare
-      v_subjects pkg_student_subject.subject_id_table;
+      v_subjects pkg_student_subject_teacher.subject_id_table;
    begin
-      v_subjects := pkg_student_subject.get_subjects_by_student(2);
+      v_subjects := pkg_student_subject_teacher.get_subjects_by_student(2);
       dbms_output.put_line('Subjects for student 2: ' || v_subjects.count);
    end;
    
    -- Delete relationship (cleanup)
-   pkg_student_subject.delete_student_subject(
+   pkg_student_subject_teacher.delete_student_subject_teacher(
       2,
       2
    );
@@ -1077,13 +1079,28 @@ end;
 /
 
 -- General statistics of a subject
-declare begin
-   dbms_output.put_line('Subject name: ' || pkg_subject.get_subject_name_by_id(1));
-   dbms_output.put_line(' * Average grade: ' || pkg_subject.get_subject_average_grade(1));
-   dbms_output.put_line(' * Most common grade: ' || pkg_subject.get_subject_most_common_grade(1));
-   dbms_output.put_line(' * Median grade: ' || pkg_subject.get_subject_median_grade(1));
+declare
+   v_subject_id number;
+begin
+   v_subject_id := 1;
+   dbms_output.put_line('Subject name: ' || pkg_subject.get_subject_name_by_id(v_subject_id));
+   dbms_output.put_line(' * Average grade: ' || pkg_subject.get_subject_average_grade(v_subject_id));
+   dbms_output.put_line(' * Most common grade: ' || pkg_subject.get_subject_most_common_grade(v_subject_id));
+   dbms_output.put_line(' * Median grade: ' || pkg_subject.get_subject_median_grade(v_subject_id));
 end;
 /
+
+-- Get student's attendance of a subject
+declare
+   v_student_id number;
+   v_subject_id number;
+begin
+   v_student_id := 12;
+   v_subject_id := 1;
+   dbms_output.put_line('Student name: ' || pkg_student.get_student_full_name_by_id(v_student_id));
+   dbms_output.put_line('Subject name: ' || pkg_subject.get_subject_name_by_id(v_subject_id));
+   dbms_output.put_line(' * Student attendance rate: ' || pkg_subject.attendance_rate(v_student_id, v_subject_id));
+end;
 
 -- =====================================
 --                TRIGGERS

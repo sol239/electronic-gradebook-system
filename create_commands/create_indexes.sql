@@ -50,8 +50,9 @@ CREATE INDEX idx_subject_teacher_subject_id ON subject_teacher(subject_id);
 CREATE INDEX idx_subject_teacher_teacher_id ON subject_teacher(teacher_id);
 
 -- Student Subject table foreign key indexes
-CREATE INDEX idx_student_subject_student_id ON student_subject(student_id);
-CREATE INDEX idx_student_subject_subject_id ON student_subject(subject_id);
+CREATE INDEX idx_student_subject_teacher_student_id ON student_subject_teacher(student_id);
+CREATE INDEX idx_student_subject_teacher_subject_id ON student_subject_teacher(subject_id);
+CREATE INDEX idx_student_subject_teacher_teacher_id ON student_subject_teacher(teacher_id);
 
 -- Student Parent table foreign key indexes
 CREATE INDEX idx_student_parent_student_id ON student_parent(student_id);

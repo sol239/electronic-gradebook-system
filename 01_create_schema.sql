@@ -20,6 +20,9 @@ Note:
 In assignment is stated that in script 1) should be object/procedure/function description. I put that description into the 
 corresponding files represeting the objects. Eg. in tbl_lecture.sql you can find the description of the table lecture.
 
+Note: 
+Currently the subject should not be eg. Math or Physics but Math 1, Physics 1 so it is clear to which class does the subject belongs.
+
 You can see the schema of the database in the file `schema.png`.
 More information about the project can be found in the project documentation README.md.
 */
@@ -40,7 +43,7 @@ More information about the project can be found in the project documentation REA
 @tables/tbl_lecture.sql
 @tables/tbl_grade_group.sql
 @tables/tbl_grade_group_student.sql
-@tables/tbl_student_subject.sql
+@tables/tbl_student_subject_teacher.sql
 @tables/tbl_subject_teacher.sql
 @tables/tbl_student_parent.sql
 @tables/tbl_lecture_student.sql
@@ -58,7 +61,7 @@ More information about the project can be found in the project documentation REA
 @packages/pkg_person.sql
 @packages/pkg_parent.sql
 @packages/pkg_student_parent.sql
-@packages/pkg_student_subject.sql
+@packages/pkg_student_subject_teacher.sql
 @packages/pkg_student.sql
 @packages/pkg_class_group.sql
 @packages/pkg_class_group_student.sql
@@ -86,6 +89,8 @@ More information about the project can be found in the project documentation REA
 @views/vw_students_parents.sql
 @views/vw_teacher_lectures.sql
 @views/vw_teacher_subjects.sql
+@views/vw_student_subject_teacher.sql
+
 -- =====================================
 --             Create Indexes
 -- =====================================

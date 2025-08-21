@@ -46,8 +46,8 @@ exec dbms_stats.delete_table_stats(USER, 'GRADE_GROUP_STUDENT');
 -- Delete statistics for Student_Parent junction table
 exec dbms_stats.delete_table_stats(USER, 'STUDENT_PARENT');
 
--- Delete statistics for Student_Subject junction table
-exec dbms_stats.delete_table_stats(USER, 'STUDENT_SUBJECT');
+-- Delete statistics for student_subject_teacher junction table
+exec dbms_stats.delete_table_stats(USER, 'student_subject_teacher');
 
 -- Delete statistics for Subject_Teacher junction table
 exec dbms_stats.delete_table_stats(USER, 'SUBJECT_TEACHER');
