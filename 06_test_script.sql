@@ -1,4 +1,9 @@
-
+/*
+   File: 06_test_script.sql
+   Author: David Válek
+   Description: Script for testing database functionality.
+   Created: 2025-08-19
+*/
 
 SET SERVEROUTPUT ON;
 

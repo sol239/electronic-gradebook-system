@@ -3,10 +3,6 @@
    Author: David Válek
    Created: 2025-08-16
    Description: Package for CRUD operations on the Person table.
-   Notes:
-     - Uses auto-incrementing identity columns for primary keys.
-     - Includes procedures: add, update, delete, get by ID.
-     - Simplified structure without role fields.
 */
 
 -- Package specification

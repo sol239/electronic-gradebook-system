@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Classroom_Lecture table.
-   Notes:
-     - Links classrooms to their lectures.
-     - Includes procedures: add, delete, get lectures by classroom, get classrooms by lecture.
 */
 
 -- Package specification

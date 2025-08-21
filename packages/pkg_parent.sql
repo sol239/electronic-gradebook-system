@@ -4,10 +4,6 @@
    Created: 2025-08-15
    Modified: 2025-08-16 - Updated for new table structure with person_id FK
    Description: Package for CRUD operations on the Parent table.
-   Notes:
-     - Uses auto-incrementing identity columns for primary keys.
-     - Includes procedures: add, update, delete, get by ID.
-     - Parent table now only contains parent_id and person_id.
 */
 
 -- Package specification

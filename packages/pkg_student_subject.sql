@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Student_Subject table.
-   Notes:
-     - Links students to their subjects.
-     - Includes procedures: add, delete, get students by subject, get subjects by student.
 */
 
 -- Package specification

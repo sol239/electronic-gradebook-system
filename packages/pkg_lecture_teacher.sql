@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Lecture_Teacher table.
-   Notes:
-     - Links lectures to their teachers.
-     - Includes procedures: add, delete, get lectures by teacher, get teachers by lecture.
 */
 
 -- Package specification

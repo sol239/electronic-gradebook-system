@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-19
    Description: Package for CRUD operations on the Class_Group_Student table.
-   Notes:
-     - Composite primary key (class_id_group, student_id).
-     - Includes procedures: add, delete, get by ID.
 */
 
 -- Package specification

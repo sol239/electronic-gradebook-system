@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Subject_Teacher table.
-   Notes:
-     - Links subjects to their teachers.
-     - Includes procedures: add, delete, get subjects by teacher, get teachers by subject.
 */
 
 -- Package specification

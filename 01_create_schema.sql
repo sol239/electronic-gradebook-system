@@ -19,6 +19,8 @@ Extending the schema is not difficult. Eg. adding personal number or phone numbe
 In assignment is stated that in script 1) should be object/procedure/function description. I put that description into the 
 corresponding files represeting the objects. Eg. in tbl_lecture.sql you can find the description of the table lecture.
 
+You can see the schema of the database in the file `schema.png`.
+
 More information about the project can be found in the project documentation README.md.
 */
 

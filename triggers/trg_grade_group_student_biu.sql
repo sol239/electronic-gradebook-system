@@ -11,16 +11,11 @@ declare
    v_subject_id number;
    v_count      integer;
 begin
-    -- Get subject_id for the grade_group
    select subject_id
      into v_subject_id
      from grade_group
     where grade_group_id = :new.grade_group_id;
 
-    -- print grade_group subject_id
-   dbms_output.put_line('Grade Group Subject ID: ' || v_subject_id);
-    
-    -- Check if student is enrolled in the subject
    select count(*)
      into v_count
      from student_subject

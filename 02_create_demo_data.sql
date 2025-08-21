@@ -1,3 +1,11 @@
+/*
+   File: 02_create_demo_data.sql
+   Author: David Válek
+   Description: Creates demo data for the database system.
+   Created: 2025-08-15
+*/
+
+
 -- Parent table
 DECLARE
   v_parent_id NUMBER;

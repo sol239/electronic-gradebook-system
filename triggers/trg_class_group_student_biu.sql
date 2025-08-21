@@ -11,19 +11,16 @@ declare
    v_class_id_group   number;
    v_class_id_student number;
 begin
-    -- Get class_id from class_group
    select class_id
      into v_class_id_group
      from class_group
     where class_group_id = :new.class_group_id;
 
-    -- Get class_id from student
    select class_id
      into v_class_id_student
      from student
     where student_id = :new.student_id;
 
-    -- Compare class IDs0
    if v_class_id_group != v_class_id_student then
       raise_application_error(
          -20004,

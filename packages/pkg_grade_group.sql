@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for CRUD operations on the Grade_Group table.
-   Notes:
-     - Uses auto-incrementing identity column for primary key.
-     - Includes procedures: add, update, delete, get by ID.
 */
 
 -- Package specification

@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Grade_Group_Student table.
-   Notes:
-     - Links grade groups to their students.
-     - Includes procedures: add, delete, get grade groups by student, get students by grade group.
 */
 
 -- Package specification

@@ -3,10 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for CRUD operations on the Teacher table.
-   Notes:
-     - Uses auto-incrementing identity columns for primary keys.
-     - Includes procedures: add, update, delete, get by ID.
-     - Teacher table now only contains teacher_id and person_id.
 */
 
 -- Package specification

@@ -3,9 +3,6 @@
    Author: David Válek
    Created: 2025-08-15
    Description: Package for operations on the Lecture_Student table.
-   Notes:
-     - Links lectures to their students.
-     - Includes procedures: add, delete, get lectures by student, get students by lecture.
 */
 
 -- Package specification
