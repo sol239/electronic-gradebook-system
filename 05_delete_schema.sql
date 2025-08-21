@@ -5,7 +5,9 @@
     Description: Script for deleting the schema.
 */
 
--- Drop all indexes created in create_indexes.sql
+-- =====================================
+--           Drop all indexes
+-- =====================================
 drop index idx_student_person_id;
 drop index idx_student_class_id;
 drop index idx_teacher_person_id;
@@ -47,19 +49,25 @@ drop index idx_person_name;
 drop index idx_grade_group_student_grade;
 drop index idx_grade_group_student_message;
 
--- Drop all triggers
+-- =====================================
+--         Drop all triggers
+-- =====================================
 drop trigger trg_grade_group_biu;
 drop trigger trg_grade_group_student_biu;
 drop trigger trg_class_group_student_biu;
 
--- Drop all views
+-- =====================================
+--          Drop all views
+-- ======================================   
 drop view vw_class;
 drop view vw_teacher_subjects;
 drop view vw_class_students;
 drop view vw_students_parents;
 drop view vw_student_grades_summary;
 
--- Drop all packages
+-- =====================================
+--          Drop all packages
+-- =====================================
 drop package pkg_class;
 drop package pkg_class_group;
 drop package pkg_class_group_student;
@@ -78,7 +86,9 @@ drop package pkg_classroom_lecture;
 drop package pkg_utils;
 drop package pkg_person;
 
--- Drop all tables
+-- =====================================
+--          Drop all tables
+-- =====================================
 drop table grade_group cascade constraints;
 drop table grade_group_student cascade constraints;
 drop table lecture cascade constraints;
@@ -100,6 +110,6 @@ drop table person cascade constraints;
 COMMIT;
 
 begin
-   dbms_output.put_line('Schema deleted successfully.');
+   dbms_output.put_line('Schema deletion completed.');
 end;
 /
