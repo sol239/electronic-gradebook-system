@@ -69,9 +69,7 @@ select *
 
 /*
 TODO:
-      Add attendance functions 40MIN
       Add Fix Errors in 06 30MIN
-      Add testing for functions above 30MIN
       Final assignment check 5MINd
       Submit 5MIN
 */
@@ -304,7 +302,6 @@ end;
 /
 
 -- =====================================
-
 -- Package: pkg_subject - CRUD Operations
 -- =====================================
 -- Test subject CRUD operations
@@ -718,42 +715,54 @@ end;
 -- Package: pkg_student_subject_teacher - CRUD Operations
 -- =====================================
 
--- Test student-subject relationship operations
+-- Test student-subject-teacher relationship operations
 declare
    v_student_id number := 1;
-   v_subject_id number := 1;
+   v_subject_id number := 4;
+   v_teacher_id number := 1;
    v_rec        pkg_student_subject_teacher.student_subject_teacher_rec;
+   v_subjects   pkg_student_subject_teacher.subject_id_table;
+   v_teachers   pkg_student_subject_teacher.teacher_id_table;
+   v_students   pkg_student_subject_teacher.student_id_table;
 begin
-   -- Add student-subject relationship
+   -- Add student-subject-teacher relationship
    pkg_student_subject_teacher.add_student_subject_teacher(
       v_student_id,
-      v_subject_id
+      v_subject_id,
+      v_teacher_id
    );
-   dbms_output.put_line('Student-subject relationship added');
-   
-   -- Update relationship
+   dbms_output.put_line('Student-Subject-Teacher relationship added');
+
+   -- Update relationship (example: change to student_id=2, subject_id=2, teacher_id=2)
    pkg_student_subject_teacher.update_student_subject_teacher(
       v_student_id,
       v_subject_id,
+      v_teacher_id,
       2,
+      5,
       2
    );
-   dbms_output.put_line('Student-subject relationship updated');
-   
-   -- Get subjects by student
-   declare
-      v_subjects pkg_student_subject_teacher.subject_id_table;
-   begin
-      v_subjects := pkg_student_subject_teacher.get_subjects_by_student(2);
-      dbms_output.put_line('Subjects for student 2: ' || v_subjects.count);
-   end;
-   
+   dbms_output.put_line('Student-Subject-Teacher relationship updated');
+
+   -- Get subjects by student and teacher (for student_id=2, teacher_id=2)
+   v_subjects := pkg_student_subject_teacher.get_subjects_by_student_teacher(2, 2);
+   dbms_output.put_line('Subjects for student 2 and teacher 2: ' || v_subjects.count);
+
+   -- Get teachers by student and subject (for student_id=2, subject_id=2)
+   v_teachers := pkg_student_subject_teacher.get_teachers_by_student_subject(2, 2);
+   dbms_output.put_line('Teachers for student 2 and subject 2: ' || v_teachers.count);
+
+   -- Get students by subject and teacher (for subject_id=2, teacher_id=2)
+   v_students := pkg_student_subject_teacher.get_students_by_subject_teacher(2, 2);
+   dbms_output.put_line('Students for subject 2 and teacher 2: ' || v_students.count);
+
    -- Delete relationship (cleanup)
    pkg_student_subject_teacher.delete_student_subject_teacher(
       2,
+      5,
       2
    );
-   dbms_output.put_line('Student-subject relationship deleted');
+   dbms_output.put_line('Student-Subject-Teacher relationship deleted');
 end;
 /
 
@@ -867,7 +876,6 @@ end;
 declare
    v_classroom_id number := 1;
    v_lecture_id   number := 1;
-   v_rec          pkg_classroom_lecture.classroom_lecture_rec;
 begin
    -- Add classroom-lecture relationship
    pkg_classroom_lecture.add_classroom_lecture(
