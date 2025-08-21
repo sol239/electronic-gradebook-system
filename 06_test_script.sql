@@ -928,6 +928,10 @@ end;
 --                TRIGGERS
 -- =====================================
 
+-- =====================================
+--    trg_class_group_student_biu 
+-- =====================================
+
 -- Test of trg_class_group_student_biu -> insert student into class group which does not belong to student's class
 -- It will raise exception because class_group:3 belongs to class:2 but student:1 is in class:1
 -- Exception expected ⛔
@@ -948,5 +952,91 @@ begin
    ) values ( v_class_group_id,
               v_student_id );
    commit;
+end;
+/
+
+-- This will pass because class_group:1 belongs to class:1 and student:1 is in class:1
+-- Pass expected ✅
+declare
+   v_student_id     number;
+   v_class_group_id number;
+begin
+   v_student_id := 1;
+   v_class_group_id := 1;
+   dbms_output.put_line('Inserting student ID: '
+                        || pkg_student.get_student_full_name_by_id(v_student_id)
+                        || ' into class group ID: '
+                        || pkg_class_group.get_class_group_name_by_id(v_class_group_id));
+
+   insert into class_group_student (
+      class_group_id,
+      student_id
+   ) values ( v_class_group_id,
+              v_student_id );
+   commit;
+   
+   -- clean up
+   DELETE FROM class_group_student
+   WHERE class_group_id = v_class_group_id
+     AND student_id = v_student_id;
+   commit;
+end;
+/
+
+-- =====================================
+--       trg_grade_group_biu
+-- =====================================
+
+-- It will raise exception because teacher:1 is does not teach subject:5
+-- Exception expected ⛔
+declare
+   v_subject_id number;
+   v_teacher_id number;
+   v_grade_group_name varchar2(50);
+begin
+   v_subject_id := 5;
+   v_teacher_id := 1;
+   v_grade_group_name := 'Test z češtiny';
+
+   insert into grade_group (
+      subject_id,
+      teacher_id,
+      grade_group_name
+   ) values (
+      v_subject_id,
+      v_teacher_id,
+      v_grade_group_name
+   );
+
+end;
+/
+
+-- This will pass because teacher:1 teaches subject:1
+-- Pass expected ✅
+declare
+   v_subject_id number;
+   v_teacher_id number;
+   v_grade_group_name varchar2(50);
+begin
+   v_subject_id := 1;
+   v_teacher_id := 1;
+   v_grade_group_name := 'Test z vyjmenovaných slov';
+
+   insert into grade_group (
+      subject_id,
+      teacher_id,
+      grade_group_name
+   ) values (
+      v_subject_id,
+      v_teacher_id,
+      v_grade_group_name
+   );
+
+   -- cleanup
+   delete from grade_group
+   where subject_id = v_subject_id
+     and teacher_id = v_teacher_id
+     and grade_group_name = v_grade_group_name;
+
 end;
 /

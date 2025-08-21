@@ -2,7 +2,7 @@
     File: trg_grade_group_student_biu.sql
     Author: David Válek
     Created: 2025-08-19
-    Description: Trigger for checking student enrollment in grade groups.
+    Description: Trigger for checking student enrollment in grade groups before isnerting/updating marks
 */
 create or replace trigger trg_grade_group_student_biu before
    insert or update on grade_group_student
