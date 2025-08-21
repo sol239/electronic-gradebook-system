@@ -6,6 +6,7 @@
 */
 
 @05_delete_schema.sql
+@04_delete_stats.sql
 @01_create_schema.sql
 @03_create_stats.sql
 @02_create_demo_data.sql
